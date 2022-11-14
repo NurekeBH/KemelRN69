@@ -19,6 +19,7 @@ import { colorApp } from '../../theme/Colors';
 import { width } from '../../Component/Component';
 import { AppleIcon, FaceBook, Eye, iconFile, Right } from '../../Component/MyIcons';
 import axios from 'axios';
+import firebase from '@react-native-firebase/app';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class Login extends Component {
@@ -33,6 +34,9 @@ export default class Login extends Component {
   }
 
   onLoginClick() {
+
+
+
     const { email, pwd } = this.state;
     if (email && pwd) {
       this.setState({ loader: true });
@@ -44,7 +48,7 @@ export default class Login extends Component {
         .then(response => {
           console.log('RESPONSE LOGIN:', response);
           this.storeData(response.data);
-          this.setState({ loader: false });
+
         })
         .catch(error => {
           this.setState({ loader: false });
@@ -54,6 +58,7 @@ export default class Login extends Component {
           }
         });
     }
+
   }
 
   getLang = () => {
@@ -76,7 +81,35 @@ export default class Login extends Component {
       await AsyncStorage.setItem('pwd', pwd);
       const AuthStr = 'Bearer '.concat(data.access);
       axios.defaults.headers.common['Authorization'] = AuthStr;
-      this.props.navigation.replace('TabStack');
+
+
+      let fcmToken = await firebase.messaging().getToken();
+      this.setState({ loader: false });
+      if (fcmToken) {
+        console.log('RESPONSE fcmToken:', fcmToken);
+
+        axios
+          .post('accounts/firebase/', {
+            type: Platform.OS,
+            token: fcmToken,
+          })
+          .then(response => {
+            console.log('RESPONSE firebase:', response);
+          })
+          .catch(error => {
+            console.log('RESPONSE  firebaseerror:', error.response);
+            if (error.response && error.response.status == 401) {
+              showToast('error', error.response.data.detail);
+            }
+          })
+          .finally(() => {
+            this.props.navigation.replace('TabStack');
+          });
+      } else {
+        this.props.navigation.replace('TabStack');
+
+      }
+
     } catch (e) {
       console.error(e);
     }

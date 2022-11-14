@@ -85,16 +85,15 @@ export default class FirstScreen extends Component {
   }
 
   async getToken() {
-    let fcmToken = await AsyncStorage.getItem('fcmToken');
-    console.log('FCM ------ TOKEN', fcmToken);
-    if (!fcmToken) {
-      fcmToken = await firebase.messaging().getToken();
-      if (fcmToken) {
-        this.fcmToken = fcmToken;
-        console.log('fcmToken', fcmToken);
-        await AsyncStorage.setItem('fcmToken', fcmToken);
-      }
+    let fcmToken = await firebase.messaging().getToken();
+    if (fcmToken) {
+      this.fcmToken = fcmToken;
+      console.log('fcmToken async', fcmToken);
+      await AsyncStorage.setItem('fcmToken', fcmToken);
+      console.log('fcmToken async', fcmToken);
+
     }
+
     console.log('fcmToken', fcmToken);
   }
 

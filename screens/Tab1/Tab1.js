@@ -13,6 +13,7 @@ import {
   Modal,
   Alert,
   ActivityIndicator,
+  SafeAreaView,
 } from 'react-native';
 import {
   ButtonClass,
@@ -1077,6 +1078,7 @@ export default class Tab1 extends Component {
     } = this.state;
 
     return (
+
       <View
         style={{
           flex: 1,
@@ -1084,157 +1086,163 @@ export default class Tab1 extends Component {
           paddingTop: getStatusBarHeight,
         }}>
         <StatusBar backgroundColor={'#fff'} barStyle="dark-content" />
-        <View style={{ flex: 1 }}>
-          <TabHeader
-            rightIcon={
-              <LeftIcon
-                stroke={!modal ? '#3F49DC' : '#fff'}
-                stroke2={modal ? '#3F49DC' : '#fff'}
-              />
-            }
-            rightOnPress={() =>
-              this.setState({
-                bytype: null,
-                modal: !modal,
-              })
-            }
-            title={GetTime(new Date(), 'MMMM')}
-            navigation={this.props.navigation}
-            borderBottomBoll={false}
-          />
+        <SafeAreaView style={{ flex: 1 }}>
 
-          <View style={{ flex: 1, backgroundColor: '#F2F2F7' }}>
-            {bytype == 2 ? (
-              <View>
-                <Calendar
-                  firstDay={1}
-                  theme={{
-                    todayTextColor: '#FF3B30',
-                  }}
-                  markingType={'custom'}
-                  markedDates={this.state.calendarData}
-                  onDayPress={day => {
-                    console.log('day', day);
-                    this.setState(
-                      {
-                        open: 'day',
-                        now: day.dateString,
-                        bytype: 0,
-                        modal: false,
-                      },
-                      () => {
-                        this.getTodoList();
-                      },
-                    );
-                  }}
+          <View style={{ flex: 1 }}>
+            <TabHeader
+              rightIcon={
+                <LeftIcon
+                  stroke={!modal ? '#3F49DC' : '#fff'}
+                  stroke2={modal ? '#3F49DC' : '#fff'}
                 />
-                <TouchableOpacity
-                  style={{
-                    paddingVertical: 4,
-                    alignItems: 'center',
-                  }}
-                  onPress={() => {
-                    this.topModalButtonPress(0);
-                  }}>
-                  {closeIcon}
-                </TouchableOpacity>
-              </View>
-            ) : null}
+              }
+              rightOnPress={() =>
+                this.setState({
+                  bytype: null,
+                  modal: !modal,
+                })
+              }
+              title={GetTime(new Date(), 'MMMM')}
+              navigation={this.props.navigation}
+              borderBottomBoll={false}
+            />
 
-            <View>{bytype != 2 ? this._listHeaderComponent() : null}</View>
-            {isLoading ?
-              <ActivityIndicator />
-              :
-              <FlatList
-                data={todos}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={this.renderItem}
-                showsVerticalScrollIndicator={false}
-              />
-            }
+            <View style={{ flex: 1, backgroundColor: '#F2F2F7' }}>
+              {bytype == 2 ? (
+                <View>
+                  <Calendar
+                    firstDay={1}
+                    theme={{
+                      todayTextColor: '#FF3B30',
+                    }}
+                    markingType={'custom'}
+                    markedDates={this.state.calendarData}
+                    onDayPress={day => {
+                      console.log('day', day);
+                      this.setState(
+                        {
+                          open: 'day',
+                          now: day.dateString,
+                          bytype: 0,
+                          modal: false,
+                        },
+                        () => {
+                          this.getTodoList();
+                        },
+                      );
+                    }}
+                  />
+                  <TouchableOpacity
+                    style={{
+                      paddingVertical: 4,
+                      alignItems: 'center',
+                    }}
+                    onPress={() => {
+                      this.topModalButtonPress(0);
+                    }}>
+                    {closeIcon}
+                  </TouchableOpacity>
+                </View>
+              ) : null}
+
+              <View>{bytype != 2 ? this._listHeaderComponent() : null}</View>
+              {isLoading ?
+                <ActivityIndicator />
+                :
+                <FlatList
+                  data={todos}
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={this.renderItem}
+                  showsVerticalScrollIndicator={false}
+                />
+              }
 
 
-            <ModalBox
-              isOpen={modal}
-              backdropColor="rgba(0,0,0,0.7)"
-              entry="top"
-              position="top"
-              onClosed={() => this.setState({ modal: false })}
-              onOpened={() => this.setState({ modal: true })}
-              style={{
-                height: 'auto',
-                borderBottomRightRadius: 12,
-                borderBottomLeftRadius: 12,
-              }}
-              backButtonClose>
-              <View
+              <ModalBox
+                isOpen={modal}
+                backdropColor="rgba(0,0,0,0.7)"
+                entry="top"
+                position="top"
+                onClosed={() => this.setState({ modal: false })}
+                onOpened={() => this.setState({ modal: true })}
                 style={{
-                  width,
                   height: 'auto',
-                }}>
-                <TopModalButtonStyle
-                  onPress={() => {
-                    this.topModalButtonPress(0);
-                  }}
-                  title={strings.raspr}
-                  titleColor={'#000'}
-                  icon={
-                    <LeftIcon2
-                      stroke={bytype == 0 ? '#ffffff' : '#8E8E93'}
-                      stroke2={bytype == 0 ? '#3F49DC' : '#ffffff'}
-                      stroke3={bytype == 0 ? '#3F49DC' : '#8E8E93'}
-                    />
-                  }
-                />
-                <TopModalButtonStyle
-                  onPress={() => {
-                    this.topModalButtonPress(1);
-                  }}
-                  title={strings.week}
-                  titleColor={'#000'}
-                  icon={
-                    <WeekIcon
-                      stroke={bytype == 1 ? '#3F49DC' : '#ffffff'}
-                      stroke2={bytype == 1 ? '#ffffff' : '#8E8E93'}
-                      stroke3={bytype == 1 ? '#3F49DC' : '#8E8E93'}
-                    />
-                  }
-                />
-                <TopModalButtonStyle
-                  onPress={() => {
-                    this.topModalButtonPress(2);
-                  }}
-                  title={strings.month}
-                  titleColor={'#000'}
-                  icon={
-                    <MonthIcon
-                      stroke={bytype == 2 ? '#3F49DC' : '#8E8E93'}
-                      stroke2={bytype == 2 ? '#fff' : '#8E8E93'}
-                      stroke3={bytype == 2 ? '#3F49DC' : '#fff'}
-                    />
-                  }
-                />
-                <TopModalButtonStyle
-                  onPress={() => {
-                    this.props.navigation.navigate('MyGoals')
-                    this.setState({ modal: false })
-                  }}
-                  title={strings.mygoals}
-                  titleColor={'#000'}
-                  icon={
-                    PurposeIconGrey
-                  }
-                />
-              </View>
-            </ModalBox>
-            <TouchableOpacity
-              onPress={() => this.mdlRef.open()}
-              activeOpacity={0.7}
-              style={styles.btnStl}>
-              {PluseBtn}
-            </TouchableOpacity>
+                  borderBottomRightRadius: 12,
+                  borderBottomLeftRadius: 12,
+                }}
+                backButtonClose>
+                <View
+                  style={{
+                    width,
+                    height: 'auto',
+                  }}>
+                  <TopModalButtonStyle
+                    onPress={() => {
+                      this.topModalButtonPress(0);
+                    }}
+                    title={strings.raspr}
+                    titleColor={'#000'}
+                    icon={
+                      <LeftIcon2
+                        stroke={bytype == 0 ? '#ffffff' : '#8E8E93'}
+                        stroke2={bytype == 0 ? '#3F49DC' : '#ffffff'}
+                        stroke3={bytype == 0 ? '#3F49DC' : '#8E8E93'}
+                      />
+                    }
+                  />
+                  <TopModalButtonStyle
+                    onPress={() => {
+                      this.topModalButtonPress(1);
+                    }}
+                    title={strings.week}
+                    titleColor={'#000'}
+                    icon={
+                      <WeekIcon
+                        stroke={bytype == 1 ? '#3F49DC' : '#ffffff'}
+                        stroke2={bytype == 1 ? '#ffffff' : '#8E8E93'}
+                        stroke3={bytype == 1 ? '#3F49DC' : '#8E8E93'}
+                      />
+                    }
+                  />
+                  <TopModalButtonStyle
+                    onPress={() => {
+                      this.topModalButtonPress(2);
+                    }}
+                    title={strings.month}
+                    titleColor={'#000'}
+                    icon={
+                      <MonthIcon
+                        stroke={bytype == 2 ? '#3F49DC' : '#8E8E93'}
+                        stroke2={bytype == 2 ? '#fff' : '#8E8E93'}
+                        stroke3={bytype == 2 ? '#3F49DC' : '#fff'}
+                      />
+                    }
+                  />
+                  <TopModalButtonStyle
+                    onPress={() => {
+                      this.props.navigation.navigate('MyGoals')
+                      this.setState({ modal: false })
+                    }}
+                    title={strings.mygoals}
+                    titleColor={'#000'}
+                    icon={
+                      PurposeIconGrey
+                    }
+                  />
+                </View>
+              </ModalBox>
+              <TouchableOpacity
+                onPress={() =>
+                  this.mdlRef.open()
+
+                }
+                activeOpacity={0.7}
+                style={styles.btnStl}>
+                {PluseBtn}
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        </SafeAreaView>
 
         <ModalBox
           ref={e => (this.mdlRef = e)}
@@ -1327,6 +1335,9 @@ export default class Tab1 extends Component {
     );
   }
 }
+
+
+
 
 const styles = StyleSheet.create({
   vwStl: {

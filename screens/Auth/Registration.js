@@ -20,6 +20,7 @@ import { width } from '../../Component/Component';
 import { Eye, FaceBook, AppleIcon } from '../../Component/MyIcons';
 import axios, { Axios } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import firebase from '@react-native-firebase/app';
 
 export default class Registration extends Component {
   constructor(props) {
@@ -29,12 +30,15 @@ export default class Registration extends Component {
       pwd: '',
       name: '',
       eye: true,
+      loader: false
     };
   }
 
   registerClick() {
+
     const { email, pwd, name } = this.state;
     if (email && pwd && name) {
+      this.setState({ loader: true });
       axios.post('register/', {
         email: email,
         password: pwd,
@@ -67,6 +71,7 @@ export default class Registration extends Component {
 
         })
         .catch(error => {
+          this.setState({ loader: false });
           console.log("RESPONSE error:", error.response);
           if (error.response && error.response.status == 400) {
             if (error.response.data.password) {
@@ -91,7 +96,33 @@ export default class Registration extends Component {
       await AsyncStorage.setItem('pwd', pwd);
       const AuthStr = 'Bearer '.concat(data.access);
       axios.defaults.headers.common['Authorization'] = AuthStr;
-      this.props.navigation.replace('TabStack');
+      let fcmToken = await firebase.messaging().getToken();
+      this.setState({ loader: false });
+      if (fcmToken) {
+        console.log('RESPONSE fcmToken:', fcmToken);
+
+        axios
+          .post('accounts/firebase/', {
+            type: Platform.OS,
+            token: fcmToken,
+          })
+          .then(response => {
+            console.log('RESPONSE firebase:', response);
+          })
+          .catch(error => {
+            console.log('RESPONSE  firebaseerror:', error.response);
+            if (error.response && error.response.status == 401) {
+              showToast('error', error.response.data.detail);
+            }
+          })
+          .finally(() => {
+            this.props.navigation.replace('TabStack');
+          });
+      } else {
+        this.props.navigation.replace('TabStack');
+
+      }
+
     } catch (e) {
       console.error(e);
     }
@@ -201,6 +232,7 @@ export default class Registration extends Component {
                   </TouchableOpacity>
                 </View>
                 <ButtonClass
+                  loader={this.state.loader}
                   title={strings.tirk}
                   onPress={() => {
                     this.registerClick()

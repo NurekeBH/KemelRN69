@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Alert, Text, View } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
+import { firebaseService } from './FirebaseService';
 
 
 const codePushOptions = {
@@ -56,11 +57,14 @@ const App: () => React$Node = () => {
 
 
   useEffect(() => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-    });
 
-    return unsubscribe;
+
+    firebaseService.register();
+
+    return () => {
+      unsubscribe();
+      firebaseService.unsubscribe()
+    }
   }, []);
 
 
