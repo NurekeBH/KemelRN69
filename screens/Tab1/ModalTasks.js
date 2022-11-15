@@ -13,7 +13,7 @@ import {
 import { ButtonClass, GetTime, showToast } from '../../Component/Component';
 import { Done, RightRed, ShareNote } from '../../Component/MyIcons';
 import DatePicker from 'react-native-date-picker';
-import { actions, RichEditor, RichToolbar } from 'react-native-pell-rich-editor';
+import { actions, RichEditor, RichToolbar } from '../../HtmlEditor';
 import { strings } from '../../Localization/Localization';
 import Modal from 'react-native-modalbox';
 import Share from 'react-native-share';

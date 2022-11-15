@@ -549,8 +549,9 @@ export const Done = (
     fill="none"
     xmlns="http://www.w3.org/2000/svg">
     <Path
+      strokeWidth='3'
       d="M5.55346 7.55928L12.0048 0.804521C12.3926 0.398493 13.0213 0.398493 13.4091 0.804521C13.7969 1.21055 13.7969 1.86885 13.4091 2.27488L5.55346 10.5L0.990793 5.72275C0.603004 5.31672 0.603004 4.65842 0.990793 4.25239C1.37858 3.84636 2.00731 3.84636 2.3951 4.25239L5.55346 7.55928Z"
-      fill="black"
+      fill="white"
     />
   </Svg>
 );
@@ -603,6 +604,30 @@ export const PluseBtn = (
       rx="1.5"
       transform="matrix(0 1 1 0 0 8.12512)"
       fill="white"
+    />
+  </Svg>
+);
+
+export const addHabitsIcon = (
+  <Svg
+    width="18"
+    height="18"
+    viewBox="0 0 20 20"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg">
+    <Rect
+      width="3.75"
+      height="20"
+      rx="1.5"
+      transform="matrix(-1 0 0 1 11.8753 0)"
+      fill="#3F49DC"
+    />
+    <Rect
+      width="3.75"
+      height="20"
+      rx="1.5"
+      transform="matrix(0 1 1 0 0 8.12512)"
+      fill="#3F49DC"
     />
   </Svg>
 );
@@ -1132,6 +1157,11 @@ export const FileIcon = (
     />
   </Svg>
 );
+
+export const threeDot = <Svg width="12" height="24" viewBox="0 0 12 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <Path opacity="0.54" fill-rule="evenodd" clip-rule="evenodd" d="M6 8C7.1 8 8 7.1 8 6C8 4.9 7.1 4 6 4C4.9 4 4 4.9 4 6C4 7.1 4.9 8 6 8ZM6 10C4.9 10 4 10.9 4 12C4 13.1 4.9 14 6 14C7.1 14 8 13.1 8 12C8 10.9 7.1 10 6 10ZM6 16C4.9 16 4 16.9 4 18C4 19.1 4.9 20 6 20C7.1 20 8 19.1 8 18C8 16.9 7.1 16 6 16Z" fill="black" />
+</Svg>
+
 
 export const BottomIcon = (
   <Svg

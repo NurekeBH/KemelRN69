@@ -62,7 +62,6 @@ const App: () => React$Node = () => {
     firebaseService.register();
 
     return () => {
-      unsubscribe();
       firebaseService.unsubscribe()
     }
   }, []);
@@ -78,8 +77,8 @@ const App: () => React$Node = () => {
   )
 }
 
-export default App;
-// export default codePush(codePushOptions)(App);
+// export default App;
+export default codePush(codePushOptions)(App);
 
 
 // appcenter codepush release-react -a KemelAdam/Kemel-ios -d Staging

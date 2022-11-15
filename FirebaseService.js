@@ -74,7 +74,7 @@ class FirebaseService {
   async getToken() {
     const token = await messaging().getToken();
 
-    console.log('getToken:', token);
+    console.log('getToken:ffffff', token);
 
     if (token) {
       // await storeString(STORAGE.firebaseToken, token);
@@ -90,6 +90,11 @@ class FirebaseService {
       console.log('onMessage: ', remoteMessage);
       // LocalNotificationService.onDisplayNotification(remoteMessage);
     });
+
+
+    messaging()
+      .subscribeToTopic('news')
+      .then(() => console.log('Subscribed to topic!'));
 
     messaging().onNotificationOpenedApp(remoteMessage => {
       console.log('onNotificationOpenedApp : ', remoteMessage);

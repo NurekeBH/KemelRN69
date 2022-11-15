@@ -167,6 +167,7 @@ export default class HabitAdd extends Component {
                 borderBottomColor: bordercolor,
               }}>
               <TextInput
+                autoFocus={true}
                 style={{ fontSize: 20, fontWeight: '700', marginHorizontal: 10 }}
                 placeholder={strings.adetk}
                 placeholderTextColor={'#D1D1D6'}

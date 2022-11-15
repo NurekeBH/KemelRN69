@@ -169,7 +169,7 @@ export default class Login extends Component {
                   fontWeight: '700',
                   marginTop: 24,
                 }}>
-                Өз уақытыңмен өз өміріңді қолға ал!
+                Өз уақытың мен өз өміріңді қолға ал!
               </Text>
               <Text style={{ fontSize: 20, color: '#000', marginTop: 8 }}>
                 Әрбір жетістік істі дұрыс жоспарлаудан, жақсы әдеттерді қалыптастырудан басталады.

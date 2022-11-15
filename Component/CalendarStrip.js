@@ -300,6 +300,16 @@ class CalendarStrip extends Component {
             }}>
             <View
               style={{
+                marginTop: 4,
+                width: 40,
+                height: 3,
+                borderRadius: 4,
+                backgroundColor: '#E5E5EA',
+              }}
+            />
+            <View
+              style={{
+                marginTop: 2,
                 width: 40,
                 height: 3,
                 borderRadius: 4,
@@ -355,7 +365,7 @@ CalendarStrip.defaultProps = {
 const styles = StyleSheet.create({
   container: {
     width,
-    height: 38 + 50,
+    height: 42 + 50,
     backgroundColor: 'white',
     borderTopColor: 'rgba(0, 0, 0, 0.1)',
     borderTopWidth: 0.5,

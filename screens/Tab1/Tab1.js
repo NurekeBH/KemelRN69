@@ -46,6 +46,9 @@ import {
   iconFile,
   closeIcon,
   PurposeIconGrey,
+  FileIcon,
+  threeDot,
+  addHabitsIcon,
 } from '../../Component/MyIcons';
 import { getStatusBarHeight } from '../../Component/getStatusBarHeight';
 import { strings } from '../../Localization/Localization';
@@ -505,7 +508,21 @@ export default class Tab1 extends Component {
                 marginBottom: 0,
               },
             ]}>
-            <Text style={{ fontSize: 17, fontWeight: '600' }}>{strings.adets}</Text>
+            <Text style={{ flex: 1, fontSize: 17, fontWeight: '600' }}>{strings.adets}</Text>
+            {
+              !this.state.isOpenHabits ?
+                <TouchableOpacity
+                  onPress={() => {
+                    this.props.navigation.navigate('HabitAdd', {
+                      updateData: this.updateData,
+                    })
+                  }}
+                  style={{ marginRight: 8, width: 30, height: 30, alignItems: 'center', justifyContent: 'center', borderRadius: 15, }}>
+                  {addHabitsIcon}
+                </TouchableOpacity>
+                :
+                null
+            }
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text
                 style={{
@@ -616,14 +633,7 @@ export default class Tab1 extends Component {
               this.DoneTasks(item);
               item.done && this.PlaySound();
             }}
-            onLongPress={() => {
-              this.state.open == 'day'
-                ? this.setState({
-                  indDrax: 1,
-                  visible: true,
-                })
-                : null;
-            }}
+            style={{ height: 40, justifyContent: 'center', width: 40 }}
             activeOpacity={0.8}>
             {item.done ? (
               <View style={styles.doneStl}>{Done}</View>
@@ -640,14 +650,7 @@ export default class Tab1 extends Component {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => {
-              // item.done = !item.done;
-              this.setState({
-                modelItem: item,
-              });
 
-              // this.DoneTasks(item);
-            }}
             onLongPress={() => {
               this.state.open == 'day'
                 ? this.setState({
@@ -658,7 +661,7 @@ export default class Tab1 extends Component {
             }}
             style={{ flex: 1 }}
             activeOpacity={0.8}>
-            <View style={{ marginLeft: 14 }}>
+            <View >
               <Text
                 style={{
                   fontSize: 15,
@@ -685,6 +688,20 @@ export default class Tab1 extends Component {
                 </Text>
               </View>
             </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              // item.done = !item.done;
+              this.setState({
+                modelItem: item,
+              });
+
+              // this.DoneTasks(item);
+            }}
+
+            style={{ height: 40, justifyContent: 'center', alignItems: 'flex-end', width: 40, }}
+          >
+            {threeDot}
           </TouchableOpacity>
         </View>
       </Swipeout>
@@ -795,14 +812,7 @@ export default class Tab1 extends Component {
             },
           ]}>
           <TouchableOpacity
-            onLongPress={() => {
-              this.state.open == 'day'
-                ? this.setState({
-                  indDrax: 2,
-                  visible: true,
-                })
-                : null;
-            }}
+            style={{ height: 40, justifyContent: 'center', width: 40, }}
             activeOpacity={0.8}
             onPress={() => {
               (item.done = !item.done), this.DoneHabits(item);
@@ -833,16 +843,10 @@ export default class Tab1 extends Component {
                 : null;
             }}
             style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'row' }}
-            onPress={() => {
-              // (item.done = !item.done), this.DoneHabits(item);
-              this.setState({
-                modelHabits: item,
-              });
-            }}
+            activeOpacity={0.8}
             key={index}>
             <Text
               style={{
-                marginLeft: 14,
                 fontSize: 15,
                 textDecorationLine: item.done ? 'line-through' : 'none',
                 color: item.done ? '#8E8E93' : '#000',
@@ -852,6 +856,19 @@ export default class Tab1 extends Component {
             {item.purpose ? <Text style={{ color: '#2BA149', fontSize: 16 }}>{item.target_value ? item.target_value.value : 0} {item.target_template ? getTemplateLabel(item.target_template.template) : null}</Text>
               :
               null}
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => {
+              // (item.done = !item.done), this.DoneHabits(item);
+              this.setState({
+                modelHabits: item,
+              });
+            }}
+
+            style={{ height: 40, justifyContent: 'center', alignItems: 'flex-end', width: 40, }}
+          >
+            {threeDot}
           </TouchableOpacity>
 
         </View>
@@ -1111,6 +1128,7 @@ export default class Tab1 extends Component {
               {bytype == 2 ? (
                 <View>
                   <Calendar
+                    enableSwipeMonths={true}
                     firstDay={1}
                     theme={{
                       todayTextColor: '#FF3B30',
@@ -1233,8 +1251,11 @@ export default class Tab1 extends Component {
               </ModalBox>
               <TouchableOpacity
                 onPress={() =>
-                  this.mdlRef.open()
-
+                  // this.mdlRef.open()
+                  this.props.navigation.navigate('TaskAdd', {
+                    updateData: this.updateData,
+                    now: now
+                  })
                 }
                 activeOpacity={0.7}
                 style={styles.btnStl}>

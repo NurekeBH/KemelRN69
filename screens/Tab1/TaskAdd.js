@@ -27,7 +27,7 @@ import 'moment/locale/ru';
 import 'moment/locale/en-au';
 import axios from 'axios';
 import Modal from 'react-native-modalbox';
-import { actions, RichEditor, RichToolbar } from 'react-native-pell-rich-editor';
+import { actions, RichEditor, RichToolbar } from '../../HtmlEditor';
 
 const bordercolor = 'rgba(0, 0, 0, 0.2)';
 const arrAction = [
@@ -160,6 +160,7 @@ export default function TaskAdd({ route, navigation }) {
                 style={{ fontSize: 20, fontWeight: '700', marginHorizontal: 10 }}
                 placeholder={strings.dobz}
                 value={theme}
+                autoFocus={true}
                 onChangeText={theme => settheme(theme)}
               />
             </View>

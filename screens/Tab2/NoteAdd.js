@@ -20,7 +20,7 @@ import {
   showToast,
 } from '../../Component/Component';
 import { strings } from '../../Localization/Localization';
-import { actions, RichEditor, RichToolbar } from 'react-native-pell-rich-editor';
+import { actions, RichEditor, RichToolbar } from '../../HtmlEditor';
 import { editorFile, FileIcon, iconFile, Left30Sec, PluseFile, ShareNote } from '../../Component/MyIcons';
 import ImageCropPicker from 'react-native-image-crop-picker';
 

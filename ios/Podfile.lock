@@ -293,8 +293,8 @@ PODS:
   - React-jsinspector (0.69.4)
   - React-logger (0.69.4):
     - glog
-  - react-native-blur (0.8.0):
-    - React
+  - react-native-blur (4.3.0):
+    - React-Core
   - react-native-date-picker (4.2.5):
     - React-Core
   - react-native-document-picker (8.1.2):
@@ -673,7 +673,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: a27badbbdbc0ff781813370736a2d1c7261181d4
   React-jsinspector: 8a3d3f5dcd23a91e8c80b1bf0e96902cd1dca999
   React-logger: 1088859f145b8f6dd0d3ed051a647ef0e3e80fad
-  react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
+  react-native-blur: 50c9feabacbc5f49b61337ebc32192c6be7ec3c3
   react-native-date-picker: 55193347d8d0f40948f441ffd4e5db6f0a8fbe13
   react-native-document-picker: f5ec1a712ca2a975c233117f044817bb8393cad4
   react-native-image-base64: 2ff9ac788639c87a91361ab6652cc95e871b1e54

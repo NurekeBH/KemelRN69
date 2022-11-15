@@ -175,7 +175,7 @@ export default class FirstScreen extends Component {
             style={{ width: 80, aspectRatio: 1, marginBottom: 24 }}
           />
           <Text style={{ fontSize: 40, fontWeight: '700' }}>
-            Көздеген мақсаттарың қол жеткіз
+            Мақсатыңа қол жеткіз!
           </Text>
           <Text
             style={{

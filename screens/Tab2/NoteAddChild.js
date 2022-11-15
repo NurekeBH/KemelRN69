@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import axios from 'axios';
-import React, {Component, useEffect, useRef, useState} from 'react';
+import React, { Component, useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -13,9 +13,9 @@ import {
   Platform,
   StyleSheet,
 } from 'react-native';
-import {ButtonClass, HeaderStyle, showToast} from '../../Component/Component';
-import {strings} from '../../Localization/Localization';
-import {actions, RichEditor, RichToolbar} from 'react-native-pell-rich-editor';
+import { ButtonClass, HeaderStyle, showToast } from '../../Component/Component';
+import { strings } from '../../Localization/Localization';
+import { actions, RichEditor, RichToolbar } from '../../HtmlEditor';
 import ImageCropPicker from 'react-native-image-crop-picker';
 const arrAction = [
   actions.insertImage,
@@ -32,7 +32,7 @@ const arrAction = [
   actions.redo,
 ];
 
-export default function NoteAddChild({route, navigation}) {
+export default function NoteAddChild({ route, navigation }) {
   const [theme, setTheme] = useState(route.params?.theme);
   const [text, setText] = useState(route.params?.text);
   const Index = route.params ? route.params.index : null;
@@ -75,21 +75,21 @@ export default function NoteAddChild({route, navigation}) {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
+    <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <StatusBar backgroundColor={'#fff'} barStyle="dark-content" />
-      <SafeAreaView style={{flex: 1}}>
+      <SafeAreaView style={{ flex: 1 }}>
         <View style={HeaderStyle}>
           <TouchableOpacity onPress={onSaveClick} activeOpacity={0.7}>
-            <Text style={{fontSize: 17, color: '#3F49DC'}}>
+            <Text style={{ fontSize: 17, color: '#3F49DC' }}>
               {strings.bastar}
             </Text>
           </TouchableOpacity>
         </View>
-        <View style={{flex: 1, paddingHorizontal: 6, backgroundColor: '#fff'}}>
+        <View style={{ flex: 1, paddingHorizontal: 6, backgroundColor: '#fff' }}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <KeyboardAvoidingView
               behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-              style={{flex: 1}}>
+              style={{ flex: 1 }}>
               <TextInput
                 placeholder={strings.tem}
                 style={{
@@ -142,14 +142,14 @@ export default function NoteAddChild({route, navigation}) {
               }}
               style={styles.toolbarStl}
               iconMap={{
-                [actions.heading1]: ({tintColor}) => (
-                  <Text style={[{color: tintColor}]}>H1</Text>
+                [actions.heading1]: ({ tintColor }) => (
+                  <Text style={[{ color: tintColor }]}>H1</Text>
                 ),
-                [actions.heading2]: ({tintColor}) => (
-                  <Text style={[{color: tintColor}]}>H2</Text>
+                [actions.heading2]: ({ tintColor }) => (
+                  <Text style={[{ color: tintColor }]}>H2</Text>
                 ),
-                [actions.heading3]: ({tintColor}) => (
-                  <Text style={[{color: tintColor}]}>H3</Text>
+                [actions.heading3]: ({ tintColor }) => (
+                  <Text style={[{ color: tintColor }]}>H3</Text>
                 ),
               }}
             />
