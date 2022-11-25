@@ -28,7 +28,7 @@ export default class SingleDua extends Component {
                     <ScrollView style={{ flex: 1, }}>
                         <View style={{ flex: 1, backgroundColor: 'white', padding: 16 }}>
                             <Text style={{ flxe: 1, fontSize: 20, color: '#000000', fontWeight: '600' }}> {item.title} </Text>
-                            <Text style={{ marginTop: 16, fontSize: 16, color: '#000000', }}> {item.desc} </Text>
+                            <Text style={{ marginTop: 16, fontSize: 17, color: '#000000', }}> {item.desc} </Text>
                         </View>
                     </ScrollView>
 

@@ -36,20 +36,12 @@ const arrAction = [
   actions.insertBulletsList,
   actions.insertOrderedList,
   actions.heading1,
-  actions.checkboxList,
 ];
-const Arrreminder = [
-  { id: 0, name: 'В момент события' },
-  { id: 1800, name: 'За 30 минут' },
-  { id: 3600, name: 'За 1 час' },
-  { id: 7200, name: 'За 2 часа' },
-  { id: 10800, name: 'За 3 часа' },
-  { id: 86400, name: 'За 1 день' },
-  { id: 172800, name: 'за 2 дня' },
-];
+
 
 export default function TaskAdd({ route, navigation }) {
   const [priority, setpriority] = useState(false);
+  const [Arrreminder, setArrreminder] = useState(route.params.ReminderArr ? route.params.ReminderArr : []);
   const [theme, settheme] = useState('');
   const [address, setaddress] = useState('');
   const [zametka, setzametka] = useState();
@@ -60,13 +52,17 @@ export default function TaskAdd({ route, navigation }) {
   const [isSaveZametka, setIsSaveZametka] = useState(false);
   const [modalValue, setmodalValue] = useState({
     id: null,
-    name: 'Нет',
+    label: 'Нет',
   });
   const [toolbarKeyboard, settoolbarKeyboard] = useState(false);
   const richText = useRef();
   useEffect(() => {
     Moment.locale(getLang());
+
   }, []);
+
+
+
 
   const getLang = () => {
     if (strings.getLanguage() == 'kz') {
@@ -88,16 +84,14 @@ export default function TaskAdd({ route, navigation }) {
           datetime: Datetime,
           priority: priority,
           address: address,
-          desc: ''
+          desc: '',
+          reminder: modalValue.id
         })
         .then(response => {
           console.log('RESPONSE add:', response.data);
-          if (modalValue.id) {
-            SetReminder(response.data.id);
-          } else {
-            route.params.updateData();
-            navigation.goBack();
-          }
+          route.params.updateData();
+          navigation.goBack();
+
         })
         .catch(error => {
           console.log('RESPONSE error:', error.response);
@@ -108,27 +102,6 @@ export default function TaskAdd({ route, navigation }) {
     }
   };
 
-  const SetReminder = id => {
-    console.log('sssssss', id);
-
-    axios
-      .post(`todos/task/${id}/reminder/`, {
-        time: modalValue.id,
-      })
-      .then(response => {
-        console.log('RESPONSE reminder:', response.data);
-      })
-      .catch(error => {
-        console.log('RESPONSE error:', error.response);
-        if (error.response && error.response.status == 401) {
-          showToast('error', error.response.data.detail);
-        }
-      })
-      .finally(() => {
-        route.params.updateData();
-        navigation.goBack();
-      });
-  };
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -232,10 +205,10 @@ export default function TaskAdd({ route, navigation }) {
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}>
-                <Text style={{ fontSize: 17, marginLeft: 12 }}>Напоминание</Text>
+                <Text style={{ fontSize: 17, }}>{strings.reminder}</Text>
               </View>
               <Text style={{ fontSize: 17, color: '#3F49DC' }}>
-                {modalValue.name}
+                {modalValue.label}
               </Text>
             </TouchableOpacity>
 
@@ -383,7 +356,7 @@ export default function TaskAdd({ route, navigation }) {
                 setopenModal(false);
                 setmodalValue({
                   id: null,
-                  name: 'Нет',
+                  label: 'Нет',
                 });
               }}>
               <Text styl={{ fontSize: 17, fontWeight: '500', color: '#000000' }}>
@@ -400,7 +373,7 @@ export default function TaskAdd({ route, navigation }) {
                 }}>
                 <Text
                   styl={{ fontSize: 17, fontWeight: '500', color: '#000000' }}>
-                  {item1.name}
+                  {item1.label}
                 </Text>
               </TouchableOpacity>
             ))}

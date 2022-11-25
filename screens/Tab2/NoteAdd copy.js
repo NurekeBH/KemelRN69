@@ -32,7 +32,6 @@ const arrAction = [
   actions.insertBulletsList,
   actions.insertOrderedList,
   actions.heading1,
-  actions.checkboxList,
   'customAction',
 ];
 

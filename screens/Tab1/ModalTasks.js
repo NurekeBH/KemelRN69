@@ -10,7 +10,7 @@ import {
   Dimensions,
   Platform,
 } from 'react-native';
-import { ButtonClass, GetTime, showToast } from '../../Component/Component';
+import { ButtonClass, GetTime, showToast, width } from '../../Component/Component';
 import { Done, RightRed, ShareNote } from '../../Component/MyIcons';
 import DatePicker from 'react-native-date-picker';
 import { actions, RichEditor, RichToolbar } from '../../HtmlEditor';
@@ -24,12 +24,11 @@ const arrAction = [
   actions.insertBulletsList,
   actions.insertOrderedList,
   actions.heading1,
-  actions.checkboxList,
 ];
 import axios from 'axios';
 import KeyboardSpacer from '../../Component/KeyboardSpacer';
 
-export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshModal }) {
+export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshModal, ReminderArr }) {
   const [modelItem, setmodelItem] = useState(modelItemData);
   const [zametka, setzametka] = useState(modelItemData.desc);
   const [open, setopen] = useState(false);
@@ -38,6 +37,8 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
   const [datetime, setdatetime] = useState(modelItemData.datetime);
   const [priority, setpriority] = useState(modelItemData.priority);
   const [address, setaddress] = useState(modelItemData.address);
+  const [reminder, setReminder] = useState(modelItemData.reminder);
+  const [openModal, setopenModal] = useState(false);
   const [isSave, setisSave] = useState(false);
   const [isSaveZametka, setIsSaveZametka] = useState(false);
   const [toolbarKeyboard, settoolbarKeyboard] = useState(false);
@@ -71,6 +72,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
           modelItem.priority = priority;
           modelItem.address = address;
           modelItem.desc = zametka;
+          modelItem.reminder = reminder
           setmodelItem(modelItem);
           setisSave(true);
           purposeMdl.current.close();
@@ -88,6 +90,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
       modelItem.priority = priority;
       modelItem.address = address;
       modelItem.desc = zametka;
+      modelItem.reminder = reminder
       setmodelItem(modelItem);
       setisSave(true);
       console.log('RESPONSE save modelItem:', modelItem);
@@ -197,6 +200,18 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
                   onChangeText={label => setLabel(label)}
                 />
               </View>
+              <View style={styles.mdlVwStl2}>
+                <Text style={{ fontSize: 17 }}>{strings.reminder}</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    setopenModal(true);
+                  }}>
+                  <Text style={{ fontSize: 17, color: '#3F49DC' }}>
+                    {reminder.label}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
 
               <View style={styles.mdlVwStl2}>
                 <Text style={{ fontSize: 17 }}>{strings.vremya}</Text>
@@ -346,6 +361,48 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
           </ScrollView>
         </View>
       ) : null}
+
+
+      <Modal
+        position="bottom"
+        backButtonClose
+        isOpen={openModal}
+        onClosed={() => {
+          setopenModal(false);
+        }}
+        style={{
+          backgroundColor: '#F2F2F7',
+          height: Dimensions.get('screen').height / 2,
+          borderTopRightRadius: 12,
+          borderTopLeftRadius: 12,
+        }}>
+        <View>
+          <TouchableOpacity
+            style={[styles.inpStl, { marginVertical: 16 }]}
+            onPress={() => {
+              setopenModal(false);
+
+            }}>
+            <Text styl={{ fontSize: 17, fontWeight: '500', color: '#000000' }}>
+              Нет
+            </Text>
+          </TouchableOpacity>
+
+          {ReminderArr.map((item1, index) => (
+            <TouchableOpacity
+              style={styles.inpStl}
+              onPress={() => {
+                setopenModal(false);
+                setReminder(item1)
+              }}>
+              <Text
+                styl={{ fontSize: 17, fontWeight: '500', color: '#000000' }}>
+                {item1.label}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </Modal>
     </Modal>
   );
 }
@@ -360,6 +417,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  inpStl: {
+    marginLeft: 16,
+    width: width - 32,
+    backgroundColor: 'white',
+    padding: 12,
+    borderRadius: 8,
+    marginVertical: 1,
   },
   doneStl: {
     width: 24,
@@ -408,7 +473,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 15,
     paddingVertical: 13,
     borderBottomWidth: 0.5,
     borderBottomColor: '#C7C7CC',

@@ -49,6 +49,7 @@ import {
   FileIcon,
   threeDot,
   addHabitsIcon,
+  reminderIcon,
 } from '../../Component/MyIcons';
 import { getStatusBarHeight } from '../../Component/getStatusBarHeight';
 import { strings } from '../../Localization/Localization';
@@ -214,6 +215,8 @@ export default class Tab1 extends Component {
       now: this.props.route.params?.date
         ? this.props.route.params.date
         : moment().format('YYYY-MM-DD'),
+      isLoadingReminder: true,
+      ReminderArr: []
     };
   }
 
@@ -226,6 +229,7 @@ export default class Tab1 extends Component {
 
     this.getTodoList();
     this.getNotes();
+    this.GetReminder()
 
 
 
@@ -253,6 +257,24 @@ export default class Tab1 extends Component {
         console.log('finished loading url', success, url);
       },
     );
+  }
+
+  GetReminder() {
+    axios
+      .get(`todos/reminders/`)
+      .then(response => {
+        console.log('RESPONSE reminder:', response);
+        this.setState({
+          isLoadingReminder: false,
+          ReminderArr: response.data
+        })
+      })
+      .catch(error => {
+        console.log('RESPONSE error:', error.response);
+        if (error.response && error.response.status == 401) {
+          showToast('error', error.response.data.detail);
+        }
+      })
   }
 
   PlaySound() {
@@ -284,14 +306,12 @@ export default class Tab1 extends Component {
   }
 
   GetHistory() {
-    console.log(' _marketData1:');
 
     axios
       .get('todos/future/')
       .then(response => {
         const x = response.data;
         var _marketData = {};
-        console.log('RESPONSE _marketData1:', response);
 
         Object.entries(x).map(
           ([key, val]) =>
@@ -670,6 +690,7 @@ export default class Tab1 extends Component {
                 }}>
                 {item.label}
               </Text>
+
               <View
                 style={{
                   marginTop: 2,
@@ -683,9 +704,12 @@ export default class Tab1 extends Component {
                     color: '#8E8E93',
                     marginLeft: 4,
                     textTransform: 'capitalize',
+                    marginRight: 8
                   }}>
-                  {GetTime(item.datetime, 'DD MMM. YYYY, HH:mm')}
+                  {GetTime(item.datetime, 'DD MMMM, HH:mm')}
                 </Text>
+
+
               </View>
             </View>
           </TouchableOpacity>
@@ -722,6 +746,7 @@ export default class Tab1 extends Component {
         done: item.done,
         sort: item.sort,
         datetime: DateTime,
+        reminder: item.reminder.id
       })
       .then(response => {
         console.log('RESPONSE put:', response);
@@ -737,9 +762,7 @@ export default class Tab1 extends Component {
   }
 
   renderItemHabits = ({ item, index }) => {
-    // let item = item1.item;
-    // let index = item1.index;
-    console.log("HHHHHHHH", item)
+
     return (
       <Swipeout
         autoClose={true}
@@ -1091,7 +1114,9 @@ export default class Tab1 extends Component {
       rContent,
       habbits,
       tasks,
-      isLoading
+      isLoading,
+      isLoadingReminder,
+      ReminderArr
     } = this.state;
 
     return (
@@ -1254,7 +1279,8 @@ export default class Tab1 extends Component {
                   // this.mdlRef.open()
                   this.props.navigation.navigate('TaskAdd', {
                     updateData: this.updateData,
-                    now: now
+                    now: now,
+                    ReminderArr: isLoadingReminder ? null : ReminderArr
                   })
                 }
                 activeOpacity={0.7}
@@ -1283,7 +1309,8 @@ export default class Tab1 extends Component {
                 this.mdlRef.close(),
                   this.props.navigation.navigate('TaskAdd', {
                     updateData: this.updateData,
-                    now: now
+                    now: now,
+
                   });
               }}
               title={strings.dobz}
@@ -1331,6 +1358,7 @@ export default class Tab1 extends Component {
             folderData={this.state.folderData}
             modelItemData={modelItem}
             RefreshModal={this.RefreshModal}
+            ReminderArr={ReminderArr}
           />
         ) : null}
 

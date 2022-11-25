@@ -52,7 +52,7 @@ export default class FirstScreen extends Component {
 
     this.checkPermission();
     this.getData(false);
-
+    // this.props.navigation.replace('Unfulfilled_tasks')
 
 
 

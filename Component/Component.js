@@ -24,8 +24,6 @@ export const DomainUrl = 'https://app.kemeladam.kz';
 
 export const getLang = () => {
   Moment.locale(strings.getLanguage() == 'kz' ? 'kk' : strings.getLanguage());
-
-  console.log('langlanglang', strings.getLanguage() == 'kz' ? 'kk' : strings.getLanguage())
   return strings.getLanguage() == 'kz' ? 'kk' : strings.getLanguage()
 
 };

@@ -1,6 +1,6 @@
 import messaging from '@react-native-firebase/messaging';
 import { Platform } from 'react-native';
-// import {navigate} from '../components/navigation/RootNavigation';
+import { navigate } from './Navigation/RootNavigation';
 // import {ROUTE_NAMES} from '../components/navigation/routes';
 // import {NOTIFICATION_TYPE, STORAGE} from '../constans/constants';
 // import {getString, storeObject, storeString} from '../storage/AsyncStorage';
@@ -99,9 +99,10 @@ class FirebaseService {
     messaging().onNotificationOpenedApp(remoteMessage => {
       console.log('onNotificationOpenedApp : ', remoteMessage);
       const notificationData = remoteMessage?.data;
-      // if (notificationData?.type === NOTIFICATION_TYPE.news) {
-      //   navigate(ROUTE_NAMES.newsDetail, {newsId: notificationData?.id});
-      // } else {
+      if (notificationData?.code === 'unfulfilled_tasks') {
+        navigate('Unfulfilled_tasks');
+      }
+
       //   if (global.setIsRead) {
       //     global.setIsRead(false);
       //   }

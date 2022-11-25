@@ -69,6 +69,7 @@ export let strings = new LocalizedStrings({
     address: 'мекен-жәй',
     zamk: 'Жазба қосу',
     addzamk: 'Заметкаға қосу',
+    reminder: 'Ескерту',
     adetk: 'Әдет қосу',
     adets: 'Әдеттер',
     kosu: 'Қосу',
@@ -163,6 +164,7 @@ export let strings = new LocalizedStrings({
     address: 'адрес',
     zamk: 'Добавить примечание',
     addzamk: 'Добавить в заметку',
+    reminder: 'Напоминание',
     adetk: 'Добавить привычку',
     adets: 'Привычки',
     kosu: 'Добавить',
@@ -257,6 +259,7 @@ export let strings = new LocalizedStrings({
     address: 'address',
     zamk: 'Add note',
     addzamk: 'Add to note',
+    reminder: 'Reminder',
     adetk: 'Add a habit',
     adets: 'Habits',
 

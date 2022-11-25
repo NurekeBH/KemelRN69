@@ -58,6 +58,8 @@ import ModalDrax from '../screens/Tab1/ModalDrax';
 import DuaList from '../screens/Dua/DuaList';
 import SingleDua from '../screens/Dua/SingleDua';
 import SearchNote from '../screens/Tab2/SearchNote';
+import { navigationRef } from './RootNavigation';
+import Unfulfilled_tasks from '../screens/Unfulfilled_tasks';
 /////////STACKS/////////
 
 const _Tab1 = createNativeStackNavigator();
@@ -522,13 +524,23 @@ const Stack = createNativeStackNavigator();
 
 function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      ref={navigationRef}
+    >
       <Stack.Navigator initialRouteName={'AuthStack'}>
         <Stack.Screen
           name="TabStack"
           options={{ headerShown: false }}
           component={TabStack}
         />
+
+        <Stack.Screen
+          name="Unfulfilled_tasks"
+          options={{ headerShown: false }}
+          component={Unfulfilled_tasks}
+        />
+
+
         <Stack.Screen
           name="AuthStack"
           options={{ headerShown: false }}

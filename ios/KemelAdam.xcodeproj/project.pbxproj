@@ -15,6 +15,7 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		B7170501290E313B00AF1820 /* dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7170500290E313B00AF1820 /* dummy.swift */; };
 		B7170503290E403800AF1820 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B7170502290E403800AF1820 /* GoogleService-Info.plist */; };
+		B78789A6292B6C4A00665679 /* sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B78789A5292B6C4A00665679 /* sound.mp3 */; };
 		FA887E958F06CFBF9E747B67 /* Pods_KemelAdam.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 638449871F53447CEECD56E3 /* Pods_KemelAdam.framework */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +50,7 @@
 		B7170500290E313B00AF1820 /* dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dummy.swift; sourceTree = "<group>"; };
 		B7170502290E403800AF1820 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B7170504290E467C00AF1820 /* KemelAdam.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = KemelAdam.entitlements; path = KemelAdam/KemelAdam.entitlements; sourceTree = "<group>"; };
+		B78789A5292B6C4A00665679 /* sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = sound.mp3; path = ../assets/sound.mp3; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -125,6 +127,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				B78789A5292B6C4A00665679 /* sound.mp3 */,
 				B7170502290E403800AF1820 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* KemelAdam */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -251,6 +254,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B78789A6292B6C4A00665679 /* sound.mp3 in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				B7170503290E403800AF1820 /* GoogleService-Info.plist in Resources */,
@@ -478,7 +482,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = KemelAdam/KemelAdam.entitlements;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = 6W6XXZ7M8W;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = KemelAdam/Info.plist;
@@ -487,7 +491,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.9;
+				MARKETING_VERSION = 1.1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -509,7 +513,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = KemelAdam/KemelAdam.entitlements;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = 6W6XXZ7M8W;
 				INFOPLIST_FILE = KemelAdam/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -517,7 +521,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.9;
+				MARKETING_VERSION = 1.1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
