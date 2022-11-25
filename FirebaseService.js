@@ -93,7 +93,7 @@ class FirebaseService {
 
 
     messaging()
-      .subscribeToTopic('news')
+      .subscribeToTopic('phrase')
       .then(() => console.log('Subscribed to topic!'));
 
     messaging().onNotificationOpenedApp(remoteMessage => {
