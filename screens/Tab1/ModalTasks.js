@@ -37,7 +37,10 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
   const [datetime, setdatetime] = useState(modelItemData.datetime);
   const [priority, setpriority] = useState(modelItemData.priority);
   const [address, setaddress] = useState(modelItemData.address);
-  const [reminder, setReminder] = useState(modelItemData.reminder);
+  const [reminder, setReminder] = useState(modelItemData.reminder ? modelItemData.reminder : {
+    id: null,
+    label: 'Нет',
+  });
   const [openModal, setopenModal] = useState(false);
   const [isSave, setisSave] = useState(false);
   const [isSaveZametka, setIsSaveZametka] = useState(false);
@@ -207,7 +210,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
                     setopenModal(true);
                   }}>
                   <Text style={{ fontSize: 17, color: '#3F49DC' }}>
-                    {reminder.label}
+                    {reminder?.label}
                   </Text>
                 </TouchableOpacity>
               </View>

@@ -50,6 +50,7 @@ import {
   threeDot,
   addHabitsIcon,
   reminderIcon,
+  dayBack,
 } from '../../Component/MyIcons';
 import { getStatusBarHeight } from '../../Component/getStatusBarHeight';
 import { strings } from '../../Localization/Localization';
@@ -216,16 +217,15 @@ export default class Tab1 extends Component {
         ? this.props.route.params.date
         : moment().format('YYYY-MM-DD'),
       isLoadingReminder: true,
-      ReminderArr: []
+      ReminderArr: [],
+      today: moment().format('YYYY-MM-DD')
     };
   }
 
   componentDidMount() {
-    if (getLang() == 'kk') {
-      LocaleConfig.defaultLocale = 'kk';
-    } else {
-      LocaleConfig.defaultLocale = 'ru';
-    }
+
+    LocaleConfig.defaultLocale = getLang();
+
 
     this.getTodoList();
     this.getNotes();
@@ -479,18 +479,69 @@ export default class Tab1 extends Component {
   }
 
   renderItem = ({ item, index }) => {
+
+    const { today, now, isLoadingReminder, ReminderArr } = this.state
+
     return (
       <View style={{ margin: 16 }}>
-        <Text
-          style={{
-            fontSize: 17,
-            fontWeight: '600',
-            color: '#232857',
-            marginBottom: 11,
-            textTransform: 'capitalize',
-          }}>
-          {GetTime(item.date, 'ddd, D MMMM')}
-        </Text>
+        <View style={{
+          flexDirection: 'row', justifyContent: 'space-between', marginBottom: 11,
+          alignItems: 'center'
+        }}>
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: '600',
+              color: '#232857',
+              textTransform: 'capitalize',
+            }}>
+            {GetTime(item.date, 'ddd, D MMMM')}
+          </Text>
+
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            {
+              today == now ?
+                null :
+                <TouchableOpacity
+
+                  onPress={() => {
+                    this.setState(
+                      {
+                        open: 'day',
+                        now: today,
+                        bytype: 0,
+                        modal: false,
+                      },
+                      () => {
+                        this.getTodoList();
+                      },
+                    )
+
+                  }}
+
+                  style={{ marginRight: 25, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 8, paddingVertical: 4 }}>
+                  {dayBack}
+                  <Text style={{ color: 'grey', marginLeft: 4, fontWeight: '500' }}>{strings.today}</Text>
+                </TouchableOpacity>
+            }
+            <TouchableOpacity
+              onPress={() =>
+                // this.mdlRef.open()
+                this.props.navigation.navigate('TaskAdd', {
+                  updateData: this.updateData,
+                  now: now,
+                  ReminderArr: isLoadingReminder ? null : ReminderArr
+                })
+              }
+              activeOpacity={0.7}
+              style={styles.btnaddStl}>
+              {PluseBtn}
+            </TouchableOpacity>
+          </View>
+
+
+        </View>
+
 
         <FlatList
           listKey={(item, index) => 'A' + index.toString()}
@@ -540,6 +591,7 @@ export default class Tab1 extends Component {
                   style={{ marginRight: 8, width: 30, height: 30, alignItems: 'center', justifyContent: 'center', borderRadius: 15, }}>
                   {addHabitsIcon}
                 </TouchableOpacity>
+
                 :
                 null
             }
@@ -746,7 +798,7 @@ export default class Tab1 extends Component {
         done: item.done,
         sort: item.sort,
         datetime: DateTime,
-        reminder: item.reminder.id
+        reminder: item?.reminder?.id
       })
       .then(response => {
         console.log('RESPONSE put:', response);
@@ -1076,10 +1128,16 @@ export default class Tab1 extends Component {
               );
             }}
             onSwipeDown={() => {
-              this.topModalButtonPress(2);
+              this.setState(
+                {
+                  open: 'day',
+                  bytype: 2,
+                  modal: false,
+                }
+              )
             }}
             markedDate={this.state.markedDates}
-            weekStartsOn={1} // 0,1,2,3,4,5,6 for S M T W T F S, defaults to 0
+            weekStartsOn={1}
           />
         </View>
       );
@@ -1144,6 +1202,12 @@ export default class Tab1 extends Component {
                   modal: !modal,
                 })
               }
+              rightIcon2={
+                reminderIcon
+              }
+              rightOnPress2={() => {
+                this.props.navigation.navigate('PushTable')
+              }}
               title={GetTime(new Date(), 'MMMM')}
               navigation={this.props.navigation}
               borderBottomBoll={false}
@@ -1153,12 +1217,9 @@ export default class Tab1 extends Component {
               {bytype == 2 ? (
                 <View>
                   <Calendar
+                    initialDate={now}
                     enableSwipeMonths={true}
                     firstDay={1}
-                    theme={{
-                      todayTextColor: '#FF3B30',
-                    }}
-                    markingType={'custom'}
                     markedDates={this.state.calendarData}
                     onDayPress={day => {
                       console.log('day', day);
@@ -1174,6 +1235,11 @@ export default class Tab1 extends Component {
                         },
                       );
                     }}
+                    theme={{
+                      textSectionTitleColor: 'rgba(0,0,0,0.5)',
+                      textDayFontSize: 18,
+                    }}
+
                   />
                   <TouchableOpacity
                     style={{
@@ -1274,7 +1340,7 @@ export default class Tab1 extends Component {
                   />
                 </View>
               </ModalBox>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() =>
                   // this.mdlRef.open()
                   this.props.navigation.navigate('TaskAdd', {
@@ -1286,7 +1352,7 @@ export default class Tab1 extends Component {
                 activeOpacity={0.7}
                 style={styles.btnStl}>
                 {PluseBtn}
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
         </SafeAreaView>
@@ -1470,4 +1536,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 10,
   },
+  btnaddStl: {
+    width: 40,
+    aspectRatio: 1,
+    borderRadius: 20,
+    backgroundColor: '#3F49DC',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });

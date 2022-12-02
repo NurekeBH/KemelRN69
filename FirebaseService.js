@@ -99,9 +99,9 @@ class FirebaseService {
     messaging().onNotificationOpenedApp(remoteMessage => {
       console.log('onNotificationOpenedApp : ', remoteMessage);
       const notificationData = remoteMessage?.data;
-      if (notificationData?.code === 'unfulfilled_tasks') {
-        navigate('Unfulfilled_tasks');
-      }
+      // if (notificationData?.code === 'unfulfilled_tasks') {
+      //   navigate('Unfulfilled_tasks');
+      // }
 
       //   if (global.setIsRead) {
       //     global.setIsRead(false);

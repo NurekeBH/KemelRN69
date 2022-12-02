@@ -15,7 +15,6 @@ import FastImage from 'react-native-fast-image';
 import { pauseIcon, PlayIcon, Right } from '../../Component/MyIcons';
 import { strings } from '../../Localization/Localization';
 import Player from '../Player/Player';
-import TrackPlayer from 'react-native-track-player';
 import TabHeader from '../../Component/TabHeader';
 import { dualist } from '../../Component/DataDua';
 
@@ -25,13 +24,7 @@ export default class DuaList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoadingCategory: true,
-            category: [],
-            data: [],
-            modalBoll: false,
-            indAudio: 1,
-            position: null,
-            audioList: [],
+
         };
     }
 
@@ -39,81 +32,6 @@ export default class DuaList extends Component {
 
     }
 
-    getCategory() {
-        axios
-            .get('meditations/category/')
-            .then(response => {
-                console.log('RESPONSE category:', response);
-
-                this.setState({
-                    isLoadingCategory: false,
-                    category: response.data.results,
-                    data: response.data.results[0].audios,
-                });
-            })
-            .catch(error => {
-                this.setState({
-                    isLoading: false,
-                });
-                console.log('RESPONSE error:', error.response);
-                if (error.response && error.response.status == 401) {
-                    showToast('error', error.response.data.detail);
-                }
-            });
-    }
-
-    ListHeaderComponent = () => (
-        <View>
-            <View style={styles.vwStl}>
-                <Text style={styles.txStl}>{strings.cat}</Text>
-                <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={{ paddingHorizontal: 8, paddingTop: 8 }}>
-                    {this.state.category.map((item, index) => (
-                        <TouchableOpacity
-                            onPress={() =>
-                                this.props.navigation.navigate('Category', {
-                                    item: item,
-                                    bgColor: itemColors[index],
-                                })
-                            }
-                            activeOpacity={0.7}
-                            key={index}
-                            style={{ marginRight: 8, marginLeft: index == 0 ? 8 : 0 }}>
-                            <FastImage
-                                source={{
-                                    uri: item.cover,
-                                }}
-                                style={{
-                                    backgroundColor: itemColors[index],
-                                    width: 90,
-                                    height: 80,
-                                    borderRadius: 8,
-                                }}>
-                                <View style={styles.vwStl2}>
-                                    <View />
-                                    <Text
-                                        style={{ color: '#fff', fontSize: 12, fontWeight: '600' }}>
-                                        {item.label}
-                                    </Text>
-                                </View>
-                            </FastImage>
-                        </TouchableOpacity>
-                    ))}
-                </ScrollView>
-            </View>
-            <Text
-                style={{
-                    padding: 16,
-                    paddingBottom: 0,
-                    fontSize: 17,
-                    fontWeight: '600',
-                }}>
-                {strings.rek}
-            </Text>
-        </View>
-    );
 
     renderItem = ({ item, index }) => (
         <TouchableOpacity
@@ -136,38 +54,8 @@ export default class DuaList extends Component {
         </TouchableOpacity>
     );
 
-    PlayTrack = async () => {
-
-        const audioList = this.state.data
-        let Arrtrack = []
-        for (let i = 0; i < audioList.length; i++) {
-            let item = audioList[i]
-            var track = {
-                url: item.file,
-                title: item.label,
-                artist: 'deadmau5',
-                album: 'while(1<2)',
-                genre: 'Progressive House, Electro House',
-                duration: item.duration,
-            };
-            Arrtrack.push(track)
-
-        }
-        await TrackPlayer.add(Arrtrack);
-
-
-        console.log('aaa', '11')
-
-        console.log('aaa', '22')
-
-        await TrackPlayer.play();
-        console.log('aaa', '33')
-        TrackPlayer.pause()
-        TrackPlayer.play()
-    }
-
     render() {
-        const { data, modalBoll, audioList, position } = this.state;
+
         return (
             <View style={{ flex: 1, backgroundColor: '#fff' }}>
                 <StatusBar backgroundColor={'#fff'} barStyle="dark-content" />
@@ -182,13 +70,10 @@ export default class DuaList extends Component {
                     <FlatList
                         data={dualist}
                         keyExtractor={(item, index) => index.toString()}
-                        // ListHeaderComponent={this.ListHeaderComponent}
                         showsVerticalScrollIndicator={false}
                         renderItem={this.renderItem}
                     />
-                    {modalBoll ? (
-                        <Player audioList={audioList} position={position} />
-                    ) : null}
+
                 </SafeAreaView>
             </View>
         );

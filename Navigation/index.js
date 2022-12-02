@@ -540,6 +540,18 @@ function App() {
           component={Unfulfilled_tasks}
         />
 
+        <Stack.Screen
+          name="QuestHistory"
+          options={{ headerShown: false }}
+          component={QuestHistory}
+        />
+
+
+        <Stack.Screen
+          name="PushTable"
+          component={PushTable}
+          options={{ headerShown: false }}
+        />
 
         <Stack.Screen
           name="AuthStack"

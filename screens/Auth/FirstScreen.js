@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StatusBar, Platform } from 'react-native';
+import { View, Text, StatusBar, Platform, Alert } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { ButtonClass, showToast } from '../../Component/Component';
 import { strings } from '../../Localization/Localization';
@@ -14,7 +14,9 @@ import messaging from '@react-native-firebase/messaging';
 export default class FirstScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      fromPush: false
+    };
     this.fcmToken = '';
   }
   static contextType = StateContext;
@@ -23,6 +25,7 @@ export default class FirstScreen extends Component {
     AsyncStorage.getItem('Lang').then(value => {
       console.log('valuevaluevaluevaluevalue', value);
       if (value !== null) {
+        AsyncStorage.setItem('Lang', value);
         strings.setLanguage(value);
       } else {
         AsyncStorage.setItem('Lang', 'kz');
@@ -30,29 +33,44 @@ export default class FirstScreen extends Component {
       }
     });
 
-    messaging().onNotificationOpenedApp((remoteMessage) => {
-      console.log('remoteMessage1', remoteMessage)
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.log(
+        'Notification caused app to open from background state:',
+        remoteMessage.notification,
+      );
+
+      this.setState({
+        fromPush: true
+      })
 
     });
 
-    messaging()
-      .getInitialNotification()
-      .then((remoteMessage) => {
-        console.log('remoteMessage2', remoteMessage)
-
-        if (remoteMessage) {
 
 
+    // messaging()
+    //   .getInitialNotification()
+    //   .then((remoteMessage) => {
+    //     console.log('remoteMessage2', remoteMessage)
 
-          setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
+    //     if (remoteMessage) {
 
-        }
-      });
+    //       this.setState({
+    //         fromPush: true
+    //       })
+
+    //     }
+    //   })
+    //   .finally(() => {
+    //     this.checkPermission();
+    //     this.getData(false);
+    //   })
+    //   ;
 
 
     this.checkPermission();
     this.getData(false);
-    // this.props.navigation.replace('Unfulfilled_tasks')
+
+
 
 
 
@@ -105,11 +123,14 @@ export default class FirstScreen extends Component {
       const avatar = await AsyncStorage.getItem('avatar');
       if (avatar) this.globalState.setAvatar(avatar);
       if (email !== null && pwd !== null) {
+        console.log('YES')
         this.onLoginClick(email, pwd, fcmToken);
         // const AuthStr = 'Bearer '.concat(value);
         // Axios.defaults.headers.common['Authorization'] = AuthStr
         // this.props.navigation.replace('TabStack')
       } else if (click) {
+        console.log('No')
+
         AsyncStorage.removeItem('token');
         delete axios.defaults.headers.common["Authorization"];
         AsyncStorage.clear();
@@ -148,7 +169,15 @@ export default class FirstScreen extends Component {
             }
           })
           .finally(() => {
-            this.props.navigation.replace('TabStack');
+            console.log('cccccccc1', this.state.fromPush)
+
+            if (this.state.fromPush) {
+              console.log('cccccccc')
+              this.props.navigation.replace('PushTable', { fromPush: true });
+
+            } else {
+              this.props.navigation.replace('TabStack');
+            }
           });
       })
       .catch(error => {

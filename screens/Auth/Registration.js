@@ -62,7 +62,7 @@ export default class Registration extends Component {
               })
               .catch(error => {
                 this.setState({ is_send: false });
-                console.log('RESPONSE error:', error.response);
+                console.log('RESPONSE error:', error);
                 if (error.response && error.response.status == 401) {
                   showToast('error', error.response.data.detail);
                 }
@@ -72,7 +72,7 @@ export default class Registration extends Component {
         })
         .catch(error => {
           this.setState({ loader: false });
-          console.log("RESPONSE error:", error.response);
+          console.log("RESPONSE error:", error);
           if (error.response && error.response.status == 400) {
             if (error.response.data.password) {
               showToast('error', error.response.data.password[0])
@@ -314,7 +314,8 @@ const styles = StyleSheet.create({
   },
   inpVwStl: {
     backgroundColor: colorApp.fone,
-    padding: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
     borderRadius: 8,
     marginTop: 15,
   },

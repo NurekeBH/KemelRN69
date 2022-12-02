@@ -8,12 +8,12 @@ import {
   Platform,
   TouchableOpacity,
 } from 'react-native';
-import {strings} from '../Localization/Localization';
-import {colorApp} from '../theme/Colors';
-import {Left_icon, no_avatar} from './MyIcons';
-import {StateContext} from '../ProviderApp';
+import { strings } from '../Localization/Localization';
+import { colorApp } from '../theme/Colors';
+import { Left_icon, no_avatar } from './MyIcons';
+import { StateContext } from '../ProviderApp';
 import FastImage from 'react-native-fast-image';
-import {HeaderStyle} from './Component';
+import { HeaderStyle } from './Component';
 
 export default function TabHeader({
   rightOnPress,
@@ -39,10 +39,10 @@ export default function TabHeader({
                 justifyContent: 'space-between',
               },
             ]}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate('ProfileStack', {screen: 'Profile'})
+                  navigation.navigate('ProfileStack', { screen: 'Profile' })
                 }
                 activeOpacity={0.7}>
                 {data.avatar ? (
@@ -75,8 +75,8 @@ export default function TabHeader({
               </TouchableOpacity>
               <Text
                 style={{
-                  fontSize: 24,
-                  fontWeight: '700',
+                  fontSize: 20,
+                  fontWeight: '600',
                   marginLeft: 15,
                   textTransform: 'capitalize',
                 }}>
@@ -100,7 +100,7 @@ export default function TabHeader({
 
               {rightIcon2 ? (
                 <TouchableOpacity
-                  style={{width: 50, alignItems: 'center'}}
+                  style={{ width: 40, alignItems: 'center' }}
                   activeOpacity={0.7}
                   onPress={rightOnPress2}>
                   {rightIcon2}
