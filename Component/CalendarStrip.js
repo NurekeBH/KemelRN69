@@ -38,7 +38,8 @@ class DateItem extends PureComponent {
   render() {
     const { item, marked, highlight, showLunar, onItemPress } = this.props;
     const solar = format(item, 'D');
-    const hightlightTextColor = '#FF3B30';
+    const hightlightTextColor = 'white';
+    const hightlightTextBackColor = '#00adf5';
     const normalTextColor = '#000000';
     return (
       <View style={styles.itemContainer}>
@@ -47,22 +48,15 @@ class DateItem extends PureComponent {
           style={styles.itemWrapButton}
           onPress={onItemPress}>
           <View style={[styles.itemView]}>
-            <Text
-              style={[
-                styles.itemDateText,
-                { color: highlight ? hightlightTextColor : normalTextColor },
-              ]}>
-              {solar}
-            </Text>
-            {showLunar && (
+            <View style={{ backgroundColor: highlight ? hightlightTextBackColor : 'white', borderRadius: 17, width: 28, height: 28, alignItems: 'center', justifyContent: 'center' }}>
               <Text
                 style={[
-                  styles.itemLunarText,
-                  { color: highlight ? hightlightTextColor : 'gray' },
+                  styles.itemDateText,
+                  { color: highlight ? hightlightTextColor : normalTextColor },
                 ]}>
-                {lunar}
+                {solar}
               </Text>
-            )}
+            </View>
             {marked && (
               <View
                 style={[
@@ -293,7 +287,7 @@ class CalendarStrip extends Component {
             justifyContent: 'center',
           }}>
           <TouchableOpacity
-            style={{ paddingBottom: 10 }}
+            style={{ paddingBottom: 10, alignItems: 'center' }}
             onPress={() => {
               const { onSwipeDown } = this.props;
               onSwipeDown && onSwipeDown();
@@ -310,7 +304,7 @@ class CalendarStrip extends Component {
             <View
               style={{
                 marginTop: 2,
-                width: 40,
+                width: 34,
                 height: 3,
                 borderRadius: 4,
                 backgroundColor: '#E5E5EA',
@@ -415,10 +409,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 44,
     height: 44,
-    backgroundColor: 'white',
   },
   itemDateText: {
-    fontSize: 15,
+    fontSize: 17,
+    fontWeight: '400',
     lineHeight: Platform.OS === 'ios' ? 19 : 15,
   },
   itemLunarText: {

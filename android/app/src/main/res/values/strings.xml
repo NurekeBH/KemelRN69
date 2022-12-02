@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">KemelAdam</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">erTdJcIwveYMlpkFbCAb_6ePG8073eTbqP-4X</string>
 </resources>

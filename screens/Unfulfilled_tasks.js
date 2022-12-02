@@ -3,13 +3,14 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity, ActivityIndicator, FlatList, StyleSheet } from 'react-native';
 import { GetTime, Header2, HeaderStyle, showToast, width } from '../Component/Component';
-import { clock, LeftIcon, Left_icon, swipeDelete, threeDot } from '../Component/MyIcons';
+import { alarmIcon, clock, LeftIcon, Left_icon, swipeDelete, threeDot } from '../Component/MyIcons';
 import moment from 'moment';
 import Swipeout from '../Swipeout';
 import { strings } from '../Localization/Localization';
 import { colorApp } from '../theme/Colors';
 import ModalTasks from './Tab1/ModalTasks';
 import SoundPlayer from 'react-native-sound-player';
+import * as Animatable from 'react-native-animatable';
 
 export default class Unfulfilled_tasks extends Component {
     constructor(props) {
@@ -18,7 +19,12 @@ export default class Unfulfilled_tasks extends Component {
             tasks: [],
             isLoading: true,
             modelItem: null,
+            date: this.props.route?.params?.date ? moment(this.props.route?.params?.date).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD'),
+            title: this.props.route?.params?.title,
+            id: this.props.route?.params?.id,
+            ReminderArr: [],
         };
+        console.log('this.props.route?.params?.date', this.props.route?.params?.date)
     }
 
     componentDidMount() {
@@ -49,79 +55,61 @@ export default class Unfulfilled_tasks extends Component {
             },
         );
 
-        this.getData()
+        this.GetReminder()
     }
 
 
 
-
-    getData = async () => {
-        try {
-            const email = await AsyncStorage.getItem('email');
-            const pwd = await AsyncStorage.getItem('pwd');
-            if (email !== null && pwd !== null) {
-                this.onLoginClick(email, pwd);
-                // const AuthStr = 'Bearer '.concat(value);
-                // Axios.defaults.headers.common['Authorization'] = AuthStr
-                // this.props.navigation.replace('TabStack')
-            }
-        } catch (e) {
-            console.error(e);
-        }
-    };
-
-    onLoginClick(email, pwd) {
+    GetReminder() {
         axios
-            .post('login/', {
-                email: email,
-                password: pwd,
-            })
+            .get(`todos/reminders/`)
             .then(response => {
-                console.log('RESPONSE LOGIN:', response);
-
-                const AuthStr = 'Bearer '.concat(response.data.access);
-                axios.defaults.headers.common['Authorization'] = AuthStr;
-            })
-            .catch(error => {
-                this.props.navigation.replace('Login');
-
-            }).finally(() => {
-                this.GetTasks()
-                this.getNotes()
-            })
-    }
-
-    getNotes() {
-        axios
-            .get('notes/folder/?parent__isnull=True')
-            .then(response => {
-
+                console.log('RESPONSE reminder:', response);
                 this.setState({
-                    folderData: response.data,
-                });
+                    isLoadingReminder: false,
+                    ReminderArr: response.data
+                })
             })
             .catch(error => {
-
                 console.log('RESPONSE error:', error.response);
                 if (error.response && error.response.status == 401) {
                     showToast('error', error.response.data.detail);
                 }
-            });
+            })
+            .finally(() => {
+                this.GetTasks()
+            })
     }
 
+
     GetTasks() {
-        axios.get('todos/tasks/?done=false&ordering=-datetime&datetime=' + moment().format('YYYY-MM-DD'))
+        axios.get('todos/tasks/?done=false&ordering=-datetime&datetime=' + this.state.date)
             .then(response => {
                 console.log('RESPONSE todos:', response);
 
+                let Arr = response.data
+                let NewArr = []
+                let k = 0
+                console.log('this.state.id', this.state.id)
+                if (this.state.id) {
+                    Arr.forEach(element => {
+                        if (element.id == this.state.id) {
+                            NewArr[k] = element
+                            k++
+                        }
+                    });
+
+                } else {
+                    NewArr = response.data
+                }
+
                 this.setState({
-                    tasks: response.data,
+                    tasks: NewArr,
                     isLoading: false
                 })
 
             })
             .catch(error => {
-                this.props.navigation.replace('Login');
                 this.setState({
 
                     isLoading: false
@@ -273,9 +261,22 @@ export default class Unfulfilled_tasks extends Component {
                                     }}>
                                     {GetTime(item.datetime, 'DD MMM. YYYY, HH:mm')}
                                 </Text>
+
+
                             </View>
+
                         </View>
                     </TouchableOpacity>
+                    {
+                        this.state.id ?
+                            <Animatable.View animation="shake" >
+                                {alarmIcon}
+                            </Animatable.View>
+                            :
+                            null
+                    }
+
+
                     <TouchableOpacity
                         onPress={() => {
                             // item.done = !item.done;
@@ -316,17 +317,17 @@ export default class Unfulfilled_tasks extends Component {
 
 
     render() {
-        const { isLoading, tasks, modelItem, } = this.state
+        const { isLoading, tasks, modelItem, title, ReminderArr } = this.state
         return (
             <View style={{ backgroundColor: 'white', flex: 1 }}>
                 <SafeAreaView style={{ flex: 1 }}>
                     <View style={HeaderStyle}>
                         <TouchableOpacity
-                            onPress={() => this.props.navigation.replace('AuthStack')}
+                            onPress={() => this.props.navigation.goBack()}
                             activeOpacity={0.7}>
                             {Left_icon}
                         </TouchableOpacity>
-                        <Text style={{ flex: 1, textAlign: 'center', fontWeight: '500', fontSize: 16 }} numberOfLines={1}>Орындалмай қалған тапсырмалар</Text>
+                        <Text style={{ flex: 1, textAlign: 'center', fontWeight: '500', fontSize: 16 }} numberOfLines={1}>{title}</Text>
 
                     </View>
                     <View style={{ flex: 1 }}>
@@ -352,6 +353,7 @@ export default class Unfulfilled_tasks extends Component {
                         folderData={this.state.folderData}
                         modelItemData={modelItem}
                         RefreshModal={this.RefreshModal}
+                        ReminderArr={ReminderArr}
                     />
                 ) : null}
 

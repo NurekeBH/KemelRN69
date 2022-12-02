@@ -8,12 +8,15 @@ import {
   ScrollView,
   ActivityIndicator,
   TouchableOpacity,
+  TextInput,
+  Dimensions,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { getLang } from '../../Component/Component';
+import { getLang, getObject, storeObject } from '../../Component/Component';
 import Header from '../../Component/Header2';
 import { Left, Right, WeekIcon } from '../../Component/MyIcons';
 import { strings } from '../../Localization/Localization';
+import Modal from 'react-native-modalbox';
 
 
 const getLabel = (label) => {
@@ -36,6 +39,23 @@ const getLabel = (label) => {
   }
 }
 
+
+const InputArray = [
+  {
+    key1: '',
+    key2: ''
+  }, {
+    key1: '',
+    key2: ''
+  }, {
+    key1: '',
+    key2: ''
+  }, {
+    key1: '',
+    key2: ''
+  },
+]
+
 export default class MyGoals extends Component {
   constructor(props) {
     super(props);
@@ -46,12 +66,31 @@ export default class MyGoals extends Component {
       section_id: null,
       section: [],
       isLoadingS: true,
+      inputArray: [],
+      modalBoll: false,
+      value1: null,
+      value2: null,
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    let InputArr = await getObject('inputArr')
+    if (InputArr) {
+      this.setState({
+        inputArray: InputArr
+      })
+    } else {
+      await storeObject('inputArr', InputArray)
+      this.setState({
+        inputArray: InputArray
+      })
+    }
+    console.log('InputArr', InputArr)
+
     this.GetSection();
     this.GetCategory();
+
+
   }
   GetSection() {
     axios
@@ -79,6 +118,7 @@ export default class MyGoals extends Component {
       .then(response => {
         console.log('RESPONSE category:', response);
         let category = response.data.sort((a, b) => (a.sort > b.sort) ? 1 : -1)
+
 
         this.setState({
           goalCate: category,
@@ -154,8 +194,31 @@ export default class MyGoals extends Component {
     );
   };
 
+
+  async onSaveClick() {
+    const { selectedIndex, value1, value2, inputArray } = this.state;
+    let InputArrayy = inputArray
+
+    if (value1 && value2) {
+      InputArrayy[selectedIndex].key1 = value1
+      InputArrayy[selectedIndex].key2 = value2
+
+      await storeObject('inputArr', InputArrayy)
+      this.setState({
+        inputArray: InputArrayy,
+        modalBoll: false,
+        value1: null,
+        value2: null
+      })
+
+    }
+
+
+  }
+
   render() {
-    const { goalCate, section } = this.state;
+    const { goalCate, section, modalBoll, inputArray, selectedIndex, value1, value2 } = this.state;
+
     return (
       <View style={{ flex: 1, backgroundColor: '#fff' }}>
         <SafeAreaView style={{ flex: 1 }}>
@@ -179,6 +242,43 @@ export default class MyGoals extends Component {
             />
           </View>
 
+          <Text style={{ marginLeft: Dimensions.get('window').width / 7, marginTop: 8, color: 'rgba(0,0,0,0.6)' }}>мерзімі :</Text>
+          <View style={{ marginVertical: 4, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+            <TouchableOpacity
+              style={{ backgroundColor: '#F2F2F7', borderRadius: 8, }}
+              onPress={() => {
+                this.setState({
+                  value1: inputArray[selectedIndex]?.key1,
+                  value2: inputArray[selectedIndex]?.key2,
+                  modalBoll: true
+                })
+              }}
+            >
+              <Text
+                style={{ textAlign: 'center', width: Dimensions.get('window').width / 3, paddingVertical: 8 }}
+                placeholder={"ай"}
+                numberOfLines={1}
+              >{inputArray[selectedIndex]?.key1}</Text>
+            </TouchableOpacity>
+            <Text style={{ margin: 8 }}>-</Text>
+            <TouchableOpacity
+              style={{ backgroundColor: '#F2F2F7', borderRadius: 8, }}
+              onPress={() => {
+                this.setState({
+                  value1: inputArray[selectedIndex]?.key1,
+                  value2: inputArray[selectedIndex]?.key2,
+                  modalBoll: true
+                })
+              }}
+            >
+              <Text
+                style={{ textAlign: 'center', width: Dimensions.get('window').width / 3, paddingVertical: 8 }}
+                placeholder={"ай"}
+                numberOfLines={1}
+              >{inputArray[selectedIndex]?.key2}</Text>
+            </TouchableOpacity>
+          </View>
+
           <View style={{ flex: 1, backgroundColor: 'white' }}>
             <FlatList
               data={goalCate}
@@ -186,6 +286,58 @@ export default class MyGoals extends Component {
               renderItem={this.renderItem}
             />
           </View>
+
+          <Modal
+            isOpen={modalBoll}
+            position="bottom"
+            onClosed={() => {
+              this.setState({
+                modalBoll: false,
+              });
+            }}
+            style={{
+              borderTopLeftRadius: 12,
+              borderTopRightRadius: 12,
+              height: '30%',
+
+            }}>
+            <View style={{ alignItems: 'flex-end', padding: 16 }}>
+              <TouchableOpacity onPress={() => this.onSaveClick()}>
+                <Text style={{ fontSize: 17, fontWeight: '600', color: '#3F49DC' }}>
+                  {strings.save}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+
+            <Text style={{ marginLeft: Dimensions.get('window').width / 7, marginVertical: 18, color: 'rgba(0,0,0,0.6)' }}>мерзімі :</Text>
+            <View style={{ marginVertical: 4, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+              <TextInput
+                value={value1}
+                onChangeText={(text) => {
+                  this.setState({
+                    value1: text
+                  })
+                }}
+                style={{ textAlign: 'center', width: Dimensions.get('window').width / 3, backgroundColor: '#F2F2F7', borderRadius: 8, paddingVertical: 8 }}
+                autoFocus={true}
+                numberOfLines={1}
+              />
+              <Text style={{ margin: 8 }}>-</Text>
+              <TextInput
+                value={value2}
+                onChangeText={(text) => {
+                  this.setState({
+                    value2: text
+                  })
+                }}
+                style={{ textAlign: 'center', width: Dimensions.get('window').width / 3, backgroundColor: '#F2F2F7', borderRadius: 8, paddingVertical: 8 }}
+
+                numberOfLines={1}
+              />
+            </View>
+
+          </Modal>
         </SafeAreaView>
       </View>
     );

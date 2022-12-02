@@ -3,7 +3,8 @@ import { strings } from './Localization/Localization';
 import Index from './Navigation/index';
 import Toast, { ErrorToast } from 'react-native-toast-message';
 import axios from 'axios';
-import TrackPlayer from 'react-native-track-player';
+
+// import TrackPlayer from 'react-native-track-player';
 import { DomainUrl } from './Component/Component';
 import { ProviderApp } from './ProviderApp';
 import codePush from "react-native-code-push";
@@ -29,20 +30,19 @@ const App: () => React$Node = () => {
   axios.defaults.baseURL = DomainUrl + '/api/';
 
 
-
-  TrackPlayer.updateOptions({
-    stopWithApp: true,
-    capabilities: [
-      TrackPlayer.CAPABILITY_PLAY,
-      TrackPlayer.CAPABILITY_PAUSE,
-      TrackPlayer.CAPABILITY_STOP,
-    ],
-    compactCapabilities: [
-      TrackPlayer.CAPABILITY_PLAY,
-      TrackPlayer.CAPABILITY_PAUSE,
-      TrackPlayer.CAPABILITY_STOP,
-    ],
-  });
+  // TrackPlayer.updateOptions({
+  //   stopWithApp: true,
+  //   capabilities: [
+  //     TrackPlayer.CAPABILITY_PLAY,
+  //     TrackPlayer.CAPABILITY_PAUSE,
+  //     TrackPlayer.CAPABILITY_STOP,
+  //   ],
+  //   compactCapabilities: [
+  //     TrackPlayer.CAPABILITY_PLAY,
+  //     TrackPlayer.CAPABILITY_PAUSE,
+  //     TrackPlayer.CAPABILITY_STOP,
+  //   ],
+  // });
 
   AsyncStorage.getItem('Lang').then(value => {
     if (value !== null) {

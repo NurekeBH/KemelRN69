@@ -16,6 +16,7 @@ import 'moment/locale/ru';
 import 'moment/locale/en-au';
 import { strings } from '../Localization/Localization';
 import { no_avatar } from './MyIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const { width, height } = Dimensions.get('window');
 
@@ -29,7 +30,10 @@ export const getLang = () => {
 };
 
 
-export const GetTime = (date, format) => Moment(date).format(format);
+export const GetTime = (date, format) => {
+  Moment.locale(strings.getLanguage() == 'kz' ? 'kk' : strings.getLanguage());
+  return Moment(date).format(format);
+}
 
 export const GetDuration = sec => {
   var hours = Math.floor(sec / 3600);
@@ -243,3 +247,22 @@ export const getTemplateLabel = (label) => {
     default: return label;
   }
 }
+
+
+export const storeObject = async (key, value) => {
+  try {
+    const jsonValue = JSON.stringify(value);
+    await AsyncStorage.setItem(key, jsonValue);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const getObject = async key => {
+  try {
+    const jsonValue = await AsyncStorage.getItem(key);
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch (e) {
+    console.log('error reading object value');
+  }
+};

@@ -40,6 +40,8 @@ export default class QuestHistory extends Component {
         });
       })
       .catch(error => {
+        console.log('RESPONSE error:', error);
+
         this.setState({
           isLoading: false,
         });

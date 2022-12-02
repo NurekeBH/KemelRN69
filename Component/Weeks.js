@@ -1,9 +1,9 @@
 import React from 'react';
-import {View, Text, Dimensions} from 'react-native';
+import { View, Text, Dimensions } from 'react-native';
 const width = Dimensions.get('window').width;
 const WEEK_kk = ['Же', 'Дү', 'Се', 'Сә', 'Бе', 'Жм', 'Сб'];
 const WEEK_ru = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
-export default ({lang, weekStartsOn}) => {
+export default ({ lang, weekStartsOn }) => {
   const week_localized = lang == 'kk' ? WEEK_kk : WEEK_ru;
   const weekStartsOnMinnor = weekStartsOn % 7;
   const weekTranformed = [
@@ -28,8 +28,8 @@ export default ({lang, weekStartsOn}) => {
           key={day}>
           <Text
             style={{
-              color: 'gray',
-              fontSize: 12,
+              color: 'rgba(0,0,0,0.5)',
+              fontSize: 13,
             }}>
             {day}
           </Text>
