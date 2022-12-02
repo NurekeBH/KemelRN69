@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "491197750345",
+    "firebase_url": "https://kemeladam-19e1f-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "kemeladam-19e1f",
+    "storage_bucket": "kemeladam-19e1f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:491197750345:android:29614f81827a6755183398",
+        "android_client_info": {
+          "package_name": "com.kemeladam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "491197750345-i34o2dhiimvenmu0t0g1972b920phqg5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZppvJzpcSZAqw73znECkftT0JWIZCTDo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "491197750345-i34o2dhiimvenmu0t0g1972b920phqg5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "491197750345-8tecgd5sav0557rcdpg7qg5sl8msm416.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "kz.buginsoft.kemeladam",
+                "app_store_id": "1599450276"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
