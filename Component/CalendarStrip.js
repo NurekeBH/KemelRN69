@@ -413,7 +413,7 @@ const styles = StyleSheet.create({
   itemDateText: {
     fontSize: 17,
     fontWeight: '400',
-    lineHeight: Platform.OS === 'ios' ? 19 : 15,
+    lineHeight: 19,
   },
   itemLunarText: {
     fontSize: 10,

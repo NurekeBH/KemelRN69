@@ -191,6 +191,7 @@ export default class NotesList extends Component {
             }}>
             <Text
               style={{
+                color: 'black',
                 fontSize: 17,
                 fontWeight: '600',
                 flex: 1,
@@ -211,7 +212,7 @@ export default class NotesList extends Component {
             baseStyle={{fontSize: 17, marginTop: 8}}
           /> */}
           {description ? (
-            <Text numberOfLines={1} style={{ marginTop: 8, fontSize: 17 }}>
+            <Text numberOfLines={1} style={{ color: 'black', marginTop: 8, fontSize: 17 }}>
               {description}
             </Text>
           ) : null}

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -9,8 +9,8 @@ import {
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Header from '../../Component/Header2';
-import {PlayWhite} from '../../Component/MyIcons';
-import {strings} from '../../Localization/Localization';
+import { PlayWhite } from '../../Component/MyIcons';
+import { strings } from '../../Localization/Localization';
 
 export default class MyBooks extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ export default class MyBooks extends Component {
     };
   }
 
-  renderBooks = ({item, index}) => (
+  renderBooks = ({ item, index }) => (
     <TouchableOpacity
       onPress={() => this.props.navigation.navigate('Book')}
       activeOpacity={0.7}
@@ -32,21 +32,21 @@ export default class MyBooks extends Component {
         marginTop: 13,
       }}>
       <FastImage
-        style={{width: 126, height: 192, borderRadius: 4}}
+        style={{ width: 126, height: 192, borderRadius: 4 }}
         source={{
           uri: 'https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cGhvdG98ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
         }}
       />
       <Text
         numberOfLines={2}
-        style={{marginTop: 8, fontSize: 15, fontWeight: '600'}}>
+        style={{ color: 'black', marginTop: 8, fontSize: 15, fontWeight: '600' }}>
         Абай. 37 стихотворений
       </Text>
-      <Text style={{marginTop: 4, color: '#8E8E93'}}>Марат Адибаев</Text>
+      <Text style={{ marginTop: 4, color: '#8E8E93' }}>Марат Адибаев</Text>
     </TouchableOpacity>
   );
 
-  renderAudioBooks = ({item, index}) => (
+  renderAudioBooks = ({ item, index }) => (
     <TouchableOpacity
       onPress={() => this.props.navigation.navigate('Book')}
       activeOpacity={0.7}
@@ -72,18 +72,18 @@ export default class MyBooks extends Component {
       </FastImage>
       <Text
         numberOfLines={2}
-        style={{marginTop: 8, fontSize: 15, fontWeight: '600'}}>
+        style={{ color: 'black', marginTop: 8, fontSize: 15, fontWeight: '600' }}>
         Абай. 37 стихотворений
       </Text>
-      <Text style={{marginTop: 4, color: '#8E8E93'}}>Марат Адибаев</Text>
+      <Text style={{ marginTop: 4, color: '#8E8E93' }}>Марат Адибаев</Text>
     </TouchableOpacity>
   );
 
   render() {
-    const {books, audioBooks} = this.state;
+    const { books, audioBooks } = this.state;
     return (
-      <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <SafeAreaView style={{flex: 1}}>
+      <View style={{ flex: 1, backgroundColor: '#fff' }}>
+        <SafeAreaView style={{ flex: 1 }}>
           <Header
             title={strings.mybooks}
             onLeftPress={() => this.props.navigation.goBack()}
@@ -97,7 +97,7 @@ export default class MyBooks extends Component {
                 borderBottomColor: 'rgba(0, 0, 0, 0.1)',
               }}>
               <Text
-                style={{fontSize: 20, fontWeight: '600', marginHorizontal: 15}}>
+                style={{ color: 'black', fontSize: 20, fontWeight: '600', marginHorizontal: 15 }}>
                 {strings.books}
               </Text>
               <FlatList
@@ -106,7 +106,7 @@ export default class MyBooks extends Component {
                 showsHorizontalScrollIndicator={false}
                 renderItem={this.renderBooks}
                 horizontal
-                contentContainerStyle={{marginHorizontal: 4}}
+                contentContainerStyle={{ marginHorizontal: 4 }}
               />
             </View>
             {audioBooks.length == 0 ? null : (
@@ -116,6 +116,7 @@ export default class MyBooks extends Component {
                 }}>
                 <Text
                   style={{
+                    color: 'black',
                     fontSize: 20,
                     fontWeight: '600',
                     marginHorizontal: 15,
@@ -128,7 +129,7 @@ export default class MyBooks extends Component {
                   showsHorizontalScrollIndicator={false}
                   renderItem={this.renderAudioBooks}
                   horizontal
-                  contentContainerStyle={{marginHorizontal: 4}}
+                  contentContainerStyle={{ marginHorizontal: 4 }}
                 />
               </View>
             )}

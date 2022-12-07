@@ -202,7 +202,7 @@ export default class AddFolder extends Component {
             })
           }>
           {folder}
-          <Text style={{ fontSize: 17, marginLeft: 12 }}>{item.label}</Text>
+          <Text style={{ color: 'black', fontSize: 17, marginLeft: 12 }}>{item.label}</Text>
         </TouchableOpacity>
       </Swipeout>
     );
@@ -295,6 +295,7 @@ export default class AddFolder extends Component {
             }}>
             <Text
               style={{
+                color: 'black',
                 fontSize: 17,
                 fontWeight: '600',
                 flex: 1,
@@ -315,7 +316,7 @@ export default class AddFolder extends Component {
             baseStyle={{fontSize: 17, marginTop: 8}}
           /> */}
           {description ? (
-            <Text numberOfLines={1} style={{ marginTop: 8, fontSize: 17 }}>
+            <Text numberOfLines={1} style={{ color: 'black', marginTop: 8, fontSize: 17 }}>
               {description}
             </Text>
           ) : null}
@@ -378,7 +379,7 @@ export default class AddFolder extends Component {
               marginHorizontal: 10,
               borderRadius: 14,
             }}>
-            <Text style={{ marginHorizontal: 16, marginTop: 24 }}>
+            <Text style={{ color: 'black', marginHorizontal: 16, marginTop: 24 }}>
               Папаканың атын енгізіңіз
             </Text>
             <TextInput

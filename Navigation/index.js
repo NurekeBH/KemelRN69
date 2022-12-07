@@ -24,7 +24,7 @@ import { strings } from '../Localization/Localization';
 import { Text, View } from 'react-native';
 import FirstScreen from '../screens/Auth/FirstScreen';
 import Login from '../screens/Auth/Login';
-import Registration from '../screens/Auth/Registration';
+import Registr from '../screens/Auth/Registr';
 import RestorePassword from '../screens/Auth/RestorePassword';
 import Note from '../screens/Tab2/Note';
 import NoteAdd from '../screens/Tab2/NoteAdd';
@@ -507,9 +507,9 @@ function AuthStack() {
       />
 
       <AuthTab.Screen
-        name="Registration"
+        name="Registr"
         options={{ headerShown: false }}
-        component={Registration}
+        component={Registr}
       />
       <AuthTab.Screen
         name="RestorePassword"

@@ -22,7 +22,7 @@ import axios, { Axios } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firebase from '@react-native-firebase/app';
 
-export default class Registration extends Component {
+export default class Registr extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -314,8 +314,7 @@ const styles = StyleSheet.create({
   },
   inpVwStl: {
     backgroundColor: colorApp.fone,
-    paddingHorizontal: 12,
-    paddingVertical: 4,
+    padding: 12,
     borderRadius: 8,
     marginTop: 15,
   },

@@ -21,7 +21,7 @@ import { strings } from '../../Localization/Localization';
 import 'intl';
 import 'intl/locale-data/jsonp/kk-KZ';
 import FastImage from 'react-native-fast-image';
-import { DraxProvider, DraxView } from 'react-native-drax';
+import { DraxProvider, DraxView, DraxScrollView } from 'react-native-drax';
 import { addWallet, Calendars } from '../../Component/MyIcons';
 import axios from 'axios';
 import TabHeader from '../../Component/TabHeader';
@@ -33,8 +33,8 @@ export const HeaderList = ({ title, price }) => (
             alignItems: 'center',
             justifyContent: 'space-between',
         }}>
-        <Text style={{ fontSize: 17, fontWeight: '600' }}>{title}</Text>
-        <Text style={{ fontSize: 17, fontWeight: '600' }}>
+        <Text style={{ color: 'black', fontSize: 17, fontWeight: '600' }}>{title}</Text>
+        <Text style={{ color: 'black', fontSize: 17, fontWeight: '600' }}>
             {Intl.NumberFormat('kz-KZ').format(price)} ₸
         </Text>
     </View>
@@ -153,18 +153,19 @@ export default class Tab4 extends Component {
                         title={strings.tab4}
                         navigation={this.props.navigation}
                     />
-                    <ScrollView
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={isLoading}
-                                onRefresh={() => {
-                                    this.getWalletList();
-                                }}
-                            />
-                        }
-                        showsVerticalScrollIndicator={false}>
-                        <View style={{ flex: 1, padding: 16 }}>
-                            <DraxProvider>
+                    <DraxProvider>
+                        <DraxScrollView
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={isLoading}
+                                    onRefresh={() => {
+                                        this.getWalletList();
+                                    }}
+                                />
+                            }
+                            showsVerticalScrollIndicator={false}>
+                            <View style={{ flex: 1, padding: 16 }}>
+
                                 {/* ///////INCOME//////// */}
                                 <View>
                                     <HeaderList title={strings.kiris} price={incomeSum} />
@@ -232,6 +233,7 @@ export default class Tab4 extends Component {
 
                                                 <Text
                                                     style={{
+                                                        color: 'black',
                                                         fontSize: 13,
                                                         marginTop: 8,
                                                     }}>
@@ -318,7 +320,7 @@ export default class Tab4 extends Component {
                                                             />
                                                         </View>
 
-                                                        <Text style={{ fontSize: 13, marginTop: 8 }}>
+                                                        <Text style={{ color: 'black', fontSize: 13, marginTop: 8 }}>
                                                             {Intl.NumberFormat('kz-KZ').format(item.value)} ₸
                                                         </Text>
                                                     </DraxView>
@@ -340,9 +342,10 @@ export default class Tab4 extends Component {
 
                                     {/* ///////EXPENSES//////// */}
                                 </View>
-                            </DraxProvider>
-                        </View>
-                    </ScrollView>
+
+                            </View>
+                        </DraxScrollView>
+                    </DraxProvider>
                 </SafeAreaView>
             </View>
         );

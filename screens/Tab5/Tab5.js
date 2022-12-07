@@ -109,6 +109,7 @@ export default class Tab5 extends Component {
       </View>
       <Text
         style={{
+          color: 'black',
           padding: 16,
           paddingBottom: 0,
           fontSize: 17,
@@ -148,7 +149,7 @@ export default class Tab5 extends Component {
       }}>
       {this.state.position == index ? pauseIcon : PlayIcon}
       <View style={{ marginLeft: 8 }}>
-        <Text style={{ fontSize: 17, fontWeight: '600' }}>{item.label}</Text>
+        <Text style={{ color: 'black', fontSize: 17, fontWeight: '600' }}>{item.label}</Text>
         <Text style={{ color: '#999999', marginTop: 2 }}>
           {GetDuration(item.duration)}
         </Text>

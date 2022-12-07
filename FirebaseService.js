@@ -99,6 +99,7 @@ class FirebaseService {
     messaging().onNotificationOpenedApp(remoteMessage => {
       console.log('onNotificationOpenedApp : ', remoteMessage);
       const notificationData = remoteMessage?.data;
+      navigate('PushTable', { fromPush: true });
       // if (notificationData?.code === 'unfulfilled_tasks') {
       //   navigate('Unfulfilled_tasks');
       // }

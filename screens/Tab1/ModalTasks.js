@@ -204,7 +204,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
                 />
               </View>
               <View style={styles.mdlVwStl2}>
-                <Text style={{ fontSize: 17 }}>{strings.reminder}</Text>
+                <Text style={{ color: 'black', fontSize: 17 }}>{strings.reminder}</Text>
                 <TouchableOpacity
                   onPress={() => {
                     setopenModal(true);
@@ -217,7 +217,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
 
 
               <View style={styles.mdlVwStl2}>
-                <Text style={{ fontSize: 17 }}>{strings.vremya}</Text>
+                <Text style={{ color: 'black', fontSize: 17 }}>{strings.vremya}</Text>
                 <TouchableOpacity
                   onPress={() => {
                     setopen(!open);
@@ -261,7 +261,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
                     alignItems: 'center',
                   }}>
                   {RightRed}
-                  <Text style={{ fontSize: 17, marginLeft: 12 }}>Приоритет</Text>
+                  <Text style={{ color: 'black', fontSize: 17, marginLeft: 12 }}>Приоритет</Text>
                 </View>
                 <Switch
                   value={priority}
@@ -289,7 +289,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
                     flexDirection: 'row',
                     alignItems: 'center',
                   }}>
-                  <Text style={{ fontSize: 17, marginLeft: 0 }}>
+                  <Text style={{ color: 'black', fontSize: 17, marginLeft: 0 }}>
                     Заметкаға қосу
                   </Text>
                 </View>

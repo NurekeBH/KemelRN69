@@ -17,9 +17,11 @@ export default class PushTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fromPush: this.props.rote?.params?.fromPush,
+      fromPush: this.props.route?.params?.fromPush,
       data: [],
     };
+
+    console.log('this.props.rote?.params', this.props.route)
   }
 
   componentDidMount() {
@@ -75,7 +77,7 @@ export default class PushTable extends Component {
             borderLeftWidth: 3.5
           }}>
           <View>
-            <Text style={{ fontSize: 17, lineHeight: 22 }}>{item.body}</Text>
+            <Text style={{ color: 'black', fontSize: 17, lineHeight: 22 }}>{item.body}</Text>
             {
               type == 2 || type == 3 ?
                 <TouchableOpacity

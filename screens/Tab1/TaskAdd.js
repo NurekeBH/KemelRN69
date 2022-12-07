@@ -205,7 +205,7 @@ export default function TaskAdd({ route, navigation }) {
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}>
-                <Text style={{ fontSize: 17, }}>{strings.reminder}</Text>
+                <Text style={{ color: 'black', fontSize: 17, }}>{strings.reminder}</Text>
               </View>
               <Text style={{ fontSize: 17, color: '#3F49DC' }}>
                 {modalValue.label}
@@ -225,7 +225,7 @@ export default function TaskAdd({ route, navigation }) {
                   alignItems: 'center',
                 }}>
                 {RightRed}
-                <Text style={{ fontSize: 17, marginLeft: 12 }}>Приоритет</Text>
+                <Text style={{ color: 'black', fontSize: 17, marginLeft: 12 }}>Приоритет</Text>
               </View>
               <Switch
                 value={priority}
@@ -246,7 +246,7 @@ export default function TaskAdd({ route, navigation }) {
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}>
-                <Text style={{ fontSize: 17, marginLeft: 0 }}>
+                <Text style={{ color: 'black', fontSize: 17, marginLeft: 0 }}>
                   {strings.addzamk}
                 </Text>
               </View>

@@ -467,7 +467,7 @@ export default class Goals extends Component {
                     }}
                   />
                 )}
-                <Text style={{ marginLeft: 8 }}>Мақсаттарым</Text>
+                <Text style={{ marginLeft: 8, color: 'black', }}>Мақсаттарым</Text>
               </TouchableOpacity>
               <View
                 style={{
@@ -500,7 +500,7 @@ export default class Goals extends Component {
                     }}
                   />
                 )}
-                <Text style={{ marginLeft: 8 }}>Орындалуда</Text>
+                <Text style={{ marginLeft: 8, color: 'black', }}>Орындалуда</Text>
               </TouchableOpacity>
               <View
                 style={{
@@ -533,7 +533,7 @@ export default class Goals extends Component {
                     }}
                   />
                 )}
-                <Text style={{ marginLeft: 8 }}>Орындалды</Text>
+                <Text style={{ color: 'black', marginLeft: 8 }}>Орындалды</Text>
               </TouchableOpacity>
               <View
                 style={{

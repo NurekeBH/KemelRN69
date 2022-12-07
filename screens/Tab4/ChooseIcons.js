@@ -137,7 +137,7 @@ export default class ChooseIcons extends Component {
             <ActivityIndicator />
           ) : (
             <ScrollView>
-              <Text style={{ fontSize: 17, fontWeight: '600', margin: 15 }}>
+              <Text style={{ color: 'black', fontSize: 17, fontWeight: '600', margin: 15 }}>
                 {strings.fon}
               </Text>
               <ScrollView
@@ -163,7 +163,7 @@ export default class ChooseIcons extends Component {
                 ))}
               </ScrollView>
               <Text
-                style={{ fontSize: 17, fontWeight: '600', margin: 15, top: 15 }}>
+                style={{ color: 'black', fontSize: 17, fontWeight: '600', margin: 15, top: 15 }}>
                 {strings.icons}
               </Text>
               <View

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -12,10 +12,10 @@ import {
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import ImageCropPicker from 'react-native-image-crop-picker';
-import {ButtonClass, showToast, width} from '../../Component/Component';
+import { ButtonClass, showToast, width } from '../../Component/Component';
 import Header from '../../Component/Header2';
-import {no_avatar} from '../../Component/MyIcons';
-import {strings} from '../../Localization/Localization';
+import { no_avatar } from '../../Component/MyIcons';
+import { strings } from '../../Localization/Localization';
 
 export default class EditProfile extends Component {
   constructor(props) {
@@ -36,7 +36,7 @@ export default class EditProfile extends Component {
       cropping: true,
       mediaType: 'photo',
     }).then(images => {
-      const {path, mime} = images;
+      const { path, mime } = images;
 
       console.log(images);
       this.setState({
@@ -48,7 +48,7 @@ export default class EditProfile extends Component {
   };
 
   SaveProfile = () => {
-    const {name, pwd, pwd2, path, mime} = this.state;
+    const { name, pwd, pwd2, path, mime } = this.state;
 
     const formData = new FormData();
 
@@ -88,23 +88,23 @@ export default class EditProfile extends Component {
   };
 
   render() {
-    const {name, pwd, pwd2, avatar} = this.state;
+    const { name, pwd, pwd2, avatar } = this.state;
     return (
-      <View style={{flex: 1, backgroundColor: '#fff'}}>
+      <View style={{ flex: 1, backgroundColor: '#fff' }}>
         <StatusBar backgroundColor={'#fff'} barStyle="dark-content" />
-        <SafeAreaView style={{flex: 1}}>
+        <SafeAreaView style={{ flex: 1 }}>
           <Header
             onLeftPress={() => this.props.navigation.goBack()}
             title={strings.redPr}
           />
           <ScrollView
-            style={{padding: 16}}
+            style={{ padding: 16 }}
             showsVerticalScrollIndicator={false}>
             <View style={styles.vwStl}>
-              <View style={{alignItems: 'center'}}>
+              <View style={{ alignItems: 'center' }}>
                 {avatar ? (
                   <FastImage
-                    style={{width: 88, aspectRatio: 1, borderRadius: 44}}
+                    style={{ width: 88, aspectRatio: 1, borderRadius: 44 }}
                     source={{
                       uri: avatar,
                     }}
@@ -126,8 +126,8 @@ export default class EditProfile extends Component {
                 <TouchableOpacity
                   onPress={() => this.getAvatar()}
                   activeOpacity={0.7}
-                  style={{paddingVertical: 8}}>
-                  <Text style={{fontSize: 15, color: '#3F49DC'}}>
+                  style={{ paddingVertical: 8 }}>
+                  <Text style={{ fontSize: 15, color: '#3F49DC' }}>
                     {strings.edeit}
                   </Text>
                 </TouchableOpacity>
@@ -136,35 +136,35 @@ export default class EditProfile extends Component {
                 <TextInput
                   value={name}
                   placeholder={strings.fio}
-                  onChangeText={name => this.setState({name})}
-                  style={{fontSize: 17, width: width / 1.8}}
+                  onChangeText={name => this.setState({ name })}
+                  style={{ fontSize: 17, width: width / 1.8 }}
                   returnKeyType={'done'}
                   textContentType="name"
                 />
               </View>
             </View>
-            <Text style={{marginTop: 30, fontSize: 22, fontWeight: '700'}}>
+            <Text style={{ color: 'black', marginTop: 30, fontSize: 22, fontWeight: '700' }}>
               {strings.edPwd}
             </Text>
-            <View style={[styles.pwdStl, {marginTop: 20}]}>
+            <View style={[styles.pwdStl, { marginTop: 20 }]}>
               <TextInput
                 placeholder={strings.newpwd}
                 placeholderTextColor={'rgba(0,0,0,0.4)'}
                 value={pwd}
-                onChangeText={pwd => this.setState({pwd})}
-                style={{fontSize: 17}}
+                onChangeText={pwd => this.setState({ pwd })}
+                style={{ fontSize: 17 }}
                 returnKeyType={'done'}
                 textContentType="name"
                 secureTextEntry
               />
             </View>
-            <View style={[styles.pwdStl, {marginTop: 8}]}>
+            <View style={[styles.pwdStl, { marginTop: 8 }]}>
               <TextInput
                 placeholder={strings.newpwd2}
                 placeholderTextColor={'rgba(0,0,0,0.4)'}
                 value={pwd2}
-                onChangeText={pwd2 => this.setState({pwd2})}
-                style={{fontSize: 17}}
+                onChangeText={pwd2 => this.setState({ pwd2 })}
+                style={{ fontSize: 17 }}
                 returnKeyType={'done'}
                 textContentType="name"
                 secureTextEntry
@@ -174,7 +174,7 @@ export default class EditProfile extends Component {
           <ButtonClass
             onPress={this.SaveProfile}
             title={strings.save}
-            style={{bottom: 16, marginHorizontal: 16}}
+            style={{ bottom: 16, marginHorizontal: 16 }}
           />
         </SafeAreaView>
       </View>

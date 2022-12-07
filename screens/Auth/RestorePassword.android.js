@@ -54,14 +54,14 @@ export default class RestorePassword extends Component {
                 source={require('../../assets/logo.png')}
                 style={{ width: 80, aspectRatio: 1, marginBottom: 24 }}
               />
-              <Text style={{ fontWeight: '700', fontSize: 34 }}>
+              <Text style={{ color: 'black', fontWeight: '700', fontSize: 34 }}>
                 {strings.umytt}
               </Text>
-              <Text style={{ fontSize: 20, marginTop: 8 }}>{strings.umyttt}</Text>
+              <Text style={{ fontSize: 20, marginTop: 8, color: 'black', }}>{strings.umyttt}</Text>
               <View
                 style={{
                   backgroundColor: colorApp.fone,
-                  padding: 12,
+                  paddingHorizontal: 12,
                   borderRadius: 8,
                   marginTop: 15,
                 }}>
@@ -103,10 +103,10 @@ export default class RestorePassword extends Component {
                   source={require('../../assets/logo.png')}
                   style={{ width: 80, aspectRatio: 1, marginBottom: 24 }}
                 />
-                <Text style={{ fontWeight: '700', fontSize: 34 }}>
+                <Text style={{ color: 'black', fontWeight: '700', fontSize: 34 }}>
                   {strings.email}
                 </Text>
-                <Text style={{ fontSize: 20, marginTop: 8 }}>
+                <Text style={{ color: 'black', fontSize: 20, marginTop: 8 }}>
                   {strings.pcht + email + strings.pcht2}
                 </Text>
               </View>

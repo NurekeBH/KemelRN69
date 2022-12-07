@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
   textButton: {
     fontSize: 14,
     alignSelf: 'center',
+    color: 'black',
   },
   opacity: {
     opacity: 0.8,

@@ -179,7 +179,7 @@ export default class Tab2 extends Component {
           })
         }>
         {folder}
-        <Text style={{ fontSize: 17, marginLeft: 12 }}>{item.label}</Text>
+        <Text style={{ color: 'black', fontSize: 17, marginLeft: 12 }}>{item.label}</Text>
       </TouchableOpacity>
     );
   };
@@ -228,7 +228,7 @@ export default class Tab2 extends Component {
               marginHorizontal: 10,
               borderRadius: 14,
             }}>
-            <Text style={{ marginHorizontal: 16, marginTop: 24 }}>
+            <Text style={{ color: 'black', marginHorizontal: 16, marginTop: 24 }}>
               Папаканың атын енгізіңіз
             </Text>
             <TextInput

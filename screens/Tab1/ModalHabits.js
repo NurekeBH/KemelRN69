@@ -363,7 +363,7 @@ export default class ModalHabits extends Component {
               ]}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {PurposeIcon}
-                <Text style={{ fontSize: 17, marginLeft: 10 }}>
+                <Text style={{ color: 'black', fontSize: 17, marginLeft: 10 }}>
                   {strings.maks}
                 </Text>
               </View>
@@ -405,7 +405,7 @@ export default class ModalHabits extends Component {
                     })
                   }
                 />
-                <Text>
+                <Text style={{ color: 'black', }}>
                   {getTemplateLabel(selected_template.template)}
                 </Text>
 
@@ -421,7 +421,7 @@ export default class ModalHabits extends Component {
                   marginTop: 30,
                 }}>
 
-                <Text style={{ fontSize: 14, marginRight: 10 }}>{strings.bugjet2}</Text>
+                <Text style={{ color: 'black', fontSize: 14, marginRight: 10 }}>{strings.bugjet2}</Text>
                 <TouchableOpacity
                   disabled={target_today == 0}
                   activeOpacity={0.7}

@@ -187,6 +187,7 @@ export default class Tab2 extends Component {
               fontSize: 17,
               fontWeight: '600',
               flex: 1,
+              color: 'black',
             }}>
             {item.label}
           </Text>

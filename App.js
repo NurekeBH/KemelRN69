@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert, Text, View } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import { firebaseService } from './FirebaseService';
+import TestApp from './screens/TestApp'
 
 
 const codePushOptions = {
@@ -72,6 +73,7 @@ const App: () => React$Node = () => {
     <ProviderApp>
 
       <Index />
+      {/* <TestApp/> */}
       <Toast config={toastConfig} />
     </ProviderApp>
   )

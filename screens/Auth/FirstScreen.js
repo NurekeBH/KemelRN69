@@ -33,17 +33,37 @@ export default class FirstScreen extends Component {
       }
     });
 
-    messaging().onNotificationOpenedApp(remoteMessage => {
-      console.log(
-        'Notification caused app to open from background state:',
-        remoteMessage.notification,
-      );
+
+    console.log('fromPush1')
+
+    messaging().onNotificationOpenedApp((remoteMessage) => {
+      console.log('fromPush2')
 
       this.setState({
         fromPush: true
       })
-
     });
+
+    messaging()
+      .getInitialNotification()
+      .then((remoteMessage) => {
+        console.log('fromPush3')
+
+        if (remoteMessage) {
+          console.log('fromPush4')
+
+          this.setState({
+            fromPush: true
+          })
+
+          setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
+          console.log('fromPush5')
+
+          this.setState({
+            fromPush: true
+          })
+        }
+      });
 
 
 
@@ -172,10 +192,14 @@ export default class FirstScreen extends Component {
             console.log('cccccccc1', this.state.fromPush)
 
             if (this.state.fromPush) {
+              console.log('fromPush7')
+
               console.log('cccccccc')
               this.props.navigation.replace('PushTable', { fromPush: true });
 
             } else {
+              console.log('fromPush8')
+
               this.props.navigation.replace('TabStack');
             }
           });
@@ -203,7 +227,7 @@ export default class FirstScreen extends Component {
             source={require('../../assets/logo.png')}
             style={{ width: 80, aspectRatio: 1, marginBottom: 24 }}
           />
-          <Text style={{ fontSize: 40, fontWeight: '700' }}>
+          <Text style={{ fontSize: 40, fontWeight: '700', color: 'black', }}>
             Мақсатыңа қол жеткіз!
           </Text>
           <Text
@@ -211,6 +235,7 @@ export default class FirstScreen extends Component {
               fontSize: 17,
               fontWeight: '400',
               marginTop: 8,
+              color: 'black',
             }}>
             Әрбір жетістік істі дұрыс жоспарлаудан, жақсы әдеттерді қалыптастырудан басталады.
           </Text>
@@ -219,6 +244,7 @@ export default class FirstScreen extends Component {
               fontSize: 17,
               fontWeight: '400',
               marginBottom: 28,
+              color: 'black',
             }}>{`Әрекетсіз жоспар – жай ғана қиял, ал жоспарсыз әрекет – былық.
 - Жапон мақалы`}</Text>
           <ButtonClass

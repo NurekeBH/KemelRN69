@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {View, Text, SafeAreaView, StatusBar, ScrollView} from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, SafeAreaView, StatusBar, ScrollView } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Header from '../../Component/Header2';
-import {strings} from '../../Localization/Localization';
+import { strings } from '../../Localization/Localization';
 
 export default class AboutUs extends Component {
   constructor(props) {
@@ -12,22 +12,22 @@ export default class AboutUs extends Component {
 
   render() {
     return (
-      <View style={{flex: 1, backgroundColor: '#fff'}}>
+      <View style={{ flex: 1, backgroundColor: '#fff' }}>
         <StatusBar backgroundColor={'#fff'} barStyle="dark-content" />
-        <SafeAreaView style={{flex: 1}}>
+        <SafeAreaView style={{ flex: 1 }}>
           <Header
             title={strings.onas}
             onLeftPress={() => this.props.navigation.goBack()}
           />
           <ScrollView
-            contentContainerStyle={{padding: 16}}
+            contentContainerStyle={{ padding: 16 }}
             showsVerticalScrollIndicator={false}>
             <FastImage
               source={require('../../assets/logo.png')}
-              style={{width: 80, aspectRatio: 1, marginBottom: 24}}
+              style={{ width: 80, aspectRatio: 1, marginBottom: 24 }}
             />
-            <Text style={{fontSize: 40, fontWeight: '700'}}>Kemel Adam</Text>
-            <Text style={{fontSize: 17, marginTop: 16}}>
+            <Text style={{ color: 'black', fontSize: 40, fontWeight: '700' }}>Kemel Adam</Text>
+            <Text style={{ color: 'black', fontSize: 17, marginTop: 16 }}>
               Автор бұл кітабында жан-жақты жетілген идеалды адамның қасиеттері
               мен ерекшеліктерін түсіндіре отырып, оқырманын “кемел адам” болуға
               шақырады. Кітаптың бірінші бөлімінде кемелденудің психологиялық

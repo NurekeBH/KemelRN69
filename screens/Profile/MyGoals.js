@@ -150,7 +150,7 @@ export default class MyGoals extends Component {
             section_id: item.id,
           });
         }}>
-        <Text style={{ fontWeight: '600', fontSize: 13 }}>{getLang() == 'kk' ? item.label : getLabel(item.label)}</Text>
+        <Text style={{ color: 'black', fontWeight: '600', fontSize: 13 }}>{getLang() == 'kk' ? item.label : getLabel(item.label)}</Text>
       </TouchableOpacity>
     );
   };
@@ -178,7 +178,7 @@ export default class MyGoals extends Component {
             label: item.label,
           });
         }}>
-        <Text style={{ flex: 1, fontSize: 17 }}>{getLang() == 'kk' ? item.label : getLabel(item.label)}</Text>
+        <Text style={{ color: 'black', flex: 1, fontSize: 17 }}>{getLang() == 'kk' ? item.label : getLabel(item.label)}</Text>
         <View
           style={{
             flexDirection: 'row',
@@ -255,12 +255,12 @@ export default class MyGoals extends Component {
               }}
             >
               <Text
-                style={{ textAlign: 'center', width: Dimensions.get('window').width / 3, paddingVertical: 8 }}
+                style={{ color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 3, paddingVertical: 8 }}
                 placeholder={"ай"}
                 numberOfLines={1}
               >{inputArray[selectedIndex]?.key1}</Text>
             </TouchableOpacity>
-            <Text style={{ margin: 8 }}>-</Text>
+            <Text style={{ color: 'black', margin: 8 }}>-</Text>
             <TouchableOpacity
               style={{ backgroundColor: '#F2F2F7', borderRadius: 8, }}
               onPress={() => {
@@ -272,7 +272,7 @@ export default class MyGoals extends Component {
               }}
             >
               <Text
-                style={{ textAlign: 'center', width: Dimensions.get('window').width / 3, paddingVertical: 8 }}
+                style={{ color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 3, paddingVertical: 8 }}
                 placeholder={"ай"}
                 numberOfLines={1}
               >{inputArray[selectedIndex]?.key2}</Text>
@@ -323,7 +323,7 @@ export default class MyGoals extends Component {
                 autoFocus={true}
                 numberOfLines={1}
               />
-              <Text style={{ margin: 8 }}>-</Text>
+              <Text style={{ color: 'black', margin: 8 }}>-</Text>
               <TextInput
                 value={value2}
                 onChangeText={(text) => {

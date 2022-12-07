@@ -55,7 +55,7 @@ export default class EditPwd extends Component {
           <ScrollView
             showsVerticalScrollIndicator={false}
             style={{ padding: 16 }}>
-            <Text style={{ fontSize: 17, fontWeight: '600', marginTop: 16, marginBottom: 8 }}>{strings.newpwd}</Text>
+            <Text style={{ color: 'black', fontSize: 17, fontWeight: '600', marginTop: 16, marginBottom: 8 }}>{strings.newpwd}</Text>
             <View style={styles.pwdStl}>
               <TextInput
                 placeholder={strings.oldpwd}
@@ -68,7 +68,7 @@ export default class EditPwd extends Component {
                 secureTextEntry
               />
             </View>
-            <Text style={{ fontSize: 17, fontWeight: '600', marginTop: 16, marginBottom: 8 }}>{strings.newpwd}</Text>
+            <Text style={{ color: 'black', fontSize: 17, fontWeight: '600', marginTop: 16, marginBottom: 8 }}>{strings.newpwd}</Text>
             <View style={styles.pwdStl}>
               <TextInput
                 placeholder={strings.newpwd}

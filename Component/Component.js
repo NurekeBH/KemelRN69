@@ -159,7 +159,7 @@ export const Header2 = ({
           {no_avatar(24)}
         </View>
       </TouchableOpacity>
-      <Text style={{ fontSize: 24, fontWeight: '700', marginLeft: 15 }}>
+      <Text style={{ color: 'black', fontSize: 24, fontWeight: '700', marginLeft: 15 }}>
         {title}
       </Text>
     </View>

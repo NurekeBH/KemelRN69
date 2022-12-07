@@ -355,6 +355,7 @@ export default class Wallet extends Component {
                         <View>
                             <Text
                                 style={{
+                                    color: 'black',
                                     padding: 16,
                                     textAlign: 'center',
                                     fontSize: 17,
@@ -484,6 +485,7 @@ export default class Wallet extends Component {
                                 <View >
                                     <Text
                                         style={{
+                                            color: 'black',
                                             fontSize: 22,
                                             fontWeight: '700',
                                             flex: 1,
@@ -600,7 +602,7 @@ export default class Wallet extends Component {
                                             ]}>
                                             <View style={styles.tableStl} key={index}>
                                                 <View style={{ flex: 1 }}>
-                                                    <Text style={{ fontSize: 17 }}>
+                                                    <Text style={{ color: 'black', fontSize: 17 }}>
                                                         {item1.comment ? item1.comment : item.label}
                                                     </Text>
                                                     <Text
@@ -614,6 +616,7 @@ export default class Wallet extends Component {
                                                 </View>
                                                 <Text
                                                     style={{
+                                                        color: 'black',
                                                         fontSize: 15,
                                                         textAlign: 'right',
                                                     }}>
@@ -683,7 +686,7 @@ export default class Wallet extends Component {
                                                 ]}>
                                                 <View style={styles.tableStl} key={index}>
                                                     <View style={{ flex: 1 }}>
-                                                        <Text style={{ fontSize: 17 }}>
+                                                        <Text style={{ color: 'black', fontSize: 17 }}>
                                                             {item.wallet_from.label}
                                                         </Text>
                                                         <Text
@@ -738,6 +741,7 @@ export default class Wallet extends Component {
                                 style={styles.www}>
                                 <Text
                                     style={{
+                                        color: 'black',
                                         fontSize: 22,
                                         fontWeight: '700',
                                         flex: 1,
@@ -840,7 +844,7 @@ export default class Wallet extends Component {
                                         ]}>
                                         <View style={styles.tableStl} key={index}>
                                             <View style={{ flex: 1 }}>
-                                                <Text style={{ fontSize: 17 }}>
+                                                <Text style={{ color: 'black', fontSize: 17 }}>
                                                     {item1.desc ? item1.desc : item1.payment_type.label}
                                                 </Text>
                                                 <Text
@@ -930,7 +934,7 @@ export default class Wallet extends Component {
                                             ]}>
                                             <View style={styles.tableStl} key={index}>
                                                 <View style={{ flex: 1 }}>
-                                                    <Text style={{ fontSize: 17 }}>
+                                                    <Text style={{ color: 'black', fontSize: 17 }}>
                                                         {item.wallet_to.label}
                                                     </Text>
                                                     <Text

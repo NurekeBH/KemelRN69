@@ -121,7 +121,7 @@ export default class Translation extends Component {
                       }}
                     />
                   </View>
-                  <Text style={{ fontSize: 13, marginTop: 7 }}>
+                  <Text style={{ color: 'black', fontSize: 13, marginTop: 7 }}>
                     {payload.label} ({Intl.NumberFormat('kz-KZ').format(payload.value)} ₸)
                   </Text>
 
@@ -139,7 +139,7 @@ export default class Translation extends Component {
                       }}
                     />
                   </View>
-                  <Text numberOfLines={1} style={{ fontSize: 13, marginTop: 7 }}>
+                  <Text numberOfLines={1} style={{ color: 'black', fontSize: 13, marginTop: 7 }}>
                     {item.label}
                   </Text>
                 </View>

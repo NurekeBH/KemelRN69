@@ -133,9 +133,9 @@ export default class Statistics extends Component {
                   style={{ width: 40 }}>
                   {Left}
                 </TouchableOpacity>
-                <Text style={{ fontSize: 22, fontWeight: '700', textTransform: 'capitalize' }}>
+                <Text style={{ color: 'black', fontSize: 22, fontWeight: '700', textTransform: 'capitalize' }}>
                   {GetTime(month, "MMMM")}
-                  <Text style={{ fontSize: 20, fontWeight: '400' }}> {GetTime(month, "YYYY")}</Text>
+                  <Text style={{ color: 'black', fontSize: 20, fontWeight: '400' }}> {GetTime(month, "YYYY")}</Text>
                 </Text>
                 <TouchableOpacity
                   // onPress={() => {
@@ -180,6 +180,7 @@ export default class Statistics extends Component {
               <View>
                 <Text
                   style={{
+                    color: 'black',
                     fontWeight: '700',
                     fontSize: 22,
                     marginHorizontal: 16,
@@ -228,6 +229,7 @@ export default class Statistics extends Component {
                       </View>
                       <Text
                         style={{
+                          color: 'black',
                           fontSize: 17,
                           fontWeight: '600',
                           marginLeft: 12,

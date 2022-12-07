@@ -148,7 +148,7 @@ export default class Category extends Component {
         ? pauseIcon
         : PlayIcon}
       <View style={{ marginLeft: 8 }}>
-        <Text style={{ fontSize: 17, fontWeight: '600' }}>{item.label}</Text>
+        <Text style={{ color: 'black', fontSize: 17, fontWeight: '600' }}>{item.label}</Text>
         <Text style={{ color: '#999999', marginTop: 2 }}>
           {GetDuration(item.duration)} • {GetTime(item.updated_at, 'DD MMMM')}
         </Text>

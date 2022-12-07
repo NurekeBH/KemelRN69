@@ -168,6 +168,7 @@ const ModalDrax = ({ onClose, dataDrax, ind }) => {
               justifyContent: 'space-between',
               marginHorizontal: 16,
               marginTop: 10,
+              width: '90%'
             }}>
             <TouchableOpacity onPress={() => onClose(false)}>
               <Text style={{ fontSize: 17, color: '#fff', fontWeight: '500' }}>
