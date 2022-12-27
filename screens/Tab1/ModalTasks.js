@@ -238,6 +238,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
                 title={null}
                 confirmText={strings.save}
                 locale={getLang()}
+                cancelText={strings.close}
                 onConfirm={date => {
                   console.log('datedate', date);
                   setdatetime(date);
@@ -290,7 +291,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
                     alignItems: 'center',
                   }}>
                   <Text style={{ color: 'black', fontSize: 17, marginLeft: 0 }}>
-                    Заметкаға қосу
+                    Жазбаға қосу
                   </Text>
                 </View>
                 <Switch
@@ -349,6 +350,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
                 style={{ minHeight: 100, marginHorizontal: -5 }}
                 ref={richText}
                 placeholder={strings.zamk}
+                androidHardwareAccelerationDisabled={true}
                 initialContentHTML={zametka}
                 onChange={zametka => {
                   setzametka(zametka);

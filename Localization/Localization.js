@@ -2,7 +2,7 @@ import LocalizedStrings from 'react-native-localization';
 
 export let strings = new LocalizedStrings({
   kz: {
-    tab1: 'Күнтізбе',
+    tab1: 'Жоспаргер',
     tab2: 'Жазбалар',
     tab3: 'Серпер',
     tab4: 'Әмиян',
@@ -69,8 +69,8 @@ export let strings = new LocalizedStrings({
     dobz: 'Тапсырма қосу',
     address: 'мекен-жәй',
     zamk: 'Жазба қосу',
-    addzamk: 'Заметкаға қосу',
-    reminder: 'Ескерту',
+    addzamk: 'Жазбаға қосу',
+    reminder: 'Еске салу',
     adetk: 'Әдет қосу',
     adets: 'Әдеттер',
     kosu: 'Қосу',
@@ -96,9 +96,17 @@ export let strings = new LocalizedStrings({
     process: 'Орындалуда',
     done: 'Орындалды',
     perday: 'күніне',
+    deleteaccount: 'Сіз аккаунтыңызды осы жерден өшіре аласыз',
+    here: 'Өшіру',
+    close: 'Жабу',
+    goalTitle: 'Мақсатыңыз',
+    goalDesc: 'Толығырақ',
+    goalDate: 'орындалу мерзімі',
+    changeStatus: 'Мәртебесін өзгерту'
+
   },
   ru: {
-    tab1: 'Календарь',
+    tab1: 'Планер',
     tab2: 'Заметки',
     tab3: 'Медитация',
     tab4: 'Кошелек',
@@ -193,6 +201,13 @@ export let strings = new LocalizedStrings({
     process: 'В процессе',
     done: 'Сделано',
     perday: 'в день',
+    deleteaccount: 'Вы можете удалить учетную запись',
+    here: 'здесь',
+    close: 'Закрыть',
+    goalTitle: 'Ваша цель',
+    goalDesc: 'Дополнительная информация',
+    goalDate: 'сроки',
+    changeStatus: 'Изменить статус'
   },
   en: {
     tab1: 'Calendar',
@@ -290,5 +305,12 @@ export let strings = new LocalizedStrings({
     process: 'In process',
     done: 'Done',
     perday: 'per day',
+    deleteaccount: 'You can delete an account',
+    here: 'here',
+    close: 'Close',
+    goalTitle: 'Goal',
+    goalDesc: 'Description',
+    goalDate: 'date',
+    changeStatus: 'Change status'
   },
 });

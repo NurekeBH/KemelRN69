@@ -113,6 +113,7 @@ export default class Tab2 extends Component {
   }
 
   renderItem = ({ item, index }) => {
+
     return (
       <Swipeout
         autoClose={true}
@@ -174,12 +175,12 @@ export default class Tab2 extends Component {
         }}
         onPress={() =>
           this.props.navigation.navigate('AddFolder', {
-            title: item.label,
+            title: item.label == 'Заметки' ? strings.zam : item.label,
             id: item.id,
           })
         }>
         {folder}
-        <Text style={{ color: 'black', fontSize: 17, marginLeft: 12 }}>{item.label}</Text>
+        <Text style={{ color: 'black', fontSize: 17, marginLeft: 12 }}>{item.label == 'Заметки' ? strings.zam : item.label}</Text>
       </TouchableOpacity>
     );
   };

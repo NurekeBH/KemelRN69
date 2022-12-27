@@ -33,7 +33,6 @@ const arrAction = [
   actions.insertBulletsList,
   actions.insertOrderedList,
   actions.heading1,
-  'customAction',
 ];
 
 import Header from '../../Component/Header2';
@@ -84,6 +83,7 @@ export default function NoteAdd({ route, navigation }) {
 
   useEffect(() => {
     setTimeout(() => {
+      richText.current?.setContentHTML(text)
       setIsLoading(false)
     }, 2000)
   }, []);
@@ -404,6 +404,7 @@ export default function NoteAdd({ route, navigation }) {
                 disabled={richDisable}
                 style={{ minHeight: 100, }}
                 ref={richText}
+                androidHardwareAccelerationDisabled={true}
                 placeholder={strings.zamk}
                 initialContentHTML={text}
                 onChange={descriptionText => {
@@ -413,42 +414,27 @@ export default function NoteAdd({ route, navigation }) {
                 onFocus={() => setTollbar(true)}
                 onBlur={() => setTollbar(false)}
 
-                onMessage={(event) => {
-                  console.log('event', event)
+              // onMessage={(event) => {
+              //   console.log('event', event)
 
-                  let url = event?.data
-                  let type = event?.type
-                  type == 'link' && Linking.canOpenURL(url).then(supported => {
-                    if (supported) {
-                      Linking.openURL(url);
-                    } else {
-                      console.log('Don\'t know how to open URI: ' + url);
-                    }
-                  });
-                }}
-                onLayout={({ nativeEvent }) => {
-                  setTimeout(() => {
-                    richText.current?.setContentHTML(text)
-                  }, 200)
-                }}
+              //   let url = event?.data
+              //   let type = event?.type
+              //   type == 'link' && Linking.canOpenURL(url).then(supported => {
+              //     if (supported) {
+              //       Linking.openURL(url);
+              //     } else {
+              //       console.log('Don\'t know how to open URI: ' + url);
+              //     }
+              //   });
+              // }}
+              // onLayout={({ nativeEvent }) => {
+              //   setTimeout(() => {
+              //     richText.current?.setContentHTML(text)
+              //   }, 200)
+              // }}
               />
 
             </ScrollView>
-
-
-
-
-            {/* {editTheme == theme &&
-            editText == text &&
-            editText &&
-            editTheme ? null : (
-              <ButtonClass
-                loader={isSend}
-                onPress={() => onSaveClick()}
-                title={strings.save}
-                style={{margin: 10}}
-              />
-            )} */}
           </View>
         </SafeAreaView>
       </KeyboardAvoidingView>

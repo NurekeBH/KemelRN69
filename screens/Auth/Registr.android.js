@@ -97,6 +97,7 @@ export default class Registr extends Component {
       const AuthStr = 'Bearer '.concat(data.access);
       axios.defaults.headers.common['Authorization'] = AuthStr;
       let fcmToken = await firebase.messaging().getToken();
+      console.log('fcmTokenfcmToken', fcmToken)
       this.setState({ loader: false });
       if (fcmToken) {
         console.log('RESPONSE fcmToken:', fcmToken);
@@ -184,7 +185,7 @@ export default class Registr extends Component {
                   Жетістіктермен прогрессті жеке кабинетіңде қадағала
                 </Text>
                 <Text style={{ fontSize: 20, color: '#000', marginTop: 8 }}>
-                  sdafsa Армандар мен мақсаттарыңды, әдеттер мен күнделікті
+                  Армандар мен мақсаттарыңды, әдеттер мен күнделікті
                   жоспарларыңды қадағалап отыр
                 </Text>
                 <View style={styles.inpVwStl}>

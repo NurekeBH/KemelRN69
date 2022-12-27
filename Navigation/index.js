@@ -60,6 +60,8 @@ import SingleDua from '../screens/Dua/SingleDua';
 import SearchNote from '../screens/Tab2/SearchNote';
 import { navigationRef } from './RootNavigation';
 import Unfulfilled_tasks from '../screens/Unfulfilled_tasks';
+import TestApp from '../screens/TestApp';
+import Splash from '../screens/Splash';
 /////////STACKS/////////
 
 const _Tab1 = createNativeStackNavigator();
@@ -79,16 +81,16 @@ function Tab1Stack() {
           component={Tab1}
           options={{ headerShown: false }}
         />
-        <_Tab1.Screen
+        {/* <_Tab1.Screen
           name="TaskAdd"
           component={TaskAdd}
           options={{ headerShown: false }}
-        />
-        <_Tab1.Screen
+        /> */}
+        {/* <_Tab1.Screen
           name="HabitAdd"
           component={HabitAdd}
           options={{ headerShown: false }}
-        />
+        /> */}
         {/* <_Tab1.Screen
           name="NoteAdd"
           component={NoteAdd}
@@ -527,11 +529,43 @@ function App() {
     <NavigationContainer
       ref={navigationRef}
     >
-      <Stack.Navigator initialRouteName={'AuthStack'}>
+      <Stack.Navigator initialRouteName={'Splash'}>
+
+        <Stack.Screen
+          name="Splash"
+          options={{ headerShown: false }}
+          component={Splash}
+        />
+
+        <Stack.Screen
+          name="AuthStack"
+          options={{ headerShown: false }}
+          component={AuthStack}
+        />
+
         <Stack.Screen
           name="TabStack"
           options={{ headerShown: false }}
           component={TabStack}
+        />
+
+        <Stack.Screen
+          name="TestApp"
+          options={{ headerShown: false }}
+          component={TestApp}
+        />
+
+        <Stack.Screen
+          name="TaskAdd"
+          component={TaskAdd}
+          options={{ headerShown: false }}
+        />
+
+
+        <Stack.Screen
+          name="HabitAdd"
+          component={HabitAdd}
+          options={{ headerShown: false }}
         />
 
         <Stack.Screen
@@ -553,11 +587,7 @@ function App() {
           options={{ headerShown: false }}
         />
 
-        <Stack.Screen
-          name="AuthStack"
-          options={{ headerShown: false }}
-          component={AuthStack}
-        />
+
         <Stack.Screen
           name="EditLocal"
           component={EditLocal}

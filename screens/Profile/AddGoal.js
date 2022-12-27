@@ -14,6 +14,7 @@ import {
   StyleSheet,
   FlatList,
   Alert,
+  Dimensions,
 } from 'react-native';
 import {
   ButtonClass,
@@ -26,6 +27,10 @@ import { strings } from '../../Localization/Localization';
 
 export default function AddGoal({ route, navigation }) {
   const [label, setLabel] = useState('');
+  const [desc, setDesc] = useState('');
+  const [fromDate, setFromDate] = useState('');
+  const [toDate, setToDate] = useState('');
+
 
   const [category_id, setCategory] = useState(route.params?.category_id);
   const [section_id, setSectionId] = useState(route.params?.section_id);
@@ -38,6 +43,9 @@ export default function AddGoal({ route, navigation }) {
           category: category_id,
           section: section_id,
           done: false,
+          date_from: fromDate,
+          date_to: toDate,
+          desc: desc
         })
         .then(response => {
           console.log('RESPONSE add:', response);
@@ -83,29 +91,83 @@ export default function AddGoal({ route, navigation }) {
                   marginHorizontal: 10,
                 }}
                 placeholderTextColor="#D1D1D6"
-                multiline
                 autoFocus
                 onChangeText={label => {
                   setLabel(label);
                 }}
                 value={label}
                 returnKeyType="next"
+                placeholder={strings.goalTitle}
               />
               <View
                 style={{
-                  height: 1,
+                  height: 0.5,
                   backgroundColor: 'rgba(0, 0, 0, 0.2)',
                   marginVertical: 10,
                   marginHorizontal: 10,
                 }}
               />
+
+              <View style={{ paddig: 16 }}>
+                <Text style={{ color: 'rgba(0,0,0,0.6)', marginBottom: 4, marginLeft: 4 }}>{strings.goalDate}</Text>
+
+                <View style={{ marginVertical: 8, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                  <View
+                    style={{ backgroundColor: '#F2F2F7', borderRadius: 8, }} >
+                    <TextInput
+                      style={{ color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 2 - 20, paddingVertical: 8 }}
+                      numberOfLines={1}
+                      onChangeText={fromDate => {
+                        setFromDate(fromDate);
+                      }}
+                      value={fromDate}
+                    />
+                  </View>
+                  <Text style={{ color: 'black', margin: 8 }}>-</Text>
+                  <View
+                    style={{ backgroundColor: '#F2F2F7', borderRadius: 8, }}
+
+                  >
+                    <TextInput
+                      style={{ color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 2 - 20, paddingVertical: 8 }}
+                      numberOfLines={1}
+                      onChangeText={toDate => {
+                        setToDate(toDate);
+                      }}
+                      value={toDate}
+                    />
+                  </View>
+                </View>
+              </View>
+              <View
+                style={{
+                  height: 0.5,
+                  backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                  marginVertical: 10,
+                  marginHorizontal: 10,
+                }}
+              />
+
+
+
+              <TextInput
+                // placeholder={strings.tem}
+                style={{
+                  fontSize: 16,
+                  fontWeight: '400',
+                  marginHorizontal: 10,
+                }}
+                placeholderTextColor="#D1D1D6"
+                multiline
+                placeholder={strings.goalDesc}
+                onChangeText={desc => {
+                  setDesc(desc);
+                }}
+                value={desc}
+                returnKeyType="next"
+              />
             </KeyboardAvoidingView>
           </ScrollView>
-          {/* <ButtonClass
-            onPress={() => onSaveClick()}
-            title={strings.save}
-            style={{ marginHorizontal: 16, marginBottom: 100 }}
-          /> */}
         </View>
       </SafeAreaView>
     </View>

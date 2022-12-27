@@ -3,6 +3,9 @@
     package="com.kemeladam">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
 
     <application
       android:name=".MainApplication"
@@ -29,5 +32,14 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
+
+        <meta-data  android:name="com.dieam.reactnativepushnotification.notification_foreground"
+            android:value="false"/>
+        <!-- Change the resource name to your App's accent color - or any other color you want -->
+        <meta-data  android:name="com.dieam.reactnativepushnotification.notification_color"
+            android:resource="@color/white"/> <!-- or @android:color/{name} to use a standard color -->
+
+
+
     </application>
 </manifest>

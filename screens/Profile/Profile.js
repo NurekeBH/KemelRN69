@@ -290,14 +290,14 @@ export default class Profile extends Component {
               fontSize: 11,
               color: 'grey'
             }}>
-              Вы можете удалить учетную запись
+              {strings.deleteaccount}
             </Text>
             <TouchableOpacity onPress={() => this.deleteAccount()}>
               <Text style={{
                 color: '#00A7E5',
                 marginLeft: 4,
                 fontSize: 11
-              }}>здесь </Text>
+              }}>{strings.here} </Text>
 
             </TouchableOpacity>
           </View>

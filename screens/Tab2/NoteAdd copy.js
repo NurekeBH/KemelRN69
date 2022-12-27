@@ -32,7 +32,6 @@ const arrAction = [
   actions.insertBulletsList,
   actions.insertOrderedList,
   actions.heading1,
-  'customAction',
 ];
 
 import Header from '../../Component/Header2';

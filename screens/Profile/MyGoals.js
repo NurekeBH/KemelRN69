@@ -63,7 +63,7 @@ export default class MyGoals extends Component {
       isLoading: true,
       goalCate: [],
       selectedIndex: 0,
-      section_id: null,
+      section_id: 1,
       section: [],
       isLoadingS: true,
       inputArray: [],
@@ -87,30 +87,30 @@ export default class MyGoals extends Component {
     }
     console.log('InputArr', InputArr)
 
-    this.GetSection();
+    // this.GetSection();
     this.GetCategory();
 
 
   }
-  GetSection() {
-    axios
-      .get('goals/section/?sorting=sort')
-      .then(response => {
-        console.log('RESPONSE section:', response);
+  // GetSection() {
+  //   axios
+  //     .get('goals/section/?sorting=sort')
+  //     .then(response => {
+  //       console.log('RESPONSE section:', response);
 
-        let section = response.data.sort((a, b) => (a.sort > b.sort) ? 1 : -1)
-        this.setState({
-          section: section,
-          section_id: section[0].id,
-          isLoadingS: false,
-        });
-      })
-      .catch(error => {
-        this.setState({
-          isLoading: false,
-        });
-      });
-  }
+  //       let section = response.data.sort((a, b) => (a.sort > b.sort) ? 1 : -1)
+  //       this.setState({
+  //         section: section,
+  //         section_id: section[0].id,
+  //         isLoadingS: false,
+  //       });
+  //     })
+  //     .catch(error => {
+  //       this.setState({
+  //         isLoading: false,
+  //       });
+  //     });
+  // }
 
   GetCategory() {
     axios
@@ -147,7 +147,6 @@ export default class MyGoals extends Component {
         onPress={() => {
           this.setState({
             selectedIndex: index,
-            section_id: item.id,
           });
         }}>
         <Text style={{ color: 'black', fontWeight: '600', fontSize: 13 }}>{getLang() == 'kk' ? item.label : getLabel(item.label)}</Text>
@@ -226,7 +225,7 @@ export default class MyGoals extends Component {
             title={strings.mygoals}
             onLeftPress={() => this.props.navigation.goBack()}
           />
-          <View
+          {/* <View
             style={{
               backgroundColor: '#D8D8DC',
               marginHorizontal: 16,
@@ -240,8 +239,8 @@ export default class MyGoals extends Component {
               keyExtractor={(item, index) => index.toString()}
               renderItem={this.renderItemCat}
             />
-          </View>
-
+          </View> */}
+          {/* 
           <Text style={{ marginLeft: Dimensions.get('window').width / 7, marginTop: 8, color: 'rgba(0,0,0,0.6)' }}>мерзімі :</Text>
           <View style={{ marginVertical: 4, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
             <TouchableOpacity
@@ -277,7 +276,7 @@ export default class MyGoals extends Component {
                 numberOfLines={1}
               >{inputArray[selectedIndex]?.key2}</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
 
           <View style={{ flex: 1, backgroundColor: 'white' }}>
             <FlatList

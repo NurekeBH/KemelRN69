@@ -162,7 +162,11 @@ export default function TaskAdd({ route, navigation }) {
               }}>
               <DatePicker
                 modal
-                locale={'en_GB'}
+                locale={getLang()}
+                is24hourSource="locale"
+                confirmText={strings.save}
+                cancelText={strings.close}
+                title={null}
                 open={open}
                 date={datetime}
                 onConfirm={date => {

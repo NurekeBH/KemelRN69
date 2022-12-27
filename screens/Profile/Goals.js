@@ -10,12 +10,14 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Dimensions,
+  TextInput,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Header from '../../Component/Header2';
 import {
   Bottom,
   Check,
+  closeIcon,
   Done,
   PluseBtn,
   statusIcon,
@@ -50,10 +52,16 @@ export default class Goals extends Component {
 
       openModal: false,
       modalItem: null,
+
+      label: '',
+      desc: '',
+      fromDate: '',
+      toDate: '',
+      modalStatus: null
     };
     this.category_id = props.route.params?.category_id;
     this.section_id = props.route.params?.section_id;
-    this.label = props.route.params?.label;
+    this.Title = props.route.params?.label;
   }
 
   componentDidMount() {
@@ -86,6 +94,10 @@ export default class Goals extends Component {
 
           openModal: false,
           modalItem: null,
+          label: '',
+          desc: '',
+          fromDate: '',
+          toDate: '',
         });
       })
       .catch(error => {
@@ -139,11 +151,16 @@ export default class Goals extends Component {
             },
           },
         ]}>
-        <View key={index} style={styles.vwStl}>
+        <View key={index} style={[styles.vwStl, { paddingVertical: 8 }]}>
           <TouchableOpacity
             onPress={() => {
               this.setState({
                 modalItem: item,
+                label: item.label,
+                desc: item.desc,
+                fromDate: item.date_from,
+                toDate: item.date_to,
+                modalStatus: item.status,
                 openModal: true,
               });
             }}
@@ -162,32 +179,46 @@ export default class Goals extends Component {
                 ]}
               />
             )}
-            <Text
-              style={{
-                marginLeft: 14,
-                fontSize: 15,
-                flex: 1,
-                textDecorationLine: item.done ? 'line-through' : 'none',
-                color: item.done ? '#8E8E93' : '#000',
-              }}>
-              {item.label}
-            </Text>
+            <View style={{ flex: 1, marginLeft: 14 }}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  textDecorationLine: item.status == 2 ? 'line-through' : 'none',
+                  color: item.status == 2 ? '#8E8E93' : '#000',
+                }}>
+                {item.label}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 13,
+                  textDecorationLine: item.status == 2 ? 'line-through' : 'none',
+                  color: 'rgba(0,0,0,0.7)',
+                }}>
+                {item.desc}
+              </Text>
+
+
+            </View>
+
           </TouchableOpacity>
         </View>
       </Swipeout>
     );
   }
 
-  onDoneTasks(item, status) {
-    console.log('item', item);
-    console.log('status', status);
+  onDoneTasks(item) {
+    console.log(' MODAL item', item);
+
     axios
       .put(`goals/goal/${item.id}/`, {
-        label: item.label,
+        label: this.state.label,
         category: this.category_id,
         section: this.section_id,
         author: item.author,
-        status: status,
+        status: this.state.modalStatus,
+        date_from: this.state.fromDate,
+        date_to: this.state.toDate,
+        desc: this.state.desc
       })
       .then(response => {
         console.log('RESPONSE put:', response);
@@ -198,6 +229,11 @@ export default class Goals extends Component {
           isLoading: false,
           openModal: false,
           modalItem: null,
+          label: '',
+          desc: '',
+          fromDate: '',
+          toDate: '',
+          modalStatus: null,
         });
         console.log('RESPONSE put:', error.response);
         if (error.response && error.response.status == 401) {
@@ -222,6 +258,7 @@ export default class Goals extends Component {
       notDoneCount,
       openModal,
       modalItem,
+      modalStatus
     } = this.state;
     const procentDone = parseInt((doneCount * 100) / allCount);
 
@@ -229,7 +266,7 @@ export default class Goals extends Component {
       <View style={{ flex: 1, backgroundColor: 'white' }}>
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
           <Header
-            title={this.label}
+            title={this.Title}
             onLeftPress={() => this.props.navigation.goBack()}
           />
           {isLoading ? <ActivityIndicator color={'white'} /> : null}
@@ -318,10 +355,6 @@ export default class Goals extends Component {
                 }}>
                 {strings.mygoals}
               </Text>
-              {/* <Text style={{color: '#8E8E93', fontSize: 15}}>
-                {notDoneCount}
-              </Text> */}
-              {/* {this.state.isOpenGoal ? Bottom : Up} */}
             </View>
 
             {/* <Collapsible collapsed={this.state.isOpenGoal}> */}
@@ -400,7 +433,7 @@ export default class Goals extends Component {
               this.props.navigation.navigate('AddGoal', {
                 category_id: this.category_id,
                 section_id: this.section_id,
-                label: this.label,
+                label: this.Title,
                 updateData: this.updateData,
               })
             }
@@ -426,6 +459,11 @@ export default class Goals extends Component {
           onClosed={() => {
             this.setState({
               modalItem: null,
+              label: '',
+              desc: '',
+              fromDate: '',
+              toDate: '',
+              modalStatus: null,
               openModal: false,
             });
           }}
@@ -435,18 +473,97 @@ export default class Goals extends Component {
             borderTopLeftRadius: 12,
             height: Dimensions.get('window').height / 2,
           }}>
+          <TouchableOpacity
+            onPress={() => {
+              this.onDoneTasks(modalItem);
+            }}
+            style={{ alignItems: 'flex-end', paddingRight: 16, paddingTop: 16 }}>
+            <Text
+              style={{ fontSize: 17, fontWeight: '600', color: '#3F49DC' }}>
+              {strings.save}</Text>
+          </TouchableOpacity>
           {modalItem ? (
-            <View style={{ padding: 16 }}>
-              <Text style={{ fontSize: 17, fontWeight: '500', color: 'black' }}>
-                {modalItem.label}
-              </Text>
+            <View style={{ paddingHorizontal: 16 }}>
+
+              <TextInput
+                style={{
+                  fontSize: 17, fontWeight: '500', color: 'black'
+                }}
+                placeholderTextColor="#D1D1D6"
+                multiline
+                placeholder={strings.goalTitle}
+                onChangeText={label => {
+                  this.setState({
+                    label
+                  })
+                }}
+                value={this.state.label}
+                returnKeyType="next"
+              />
+
+
+              <TextInput
+                style={{
+                  fontSize: 14,
+                  fontWeight: '400',
+                  marginTop: 8
+                }}
+                placeholderTextColor="#D1D1D6"
+                multiline
+                placeholder={strings.goalDesc}
+                onChangeText={desc => {
+                  this.setState({
+                    desc
+                  })
+                }}
+                value={this.state.desc}
+                returnKeyType="next"
+              />
+
+              <Text style={{ color: 'rgba(0,0,0,0.6)', marginHorizontal: 4, marginTop: 16 }}>{strings.goalDate}</Text>
+
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 4 }}>
+                <View
+                  style={{ backgroundColor: '#F2F2F7', borderRadius: 8, }} >
+
+                  <TextInput
+                    style={{ color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 2 - 20, paddingVertical: 4 }}
+                    numberOfLines={1}
+                    onChangeText={fromDate => {
+                      this.setState({
+                        fromDate
+                      })
+                    }}
+                    value={this.state.fromDate}
+                  />
+                </View>
+                <Text style={{ color: 'black', margin: 8 }}>-</Text>
+
+                <View
+                  style={{ backgroundColor: '#F2F2F7', borderRadius: 8, }} >
+                  <TextInput
+                    style={{ color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 2 - 20, paddingVertical: 4 }}
+                    numberOfLines={1}
+                    onChangeText={toDate => {
+                      this.setState({
+                        toDate
+                      })
+                    }}
+                    value={this.state.toDate}
+                  />
+                </View>
+              </View>
+
               <Text style={{ marginTop: 16, fontSize: 14, color: '#8E8E93' }}>
-                Изменить статус
+                {strings.changeStatus}
               </Text>
               <TouchableOpacity
                 onPress={() => {
-                  if (modalItem.status != null) {
-                    this.onDoneTasks(modalItem, null);
+                  if (modalStatus != null) {
+                    // this.onDoneTasks(modalItem, null);
+                    this.setState({
+                      modalStatus: null
+                    })
                   }
                 }}
                 style={{
@@ -454,7 +571,7 @@ export default class Goals extends Component {
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}>
-                {modalItem.status == null ? (
+                {modalStatus == null ? (
                   Check
                 ) : (
                   <View
@@ -467,7 +584,7 @@ export default class Goals extends Component {
                     }}
                   />
                 )}
-                <Text style={{ marginLeft: 8, color: 'black', }}>Мақсаттарым</Text>
+                <Text style={{ marginLeft: 8, color: 'black', }}>{strings.mygoals}</Text>
               </TouchableOpacity>
               <View
                 style={{
@@ -483,11 +600,14 @@ export default class Goals extends Component {
                   alignItems: 'center',
                 }}
                 onPress={() => {
-                  if (modalItem.status != 1) {
-                    this.onDoneTasks(modalItem, 1);
+                  if (modalStatus != 1) {
+                    // this.onDoneTasks(modalItem, 1);
+                    this.setState({
+                      modalStatus: 1
+                    })
                   }
                 }}>
-                {modalItem.status == 1 ? (
+                {modalStatus == 1 ? (
                   Check
                 ) : (
                   <View
@@ -500,7 +620,7 @@ export default class Goals extends Component {
                     }}
                   />
                 )}
-                <Text style={{ marginLeft: 8, color: 'black', }}>Орындалуда</Text>
+                <Text style={{ marginLeft: 8, color: 'black', }}>{strings.process}</Text>
               </TouchableOpacity>
               <View
                 style={{
@@ -516,11 +636,14 @@ export default class Goals extends Component {
                   alignItems: 'center',
                 }}
                 onPress={() => {
-                  if (modalItem.status != 2) {
-                    this.onDoneTasks(modalItem, 2);
+                  if (modalStatus != 2) {
+                    // this.onDoneTasks(modalItem, 2);
+                    this.setState({
+                      modalStatus: 2
+                    })
                   }
                 }}>
-                {modalItem.status == 2 ? (
+                {modalStatus == 2 ? (
                   Check
                 ) : (
                   <View
@@ -533,7 +656,7 @@ export default class Goals extends Component {
                     }}
                   />
                 )}
-                <Text style={{ color: 'black', marginLeft: 8 }}>Орындалды</Text>
+                <Text style={{ color: 'black', marginLeft: 8 }}>{strings.done}</Text>
               </TouchableOpacity>
               <View
                 style={{
@@ -554,7 +677,6 @@ const styles = StyleSheet.create({
   vwStl: {
     paddingHorizontal: 14,
     borderRadius: 6,
-    height: 55,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

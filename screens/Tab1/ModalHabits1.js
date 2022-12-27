@@ -231,8 +231,9 @@ export default function ModalHabits({ isOpen, modelItemData, RefreshModal }) {
             mode="datetime"
             date={new Date(datetime)}
             is24hourSource="locale"
-            title={null}
             confirmText={strings.save}
+            cancelText={strings.close}
+            title={null}
             locale={getLang()}
             onConfirm={date => {
               setdatetime(date);

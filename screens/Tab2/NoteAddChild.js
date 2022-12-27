@@ -24,12 +24,6 @@ const arrAction = [
   actions.insertBulletsList,
   actions.insertOrderedList,
   actions.heading1,
-  actions.heading2,
-  actions.heading3,
-  actions.setStrikethrough,
-  actions.setUnderline,
-  actions.undo,
-  actions.redo,
 ];
 
 export default function NoteAddChild({ route, navigation }) {
@@ -117,6 +111,7 @@ export default function NoteAddChild({ route, navigation }) {
               <RichEditor
                 ref={richText}
                 placeholder=""
+                androidHardwareAccelerationDisabled={true}
                 initialContentHTML={text}
                 onChange={descriptionText => {
                   setText(descriptionText), console.log(descriptionText);
