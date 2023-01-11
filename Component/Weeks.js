@@ -3,8 +3,9 @@ import { View, Text, Dimensions } from 'react-native';
 const width = Dimensions.get('window').width;
 const WEEK_kk = ['Же', 'Дү', 'Се', 'Сә', 'Бе', 'Жм', 'Сб'];
 const WEEK_ru = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+const WEEK_en = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 export default ({ lang, weekStartsOn }) => {
-  const week_localized = lang == 'kk' ? WEEK_kk : WEEK_ru;
+  const week_localized = lang == 'kk' ? WEEK_kk : lang == 'en' ? WEEK_en : WEEK_ru;
   const weekStartsOnMinnor = weekStartsOn % 7;
   const weekTranformed = [
     ...week_localized.slice(weekStartsOnMinnor),

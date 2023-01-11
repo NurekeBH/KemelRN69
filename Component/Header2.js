@@ -8,9 +8,9 @@ import {
   Platform,
   TouchableOpacity,
 } from 'react-native';
-import {strings} from '../Localization/Localization';
-import {colorApp} from '../theme/Colors';
-import {Left_icon} from './MyIcons';
+import { strings } from '../Localization/Localization';
+import { colorApp } from '../theme/Colors';
+import { Left_icon } from './MyIcons';
 import FastImage from 'react-native-fast-image';
 
 export default function Header({
@@ -46,12 +46,12 @@ export default function Header({
           style={[
             styles.leftButtonStyle,
             leftButtonStyle,
-            {paddingLeft: deleteBackText ? 10 : 0},
+            { paddingLeft: deleteBackText ? 10 : 0 },
           ]}>
           {Left_icon}
 
           {deleteBackText ? null : (
-            <Text style={{fontSize: 17, color: '#3F49DC', marginLeft: 6}}>
+            <Text numberOfLines={1} style={{ fontSize: 17, color: '#3F49DC', marginLeft: 6 }}>
               {strings.nazad}
             </Text>
           )}
@@ -66,7 +66,7 @@ export default function Header({
             {title_icon ? (
               <Image
                 source={title_icon}
-                style={{width: 16, height: 8, marginLeft: 8}}
+                style={{ width: 16, height: 8, marginLeft: 8 }}
                 tintColor="#1D306D"
               />
             ) : null}
@@ -75,7 +75,7 @@ export default function Header({
       ) : childComponent ? (
         <View style={[styles.titleView]}>{childComponent}</View>
       ) : (
-        <View style={{flex: 1, backgroundColor: 'red'}} />
+        <View style={{ flex: 1, backgroundColor: 'red' }} />
       )}
 
       {right_icon2 ? (
@@ -88,7 +88,7 @@ export default function Header({
       {right_text2 ? (
         <TouchableWithoutFeedback onPress={onRightPress3}>
           <View>
-            <Text style={{color: '#3F49DC', fontWeight: '600', fontSize: 15}}>
+            <Text style={{ color: '#3F49DC', fontWeight: '600', fontSize: 15 }}>
               {right_text2}
             </Text>
           </View>
@@ -120,12 +120,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
-    height: Platform.select({ios: 44, android: 56}),
+    height: Platform.select({ ios: 44, android: 56 }),
     backgroundColor: 'white',
     paddingHorizontal: 9,
   },
   leftButtonStyle: {
-    width: 60,
+    width: 80,
 
     height: '100%',
     alignItems: 'center',

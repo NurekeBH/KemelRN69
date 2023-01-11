@@ -115,7 +115,7 @@ export default function AddGoal({ route, navigation }) {
                   <View
                     style={{ backgroundColor: '#F2F2F7', borderRadius: 8, }} >
                     <TextInput
-                      style={{ color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 2 - 20, paddingVertical: 8 }}
+                      style={{ fontSize: 16, color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 2 - 20, paddingVertical: 8 }}
                       numberOfLines={1}
                       onChangeText={fromDate => {
                         setFromDate(fromDate);
@@ -129,7 +129,7 @@ export default function AddGoal({ route, navigation }) {
 
                   >
                     <TextInput
-                      style={{ color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 2 - 20, paddingVertical: 8 }}
+                      style={{ fontSize: 16, color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 2 - 20, paddingVertical: 8 }}
                       numberOfLines={1}
                       onChangeText={toDate => {
                         setToDate(toDate);

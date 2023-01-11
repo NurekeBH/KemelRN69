@@ -11,6 +11,7 @@ import {
   TextInput,
   Dimensions,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
 import {
   ButtonClass,
@@ -50,15 +51,16 @@ export default function TaskAdd({ route, navigation }) {
   const [isSend, setisSend] = useState(false);
   const [openModal, setopenModal] = useState(false);
   const [isSaveZametka, setIsSaveZametka] = useState(false);
+  const [folderData, setFolderData] = useState(route.params?.folderData);
   const [modalValue, setmodalValue] = useState({
     id: null,
-    label: 'Нет',
+    label: strings.no
   });
   const [toolbarKeyboard, settoolbarKeyboard] = useState(false);
   const richText = useRef();
   useEffect(() => {
     Moment.locale(getLang());
-
+    console.log('folderData', folderData)
   }, []);
 
 
@@ -89,12 +91,43 @@ export default function TaskAdd({ route, navigation }) {
         })
         .then(response => {
           console.log('RESPONSE add:', response.data);
-          route.params.updateData();
-          navigation.goBack();
+          if (isSaveZametka) {
+            axios
+              .post('notes/note/', {
+                label: theme,
+                desc: zametka,
+                parent: null,
+                folder: folderData[0].id,
+              })
+              .then(response => {
+                console.log('RESPONSE add:', response.data);
+                route.params.updateData();
+                navigation.goBack();
+                setisSend(false);
+              })
+              .catch(error => {
+                console.log('RESPONSE error:', error.response);
+                if (error.response && error.response.status == 401) {
+                  showToast('error', error.response.data.detail);
+                }
+                route.params.updateData();
+                navigation.goBack();
+                setisSend(false);
+              });
+          } else {
+            setisSend(false);
+            route.params.updateData();
+            navigation.goBack();
+          }
+
+
+
+
 
         })
         .catch(error => {
           console.log('RESPONSE error:', error.response);
+          setisSend(false);
           if (error.response && error.response.status == 401) {
             showToast('error', error.response.data.detail);
           }
@@ -114,10 +147,15 @@ export default function TaskAdd({ route, navigation }) {
             activeOpacity={0.7}>
             {Left_icon}
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => onAddPress()}>
-            <Text style={{ fontSize: 17, fontWeight: '600', color: '#3F49DC' }}>
-              {strings.save}
-            </Text>
+          <TouchableOpacity onPress={() => !isSend && onAddPress()}>
+            {isSend ?
+              <ActivityIndicator color={"#3F49DC"} />
+              :
+              <Text style={{ fontSize: 17, fontWeight: '600', color: '#3F49DC' }}>
+                {strings.save}
+              </Text>
+            }
+
           </TouchableOpacity>
         </View>
         <ScrollView style={{ paddingHorizontal: 16, minHeight: 400 }}>
@@ -360,11 +398,11 @@ export default function TaskAdd({ route, navigation }) {
                 setopenModal(false);
                 setmodalValue({
                   id: null,
-                  label: 'Нет',
+                  label: strings.no,
                 });
               }}>
               <Text styl={{ fontSize: 17, fontWeight: '500', color: '#000000' }}>
-                Нет
+                {strings.no}
               </Text>
             </TouchableOpacity>
 

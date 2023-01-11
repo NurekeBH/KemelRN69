@@ -8,36 +8,19 @@ import {
   ScrollView,
   ActivityIndicator,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   TextInput,
   Dimensions,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { getLang, getObject, storeObject } from '../../Component/Component';
+import { getLabelGoal, getLang, getObject, storeObject } from '../../Component/Component';
 import Header from '../../Component/Header2';
 import { Left, Right, WeekIcon } from '../../Component/MyIcons';
-import { strings } from '../../Localization/Localization';
+import { descHowGoal, omirTepe, strings } from '../../Localization/Localization';
 import Modal from 'react-native-modalbox';
+import FastImage from 'react-native-fast-image';
 
 
-const getLabel = (label) => {
-  switch (label) {
-    case 'Руханият': return 'Духовный интеллект';
-    case 'Интелектуалдық даму': return 'Интеллектуальный интеллект';
-    case 'Отбасы': return 'Семья';
-    case 'Қаржы тәуелсіздігі': return 'Финансовый независимость';
-    case 'Денсаулық': return 'Здоровья';
-    case 'Қарым-қатынас': return 'Отношение';
-    case 'Қоғамдық жұмыс': return 'Общественные дела';
-    case 'Хобби': return 'Хобби/Отдых';
-    case '3 ай': return '3 месяц';
-    case '6 ай': return '6 месяц';
-    case '1 жыл': return '1 год';
-    case '3 жыл': return '3 года';
-    case '5 жыл': return '5 года';
-
-    default: return '';
-  }
-}
 
 
 const InputArray = [
@@ -70,6 +53,8 @@ export default class MyGoals extends Component {
       modalBoll: false,
       value1: null,
       value2: null,
+      modalHow: false,
+      modalHow2: false
     };
   }
 
@@ -149,7 +134,7 @@ export default class MyGoals extends Component {
             selectedIndex: index,
           });
         }}>
-        <Text style={{ color: 'black', fontWeight: '600', fontSize: 13 }}>{getLang() == 'kk' ? item.label : getLabel(item.label)}</Text>
+        <Text style={{ color: 'black', fontWeight: '600', fontSize: 13 }}>{getLabelGoal(item.label)}</Text>
       </TouchableOpacity>
     );
   };
@@ -164,7 +149,6 @@ export default class MyGoals extends Component {
           justifyContent: 'space-between',
           backgroundColor: 'white',
           borderRadius: 12,
-          marginHorizontal: 16,
           marginTop: 8,
           padding: 16,
           borderBottomColor: '#8E8E93',
@@ -177,7 +161,7 @@ export default class MyGoals extends Component {
             label: item.label,
           });
         }}>
-        <Text style={{ color: 'black', flex: 1, fontSize: 17 }}>{getLang() == 'kk' ? item.label : getLabel(item.label)}</Text>
+        <Text style={{ color: 'black', flex: 1, fontSize: 17 }}>{getLabelGoal(item.label)}</Text>
         <View
           style={{
             flexDirection: 'row',
@@ -216,7 +200,7 @@ export default class MyGoals extends Component {
   }
 
   render() {
-    const { goalCate, section, modalBoll, inputArray, selectedIndex, value1, value2 } = this.state;
+    const { goalCate, modalHow, modalHow2, section, modalBoll, inputArray, selectedIndex, value1, value2 } = this.state;
 
     return (
       <View style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -225,64 +209,52 @@ export default class MyGoals extends Component {
             title={strings.mygoals}
             onLeftPress={() => this.props.navigation.goBack()}
           />
-          {/* <View
-            style={{
-              backgroundColor: '#D8D8DC',
-              marginHorizontal: 16,
-              borderRadius: 8,
-              padding: 2,
-            }}>
-            <FlatList
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              data={section}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={this.renderItemCat}
-            />
-          </View> */}
-          {/* 
-          <Text style={{ marginLeft: Dimensions.get('window').width / 7, marginTop: 8, color: 'rgba(0,0,0,0.6)' }}>мерзімі :</Text>
-          <View style={{ marginVertical: 4, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-            <TouchableOpacity
-              style={{ backgroundColor: '#F2F2F7', borderRadius: 8, }}
-              onPress={() => {
-                this.setState({
-                  value1: inputArray[selectedIndex]?.key1,
-                  value2: inputArray[selectedIndex]?.key2,
-                  modalBoll: true
-                })
-              }}
-            >
-              <Text
-                style={{ color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 3, paddingVertical: 8 }}
-                placeholder={"ай"}
-                numberOfLines={1}
-              >{inputArray[selectedIndex]?.key1}</Text>
-            </TouchableOpacity>
-            <Text style={{ color: 'black', margin: 8 }}>-</Text>
-            <TouchableOpacity
-              style={{ backgroundColor: '#F2F2F7', borderRadius: 8, }}
-              onPress={() => {
-                this.setState({
-                  value1: inputArray[selectedIndex]?.key1,
-                  value2: inputArray[selectedIndex]?.key2,
-                  modalBoll: true
-                })
-              }}
-            >
-              <Text
-                style={{ color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 3, paddingVertical: 8 }}
-                placeholder={"ай"}
-                numberOfLines={1}
-              >{inputArray[selectedIndex]?.key2}</Text>
-            </TouchableOpacity>
-          </View> */}
+
 
           <View style={{ flex: 1, backgroundColor: 'white' }}>
             <FlatList
               data={goalCate}
               keyExtractor={(item, index) => index.toString()}
               renderItem={this.renderItem}
+              ListFooterComponent={() =>
+              (
+                <View>
+
+                  <TouchableOpacity
+                    style={{
+                      padding: 16,
+                      borderBottomColor: '#8E8E93',
+                      borderBottomWidth: 0.5,
+                    }}
+                    onPress={() => {
+                      this.setState({
+                        modalHow: true
+                      })
+                    }}
+                  >
+                    <Text style={{ color: 'rgba(0,0,0,0.6)' }}>Мақсатты қалай қоямыз?</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={{
+                      padding: 16,
+                      borderBottomColor: '#8E8E93',
+                      borderBottomWidth: 0.5,
+                    }}
+                    onPress={() => {
+                      this.setState({
+                        modalHow2: true
+                      })
+                    }}
+                  >
+                    <Text style={{ color: 'rgba(0,0,0,0.6)' }}>Өмір тепе-теңдігі</Text>
+                  </TouchableOpacity>
+
+
+
+                </View>
+              )
+              }
             />
           </View>
 
@@ -336,6 +308,82 @@ export default class MyGoals extends Component {
               />
             </View>
 
+          </Modal>
+
+
+          <Modal
+            isOpen={modalHow}
+            position="bottom"
+
+            onClosed={() => {
+              this.setState({
+                modalHow: false,
+              });
+            }}
+            style={{
+              borderTopLeftRadius: 12,
+              borderTopRightRadius: 12,
+              height: '70%',
+
+            }}>
+            <ScrollView >
+              <TouchableWithoutFeedback style={{ paddingVertical: 30 }}>
+                <View style={{
+                  padding: 16,
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+
+                  <Text style={{ color: '#000', fontSize: 16, fontWeight: '500', textAlign: 'center' }}>Мақсатты қалай қоямыз?</Text>
+
+
+                  <Text style={{ color: '#000', fontSize: 15, marginTop: 10 }}>{descHowGoal}</Text>
+
+                </View>
+              </TouchableWithoutFeedback>
+            </ScrollView>
+          </Modal>
+
+
+          <Modal
+            isOpen={modalHow2}
+            position="bottom"
+
+            onClosed={() => {
+              this.setState({
+                modalHow2: false,
+              });
+            }}
+            style={{
+              borderTopLeftRadius: 12,
+              borderTopRightRadius: 12,
+              height: '70%',
+
+            }}>
+            <ScrollView >
+              <TouchableWithoutFeedback style={{ paddingVertical: 30 }}>
+                <View style={{
+                  padding: 16,
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+
+                  <Text style={{ color: '#000', fontSize: 16, fontWeight: '500', textAlign: 'center' }}>Өмір тепе-теңдігі</Text>
+
+                  <FastImage
+                    source={require('../../assets/diagram.png')}
+                    style={{
+                      width: '80%',
+                      height: 300,
+                    }}
+                    resizeMode={FastImage.resizeMode.contain}
+                  />
+
+                  <Text style={{ color: '#000', fontSize: 15, marginTop: 10 }}>{omirTepe}</Text>
+
+                </View>
+              </TouchableWithoutFeedback>
+            </ScrollView>
           </Modal>
         </SafeAreaView>
       </View>

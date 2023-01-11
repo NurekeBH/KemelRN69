@@ -283,7 +283,8 @@ export default class Wallet extends Component {
                         .catch(error => {
                             console.log('RESPONSE delete:', error.response);
                             if (error.response?.data?.detail) {
-                                showToast('error', error.response.data.detail);
+                                // showToast('error', error.response.data.detail);
+                                Alert.alert(error.response.data.detail)
                             }
                         })
                         .finally(() => {

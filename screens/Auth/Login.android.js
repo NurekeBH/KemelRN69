@@ -21,6 +21,7 @@ import { AppleIcon, FaceBook, Eye, iconFile, Right } from '../../Component/MyIco
 import axios from 'axios';
 import firebase from '@react-native-firebase/app';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import KeyboardAvoidingComponent from '../../Component/KeyboardAvoidingComponent';
 
 export default class Login extends Component {
   constructor(props) {
@@ -121,109 +122,85 @@ export default class Login extends Component {
   render() {
     const { email, pwd, loader, eye, onfocuse } = this.state;
     return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: '#fff',
-          paddingHorizontal: 16,
-        }}>
-        <StatusBar barStyle={'dark-content'} backgroundColor={'#fff'} />
-        <SafeAreaView style={{ flex: 1 }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              marginTop: 15,
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              backgroundColor: '#fff',
-            }}>
-            <Text
-              style={{
-                fontSize: 13,
-                color: colorApp.blueDark,
-                marginBottom: 5,
-              }}>
-              {strings.log}
-            </Text>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('Registr')}
-              activeOpacity={0.7}>
-              <View style={styles.btnStl}>
-                <Text style={{ fontSize: 15, fontWeight: '600', color: '#fff' }}>
-                  {strings.tirk}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <FastImage
-              source={require('../../assets/logo.png')}
-              style={{
-                width: 80,
-                aspectRatio: 1,
-                marginBottom: 24,
-                marginTop: 30,
-              }}
-            />
-            <Text
-              style={{
-                fontSize: 34,
-                fontWeight: '700',
-                marginTop: 24,
-                color: 'black',
-              }}>
-              Өз уақытың мен өз өміріңді қолға ал!
-            </Text>
-            <Text style={{ fontSize: 20, color: '#000', marginTop: 8 }}>
-              Әрбір жетістік істі дұрыс жоспарлаудан, жақсы әдеттерді қалыптастырудан басталады.
-            </Text>
+      <KeyboardAvoidingComponent>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: '#fff',
+            paddingHorizontal: 16,
+          }}>
+          <StatusBar barStyle={'dark-content'} backgroundColor={'#fff'} />
+          <SafeAreaView style={{ flex: 1 }}>
             <View
               style={{
-                backgroundColor: colorApp.fone,
-                paddingHorizontal: 12,
-                borderRadius: 8,
+                flexDirection: 'row',
                 marginTop: 15,
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                backgroundColor: '#fff',
               }}>
-              <TextInput
-                style={{ fontSize: 17, width: width - 60 }}
-                placeholder={'Email'}
-                placeholderTextColor={'rgba(0,0,0,0.4)'}
-                keyboardType={'email-address'}
-                returnKeyType={'done'}
-                textContentType="emailAddress"
-                value={email}
-                autoCapitalize='none'
-                onChangeText={email => this.setState({ email })}
-                onFocus={() => {
-                  this.setState({ onfocuse: true })
-                }}
-                onBlur={() => {
-                  this.setState({ onfocuse: false })
+              <Text
+                style={{
+                  fontSize: 13,
+                  color: colorApp.blueDark,
+                  marginBottom: 5,
+                }}>
+                {strings.log}
+              </Text>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('Registr')}
+                activeOpacity={0.7}>
+                <View style={styles.btnStl}>
+                  <Text style={{ fontSize: 15, fontWeight: '600', color: '#fff' }}>
+                    {strings.tirk}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <FastImage
+                source={require('../../assets/logo.png')}
+                style={{
+                  width: 80,
+                  aspectRatio: 1,
+                  marginBottom: 24,
+                  marginTop: 30,
                 }}
               />
-            </View>
-            <View
-              style={{
-                backgroundColor: colorApp.fone,
-                paddingHorizontal: 12,
-                paddingVertical: 4,
-                borderRadius: 8,
-                marginTop: 8,
-              }}>
+              <Text
+                style={{
+                  fontSize: 34,
+                  fontWeight: '700',
+                  marginTop: 24,
+                  color: 'black',
+                }}>
+                Өз уақытың мен өз өміріңді қолға ал!
+              </Text>
+              <Text style={{ fontSize: 20, color: '#000', marginTop: 8 }}>
+                Әрбір жетістік істі дұрыс жоспарлаудан, жақсы әдеттерді қалыптастырудан басталады.
+              </Text>
               <View
-                style={[
-                  styles.inpVwStl,
-                  { justifyContent: 'space-between', flexDirection: 'row' },
-                ]}>
+                style={{
+                  backgroundColor: colorApp.fone,
+                  paddingHorizontal: 12,
+                  borderRadius: 8,
+                  marginTop: 15,
+                }}>
                 <TextInput
-                  style={{ fontSize: 17, width: width - 90 }}
-                  placeholder={strings.pwd}
+                  style={{ fontSize: 17, width: width - 60, color: '#000' }}
+                  placeholder={'Email'}
                   placeholderTextColor={'rgba(0,0,0,0.4)'}
-                  returnKeyType={'done'}
-                  value={pwd}
+                  keyboardType={'email-address'}
+                  returnKeyType={'next'}
+                  onSubmitEditing={() => {
+
+                    this.editInput?.focus()
+                  }}
+                  blurOnSubmit={false}
+                  textContentType="emailAddress"
+                  value={email}
                   autoCapitalize='none'
-                  secureTextEntry={eye}
-                  onChangeText={pwd => this.setState({ pwd })}
+                  onChangeText={email => this.setState({ email })}
                   onFocus={() => {
                     this.setState({ onfocuse: true })
                   }}
@@ -231,88 +208,92 @@ export default class Login extends Component {
                     this.setState({ onfocuse: false })
                   }}
                 />
+              </View>
+              <View
+                style={{
+                  backgroundColor: colorApp.fone,
+                  paddingHorizontal: 12,
+                  paddingVertical: 4,
+                  borderRadius: 8,
+                  marginTop: 8,
+                }}>
+                <View
+                  style={[
+                    styles.inpVwStl,
+                    { justifyContent: 'space-between', flexDirection: 'row' },
+                  ]}>
+                  <TextInput
+                    ref={(ref) => { this.editInput = ref; }}
+                    style={{ fontSize: 17, width: width - 90, color: '#000' }}
+                    placeholder={strings.pwd}
+                    placeholderTextColor={'rgba(0,0,0,0.4)'}
+                    returnKeyType={'done'}
+                    value={pwd}
+                    autoCapitalize='none'
+                    secureTextEntry={eye}
+                    onChangeText={pwd => this.setState({ pwd })}
+                    onFocus={() => {
+                      this.setState({ onfocuse: true })
+                    }}
+                    onBlur={() => {
+                      this.setState({ onfocuse: false })
+                    }}
+                    onSubmitEditing={() => {
+
+                      this.onLoginClick()
+
+                    }}
+
+
+                  />
+                  <TouchableOpacity
+                    style={{ alignItems: 'center', justifyContent: 'center' }}
+                    onPress={() => this.setState({ eye: !eye })}
+                    activeOpacity={0.7}>
+                    <Eye stroke={!eye ? colorApp.blueDark : '#DADADA'} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <ButtonClass
+                disabled={loader}
+                loader={loader}
+                onPress={() => this.onLoginClick()}
+                title={strings.kiru}
+              />
+              <ButtonClass
+                onPress={() =>
+                  this.props.navigation.navigate('RestorePassword')
+                }
+                style={{ backgroundColor: '#fff', marginTop: 8 }}
+                titleStyle={{ color: '#007AFF', fontWeight: '400' }}
+                title={strings.zab}
+              />
+
+            </ScrollView>
+
+
+            {onfocuse ? null :
+              <View style={{ position: 'absolute', bottom: 16, flexDirection: 'row' }}>
+                <Text style={{ color: 'grey' }}>{strings.lang} : </Text>
                 <TouchableOpacity
-                  style={{ alignItems: 'center', justifyContent: 'center' }}
-                  onPress={() => this.setState({ eye: !eye })}
-                  activeOpacity={0.7}>
-                  <Eye stroke={!eye ? colorApp.blueDark : '#DADADA'} />
+                  onPress={() =>
+                    this.props.navigation.replace('EditLocal', {
+                      login: true,
+                      lg: this.getLang(),
+                    })
+                  }
+                  style={{ flexDirection: 'row', alignItems: 'center' }}
+                >
+                  <Text style={{ marginHorizontal: 8, color: 'black', }}>{this.getLang()}</Text>
+                  {Right}
                 </TouchableOpacity>
               </View>
-            </View>
-            <ButtonClass
-              disabled={loader}
-              loader={loader}
-              onPress={() => this.onLoginClick()}
-              title={strings.kiru}
-            />
-            <ButtonClass
-              onPress={() =>
-                this.props.navigation.navigate('RestorePassword')
-              }
-              style={{ backgroundColor: '#fff', marginTop: 8 }}
-              titleStyle={{ color: '#007AFF', fontWeight: '400' }}
-              title={strings.zab}
-            />
-            {/* <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginTop: 30,
-                }}>
-                <View style={styles.vwStl} />
-                <Text
-                  style={{
-                    color: '#8E8E93',
-                    fontSize: 13,
-                    marginHorizontal: 12,
-                  }}>
-                  {strings.neme}
-                </Text>
-                <View style={styles.vwStl} />
-              </View> */}
-            {/* <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  marginTop: 10,
-                }}>
-                <TouchableOpacity style={styles.btnStl2}>
-                  {FaceBook}
-                  <Text style={{ fontSize: 17, color: '#395185', marginLeft: 7 }}>
-                    Facebook
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.btnStl2}>
-                  {AppleIcon}
-                  <Text style={{ fontSize: 17, color: '#000', marginLeft: 7 }}>
-                    Apple ID
-                  </Text>
-                </TouchableOpacity>
-              </View> */}
-          </ScrollView>
+            }
 
+          </SafeAreaView>
+        </View>
+      </KeyboardAvoidingComponent>
 
-          {onfocuse ? null :
-            <View style={{ position: 'absolute', bottom: 16, flexDirection: 'row' }}>
-              <Text style={{ color: 'grey' }}>{strings.lang} : </Text>
-              <TouchableOpacity
-                onPress={() =>
-                  this.props.navigation.replace('EditLocal', {
-                    login: true,
-                    lg: this.getLang(),
-                  })
-                }
-                style={{ flexDirection: 'row', alignItems: 'center' }}
-              >
-                <Text style={{ marginHorizontal: 8, color: 'black', }}>{this.getLang()}</Text>
-                {Right}
-              </TouchableOpacity>
-            </View>
-          }
-
-        </SafeAreaView>
-      </View>
     );
   }
 }

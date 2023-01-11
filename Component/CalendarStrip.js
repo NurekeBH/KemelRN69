@@ -407,13 +407,13 @@ const styles = StyleSheet.create({
   itemView: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 44,
-    height: 44,
+    padding: 2,
+    aspectRatio: 1
   },
   itemDateText: {
-    fontSize: 17,
+    fontSize: Platform.OS == "ios" ? 17 : 14,
     fontWeight: '400',
-    lineHeight: 19,
+
   },
   itemLunarText: {
     fontSize: 10,

@@ -144,7 +144,7 @@ export default class Profile extends Component {
       "",
       [
         {
-          text: "Нет",
+          text: strings.no,
           style: "cancel",
         },
         {

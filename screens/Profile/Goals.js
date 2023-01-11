@@ -27,7 +27,7 @@ import {
 } from '../../Component/MyIcons';
 import { strings } from '../../Localization/Localization';
 
-import { width } from '../../Component/Component';
+import { getLabelGoal, width } from '../../Component/Component';
 import Collapsible from 'react-native-collapsible';
 import Modal from 'react-native-modalbox';
 import Swipeout from '../../Swipeout/index';
@@ -166,7 +166,7 @@ export default class Goals extends Component {
             }}
             activeOpacity={0.8}
             key={index}
-            style={{ flexDirection: 'row', flex: 1 }}>
+            style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
             {item.status == 2 ? (
               <View style={styles.doneStl}>{Done}</View>
             ) : (
@@ -174,7 +174,7 @@ export default class Goals extends Component {
                 style={[
                   styles.doneStl2,
                   {
-                    borderColor: item.status == 1 ? '#FF9500' : '#000000',
+                    borderColor: item.status == 1 ? '#FF9500' : 'rgba(0,0,0,0.5)',
                   },
                 ]}
               />
@@ -191,11 +191,9 @@ export default class Goals extends Component {
               <Text
                 style={{
                   fontSize: 13,
-                  textDecorationLine: item.status == 2 ? 'line-through' : 'none',
+                  marginTop: 2,
                   color: 'rgba(0,0,0,0.7)',
-                }}>
-                {item.desc}
-              </Text>
+                }}>{item.date_from ? (item.date_from + ' - ' + item.date_to) : null}</Text>
 
 
             </View>
@@ -266,7 +264,7 @@ export default class Goals extends Component {
       <View style={{ flex: 1, backgroundColor: 'white' }}>
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
           <Header
-            title={this.Title}
+            title={getLabelGoal(this.Title)}
             onLeftPress={() => this.props.navigation.goBack()}
           />
           {isLoading ? <ActivityIndicator color={'white'} /> : null}
@@ -444,7 +442,7 @@ export default class Goals extends Component {
               width: 56,
               aspectRatio: 1,
               borderRadius: 28,
-              backgroundColor: '#9B8274',
+              backgroundColor: '#3F49DC',
               justifyContent: 'center',
               alignItems: 'center',
 
@@ -527,7 +525,7 @@ export default class Goals extends Component {
                   style={{ backgroundColor: '#F2F2F7', borderRadius: 8, }} >
 
                   <TextInput
-                    style={{ color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 2 - 20, paddingVertical: 4 }}
+                    style={{ fontSize: 16, color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 2 - 20, paddingVertical: 4 }}
                     numberOfLines={1}
                     onChangeText={fromDate => {
                       this.setState({
@@ -542,7 +540,7 @@ export default class Goals extends Component {
                 <View
                   style={{ backgroundColor: '#F2F2F7', borderRadius: 8, }} >
                   <TextInput
-                    style={{ color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 2 - 20, paddingVertical: 4 }}
+                    style={{ fontSize: 16, color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 2 - 20, paddingVertical: 4 }}
                     numberOfLines={1}
                     onChangeText={toDate => {
                       this.setState({

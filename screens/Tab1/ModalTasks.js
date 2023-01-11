@@ -39,7 +39,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
   const [address, setaddress] = useState(modelItemData.address);
   const [reminder, setReminder] = useState(modelItemData.reminder ? modelItemData.reminder : {
     id: null,
-    label: 'Нет',
+    label: strings.no,
   });
   const [openModal, setopenModal] = useState(false);
   const [isSave, setisSave] = useState(false);
@@ -389,7 +389,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
 
             }}>
             <Text styl={{ fontSize: 17, fontWeight: '500', color: '#000000' }}>
-              Нет
+              {strings.no}
             </Text>
           </TouchableOpacity>
 

@@ -52,7 +52,7 @@ export default function TaskAdd({ route, navigation }) {
   const [isSaveZametka, setIsSaveZametka] = useState(false);
   const [modalValue, setmodalValue] = useState({
     id: null,
-    label: 'Нет',
+    label: strings.no,
   });
   const [toolbarKeyboard, settoolbarKeyboard] = useState(false);
   const richText = useRef();
@@ -364,11 +364,11 @@ export default function TaskAdd({ route, navigation }) {
                 setopenModal(false);
                 setmodalValue({
                   id: null,
-                  label: 'Нет',
+                  label: strings.no,
                 });
               }}>
               <Text styl={{ fontSize: 17, fontWeight: '500', color: '#000000' }}>
-                Нет
+                {strings.no}
               </Text>
             </TouchableOpacity>
 
