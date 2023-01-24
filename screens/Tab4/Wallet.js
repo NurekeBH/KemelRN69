@@ -513,6 +513,7 @@ export default class Wallet extends Component {
                                         style={{ paddingBottom: 16 }}> */}
                                     {kiris.map((item1, index) => (
                                         <Swipeout
+                                            key={index}
                                             autoClose={true}
                                             style={{
                                                 backgroundColor: 'white',
@@ -633,6 +634,7 @@ export default class Wallet extends Component {
                                     {
                                         History2.map((item, index) => (
                                             <Swipeout
+                                                key={index}
                                                 autoClose={true}
                                                 style={{
                                                     backgroundColor: 'white',
@@ -761,6 +763,7 @@ export default class Wallet extends Component {
 
                                 {expence.map((item1, index) => (
                                     <Swipeout
+                                        key={index}
                                         autoClose={true}
                                         style={{
                                             backgroundColor: 'white',
@@ -883,6 +886,7 @@ export default class Wallet extends Component {
                                 {
                                     History.map((item, index) => (
                                         <Swipeout
+                                            key={index}
                                             autoClose={true}
                                             style={{
                                                 backgroundColor: 'white',

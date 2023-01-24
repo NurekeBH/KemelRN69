@@ -105,7 +105,7 @@ export let strings = new LocalizedStrings({
     dobz: 'Тапсырма қосу',
     address: 'мекен-жәй',
     zamk: 'Жазба қосу',
-    addzamk: 'Жазбаға қосу',
+    addzamk: 'Жазба қосу',
     reminder: 'Еске салу',
     adetk: 'Әдет қосу',
     adets: 'Әдеттер',

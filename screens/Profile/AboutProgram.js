@@ -5,9 +5,10 @@ import {
   SafeAreaView,
   StatusBar,
   TouchableOpacity,
+  Linking,
 } from 'react-native';
 import Header from '../../Component/Header2';
-import { BSoft, Instagram, Telega } from '../../Component/MyIcons';
+import { BSoft, Instagram, Site, Telega } from '../../Component/MyIcons';
 import { strings } from '../../Localization/Localization';
 
 export default class AboutProgram extends Component {
@@ -33,11 +34,31 @@ export default class AboutProgram extends Component {
             <Text style={{ fontSize: 16, marginTop: 16 }}>Версия: 2.1</Text>
             <View style={{ flexDirection: 'row' }}>
               <TouchableOpacity
+                onPress={() => {
+                  let url = 'https://buginholding.com/'
+                  Linking.canOpenURL(url).then(supported => {
+                    if (supported) {
+                      Linking.openURL(url);
+                    } else {
+                      console.log("Don't know how to open URI: " + url);
+                    }
+                  })
+                }}
                 activeOpacity={0.7}
                 style={{ marginTop: 24, marginRight: 16 }}>
-                {Telega}
+                {Site}
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() => {
+                  let url = 'https://www.instagram.com/buginsoft/'
+                  Linking.canOpenURL(url).then(supported => {
+                    if (supported) {
+                      Linking.openURL(url);
+                    } else {
+                      console.log("Don't know how to open URI: " + url);
+                    }
+                  })
+                }}
                 activeOpacity={0.7}
                 style={{ marginTop: 24, marginRight: 16 }}>
                 {Instagram}

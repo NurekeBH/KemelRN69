@@ -175,7 +175,7 @@ export default class NotesList extends Component {
         <TouchableOpacity
           onPress={() =>
             this.props.navigation.navigate('NoteAdd', {
-              folderId: this.state.parentId,
+              folderId: this.state.folderId,
               item: item,
             })
           }
@@ -235,7 +235,7 @@ export default class NotesList extends Component {
   }
 
   render() {
-    const { data, visible, searchText, searchData, folderId } = this.state;
+    const { data, isLoading, visible, searchText, searchData, folderId } = this.state;
     return (
       <View style={{ flex: 1, backgroundColor: '#fff' }}>
         <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -250,28 +250,23 @@ export default class NotesList extends Component {
             }
           />
 
+
           <View style={{ flex: 1, paddingHorizontal: 16, marginTop: 10 }}>
-            {data.length == 0 ? (
-              <View
-                style={{
-                  flex: 1,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Text style={{ color: 'rgba(0, 0, 0, 0.4)' }}>
-                  {strings.zametnet}
-                </Text>
+            {isLoading ?
+              <View style={{ padding: 16 }}>
+                <ActivityIndicator color={'#3F49DC'} />
               </View>
-            ) : (
-              <CollapsibleHeaderScrollView
-                CollapsibleHeaderComponent={this.CollapsibleHeaderComponent}
-                headerHeight={55}
-                clipHeader
-                onScroll={() => Keyboard.dismiss()}
-                showsVerticalScrollIndicator={false}>
-                {data.map((item, index) => this.renderItem({ item, index }))}
-              </CollapsibleHeaderScrollView>
-            )}
+              :
+              (
+                <CollapsibleHeaderScrollView
+                  CollapsibleHeaderComponent={this.CollapsibleHeaderComponent}
+                  headerHeight={55}
+                  clipHeader
+                  onScroll={() => Keyboard.dismiss()}
+                  showsVerticalScrollIndicator={false}>
+                  {data.map((item, index) => this.renderItem({ item, index }))}
+                </CollapsibleHeaderScrollView>
+              )}
           </View>
         </SafeAreaView>
 
@@ -327,6 +322,7 @@ export default class NotesList extends Component {
                   </Text>
                 </TouchableOpacity>
               </View>
+
 
               <ScrollView
                 showsVerticalScrollIndicator={false}

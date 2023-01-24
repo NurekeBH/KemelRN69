@@ -241,7 +241,8 @@ export default function NoteAdd({ route, navigation }) {
       .then(response => {
         console.log('AddPhoto -', response);
 
-        richText.current.insertImage(DomainUrl + response.data.path, `width:${width}px;height:${height}px;`);
+        richText.current.insertImage(response.data.path, `width:${width}px;height:${height}px;`);
+
 
 
       })

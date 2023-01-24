@@ -291,7 +291,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
                     alignItems: 'center',
                   }}>
                   <Text style={{ color: 'black', fontSize: 17, marginLeft: 0 }}>
-                    Жазбаға қосу
+                    {strings.addzamk}
                   </Text>
                 </View>
                 <Switch

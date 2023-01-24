@@ -188,7 +188,7 @@ export default class Tab2 extends Component {
 
 
   render() {
-    const { folderName, data } = this.state;
+    const { folderName, data, isLoading } = this.state;
     return (
       <View style={{ flex: 1, backgroundColor: '#fff' }}>
         <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -209,6 +209,13 @@ export default class Tab2 extends Component {
             {Search}
             <Text style={{ marginLeft: 8, fontSize: 16, color: 'grey' }}>{strings.search}</Text>
           </TouchableOpacity>
+          {isLoading ?
+            <View style={{ padding: 16 }}>
+              <ActivityIndicator color={'#3F49DC'} />
+            </View>
+            :
+            null
+          }
           <FlatList
             data={data}
             keyExtractor={(item, index) => index.toString()}
