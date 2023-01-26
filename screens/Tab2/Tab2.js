@@ -237,7 +237,7 @@ export default class Tab2 extends Component {
               borderRadius: 14,
             }}>
             <Text style={{ color: 'black', marginHorizontal: 16, marginTop: 24 }}>
-              Папаканың атын енгізіңіз
+              {strings.nameFolder}
             </Text>
             <TextInput
               placeholder={strings.papka}

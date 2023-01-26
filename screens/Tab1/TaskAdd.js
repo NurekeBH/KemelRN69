@@ -176,60 +176,25 @@ export default function TaskAdd({ route, navigation }) {
               />
             </View>
 
-            <View
+            <TouchableOpacity
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 paddingVertical: 16,
-              }}>
-              <Text style={{ fontSize: 17 }}>{strings.vremya}</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  setOpen(true);
-                }}>
-                <Text style={{ fontSize: 17, color: '#3F49DC' }}>
-                  {Moment(datetime).format('lll')}
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                alignItems: 'center',
-                borderBottomColor: 'rgba(0, 0, 0, 0.2)',
-                borderBottomWidth: 1,
-              }}>
-              <DatePicker
-                modal
-                locale={getLang()}
-                is24hourSource="locale"
-                confirmText={strings.save}
-                cancelText={strings.close}
-                title={null}
-                open={open}
-                date={datetime}
-                onConfirm={date => {
-                  setOpen(false);
-                  setdatetime(date);
-                }}
-                onCancel={() => {
-                  setOpen(false);
-                }}
-              />
-
-              {/* <DatePicker
-              modal={true}
-              open={true}
-              mode="datetime"
-              date={datetime}
-              style={{width: width}}
-              is24hourSource="locale"
-              locale={getLang()}
-              onDateChange={e => {
-                setdatetime(e);
               }}
-              androidVariant="nativeAndroid"
-            /> */}
-            </View>
+              onPress={() => {
+                setOpen(!open);
+              }}
+            >
+              <Text style={{ fontSize: 17 }}>{strings.vremya}</Text>
+
+              <Text style={{ fontSize: 17, color: '#3F49DC' }}>
+                {Moment(datetime).format('lll')}
+              </Text>
+
+            </TouchableOpacity>
+
+
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
@@ -377,6 +342,43 @@ export default function TaskAdd({ route, navigation }) {
               this.onAddPress();
             }}
           /> */}
+
+        <Modal
+
+          position="bottom"
+          backButtonClose
+          isOpen={open}
+          onClosed={() => {
+            setOpen(false);
+          }}
+          style={{
+            backgroundColor: '#F2F2F7',
+            height: 'auto',
+
+          }}
+        >
+          <View style={{ alignItems: 'center', justifyContent: 'flex-end', marginBottom: 40 }}>
+            <DatePicker
+              locale={getLang()}
+              is24hourSource="locale"
+              date={datetime}
+              onDateChange={date => {
+                setdatetime(date);
+              }}
+            />
+            <TouchableOpacity
+              onPress={() => {
+                setOpen(false);
+              }}
+            >
+              <Text style={{ color: '#3F49DC', fontSize: 16, textAlign: 'center', fontWeight: '600' }}>OK</Text>
+            </TouchableOpacity>
+          </View>
+
+        </Modal>
+
+
+
 
         <Modal
           position="bottom"

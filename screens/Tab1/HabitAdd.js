@@ -81,6 +81,17 @@ export default class HabitAdd extends Component {
 
   componentDidMount() {
 
+    // axios.get('todos/weeks/')
+    //   .then((response) => {
+    //     console.log('weeks weeks', response)
+    //   })
+    //   .catch((error) => {
+
+    //     console.log(' error', error)
+    //   })
+
+
+
     axios.get('todos/target-templates/')
       .then((response) => {
         console.log('templates response', response)
@@ -125,7 +136,7 @@ export default class HabitAdd extends Component {
             target_template: selected_template,
           })
           .then(response => {
-            console.log('RESPONSE habits add:', response.data);
+            console.log('RESPONSE habits add:', response);
             this.props.route.params.updateData();
             this.props.navigation.goBack();
           })

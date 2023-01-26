@@ -23,7 +23,7 @@ import { strings } from '../../Localization/Localization';
 import { actions, RichEditor, RichToolbar } from '../../HtmlEditor';
 import { editorFile, FileIcon, iconFile, Left30Sec, PluseFile, ShareNote } from '../../Component/MyIcons';
 import ImageCropPicker from 'react-native-image-crop-picker';
-
+import converter from '../../markdown/index'
 
 
 const arrAction = [
@@ -91,17 +91,30 @@ export default function NoteAdd({ route, navigation }) {
 
   const share = () => {
     let hmtl = theme + '\n' + text;
-    const shareOptions = {
-      title: 'Kemel Adam',
-      message: hmtl,
-      url: 'https://kemeladam.kz/',
-    };
 
-    Share.open(shareOptions)
-      .then(res => { })
-      .catch(err => {
-        err && console.log(err);
-      });
+
+    console.log('hmtl', hmtl)
+
+    var markdown = converter.convert(hmtl);
+
+    console.log('sharehmtl', markdown)
+
+    // const regex = /(<([^>]+)>)/ig;
+    // const result = hmtl.replace(regex, '');
+    // console.log('sharehmtl', descriptionText)
+    // console.log('sharehmtl', hmtl)
+    // console.log('sharehmtlresult', result)
+    // const shareOptions = {
+    //   title: 'Kemel Adam',
+    //   message: result,
+    //   url: 'https://kemeladam.kz/',
+    // };
+
+    // Share.open(shareOptions)
+    //   .then(res => { })
+    //   .catch(err => {
+    //     err && console.log(err);
+    //   });
   };
 
   const onSaveClick = () => {

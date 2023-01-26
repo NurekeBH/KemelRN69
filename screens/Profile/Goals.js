@@ -14,6 +14,8 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Header from '../../Component/Header2';
+import DatePicker from 'react-native-date-picker';
+
 import {
   Bottom,
   Check,
@@ -27,10 +29,12 @@ import {
 } from '../../Component/MyIcons';
 import { strings } from '../../Localization/Localization';
 
-import { getLabelGoal, width } from '../../Component/Component';
+import { getLabelGoal, getLang, width } from '../../Component/Component';
 import Collapsible from 'react-native-collapsible';
 import Modal from 'react-native-modalbox';
 import Swipeout from '../../Swipeout/index';
+import moment from 'moment';
+
 
 export default class Goals extends Component {
   constructor(props) {
@@ -57,7 +61,14 @@ export default class Goals extends Component {
       desc: '',
       fromDate: '',
       toDate: '',
-      modalStatus: null
+      modalStatus: null,
+
+      datetime: new Date(),
+      open: false,
+
+      datetime2: new Date(),
+      open2: false
+
     };
     this.category_id = props.route.params?.category_id;
     this.section_id = props.route.params?.section_id;
@@ -256,7 +267,13 @@ export default class Goals extends Component {
       notDoneCount,
       openModal,
       modalItem,
-      modalStatus
+      modalStatus,
+      open,
+      open2,
+      datetime,
+      datetime2,
+      fromDate,
+      toDate,
     } = this.state;
     const procentDone = parseInt((doneCount * 100) / allCount);
 
@@ -521,10 +538,15 @@ export default class Goals extends Component {
               <Text style={{ color: 'rgba(0,0,0,0.6)', marginHorizontal: 4, marginTop: 16 }}>{strings.goalDate}</Text>
 
               <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 4 }}>
-                <View
-                  style={{ backgroundColor: '#F2F2F7', borderRadius: 8, }} >
+                <TouchableOpacity
+                  onPress={() => {
+                    this.setState({
+                      open: true
+                    })
+                  }}
+                  style={{ backgroundColor: '#F2F2F7', borderRadius: 8, width: Dimensions.get('window').width / 2 - 20, paddingVertical: 8 }} >
 
-                  <TextInput
+                  {/* <TextInput
                     style={{ fontSize: 16, color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 2 - 20, paddingVertical: 4 }}
                     numberOfLines={1}
                     onChangeText={fromDate => {
@@ -533,23 +555,35 @@ export default class Goals extends Component {
                       })
                     }}
                     value={this.state.fromDate}
-                  />
-                </View>
+                  /> */}
+                  <Text style={{ fontSize: 16, color: 'black', textAlign: 'center', }}>
+                    {fromDate}
+                  </Text>
+                </TouchableOpacity>
                 <Text style={{ color: 'black', margin: 8 }}>-</Text>
 
-                <View
-                  style={{ backgroundColor: '#F2F2F7', borderRadius: 8, }} >
-                  <TextInput
+                <TouchableOpacity
+                  onPress={() => {
+                    this.setState({
+                      open2: true
+                    })
+                  }}
+                  style={{ backgroundColor: '#F2F2F7', borderRadius: 8, width: Dimensions.get('window').width / 2 - 20, paddingVertical: 8 }} >
+
+                  {/* <TextInput
                     style={{ fontSize: 16, color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 2 - 20, paddingVertical: 4 }}
                     numberOfLines={1}
-                    onChangeText={toDate => {
+                    onChangeText={fromDate => {
                       this.setState({
-                        toDate
+                        fromDate
                       })
                     }}
-                    value={this.state.toDate}
-                  />
-                </View>
+                    value={this.state.fromDate}
+                  /> */}
+                  <Text style={{ fontSize: 16, color: 'black', textAlign: 'center', }}>
+                    {toDate}
+                  </Text>
+                </TouchableOpacity>
               </View>
 
               <Text style={{ marginTop: 16, fontSize: 14, color: '#8E8E93' }}>
@@ -666,6 +700,101 @@ export default class Goals extends Component {
             </View>
           ) : null}
         </Modal>
+
+
+
+
+
+
+        <Modal
+          position="bottom"
+          backButtonClose
+          isOpen={open}
+          onClosed={() => {
+            this.setState({
+              open: false
+            })
+          }}
+          style={{
+            backgroundColor: '#F2F2F7',
+            height: 'auto',
+          }}
+        >
+          <View style={{ alignItems: 'center', justifyContent: 'flex-end', marginBottom: 40 }}>
+            <DatePicker
+              locale={getLang()}
+              mode="date"
+              is24hourSource="locale"
+              date={datetime}
+              onDateChange={date => {
+                this.setState({
+                  datetime: date,
+                  fromDate: moment(date).format('DD.MM.YYYY')
+                })
+
+              }}
+            />
+            <TouchableOpacity
+              onPress={() => {
+                this.setState({
+                  open: false,
+                  fromDate: moment(datetime).format('DD.MM.YYYY')
+                })
+
+
+              }}
+            >
+              <Text style={{ color: '#3F49DC', fontSize: 16, textAlign: 'center', fontWeight: '600' }}>OK</Text>
+            </TouchableOpacity>
+          </View>
+
+        </Modal>
+
+
+        <Modal
+          position="bottom"
+          backButtonClose
+          isOpen={open2}
+          onClosed={() => {
+            this.setState({
+              open2: false,
+            })
+          }}
+          style={{
+            backgroundColor: '#F2F2F7',
+            height: 'auto',
+          }}
+        >
+          <View style={{ alignItems: 'center', justifyContent: 'flex-end', marginBottom: 40 }}>
+            <DatePicker
+              locale={getLang()}
+              mode="date"
+              is24hourSource="locale"
+              date={datetime2}
+              onDateChange={date => {
+                this.setState({
+                  open2: false,
+                  toDate: moment(date).format('DD.MM.YYYY'),
+                })
+
+              }}
+            />
+            <TouchableOpacity
+              onPress={() => {
+                this.setState({
+                  open2: false,
+                  toDate: moment(datetime2).format('DD.MM.YYYY'),
+                })
+
+
+              }}
+            >
+              <Text style={{ color: '#3F49DC', fontSize: 16, textAlign: 'center', fontWeight: '600' }}>OK</Text>
+            </TouchableOpacity>
+          </View>
+
+        </Modal>
+
       </View>
     );
   }

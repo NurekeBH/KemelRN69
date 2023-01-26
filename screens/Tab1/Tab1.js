@@ -311,7 +311,6 @@ export default class Tab1 extends Component {
         let Arr = response.data
         Arr.forEach(element => {
           element.label = getTemplateReminder(element.label)
-          console.log('element', element)
         });
         this.setState({
           isLoadingReminder: false,
@@ -439,7 +438,7 @@ export default class Tab1 extends Component {
     axios
       .get(URL)
       .then(response => {
-        console.log('RESPONSE getTodoList:', response.data);
+        console.log('RESPONSE getTodoList:', response);
         let result = [];
         let arrTasks = [];
         let arrHabits = [];

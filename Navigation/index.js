@@ -26,7 +26,7 @@ import FirstScreen from '../screens/Auth/FirstScreen';
 import Login from '../screens/Auth/Login';
 import Registr from '../screens/Auth/Registr';
 import RestorePassword from '../screens/Auth/RestorePassword';
-import Note from '../screens/Tab2/Note';
+
 import NoteAdd from '../screens/Tab2/NoteAdd';
 import AboutUs from '../screens/Profile/AboutUs';
 import AboutProgram from '../screens/Profile/AboutProgram';
@@ -51,7 +51,6 @@ import Goals from '../screens/Profile/Goals';
 import AddGoal from '../screens/Profile/AddGoal';
 import Replenishment from '../screens/Tab4/Replenishment';
 import ReadBook from '../screens/Tab3/ReadBook';
-import NoteAddChild from '../screens/Tab2/NoteAddChild';
 import AddFolder from '../screens/Tab2/AddFolder';
 import NotesList from '../screens/Tab2/NotesList';
 import ModalDrax from '../screens/Tab1/ModalDrax';
@@ -81,26 +80,7 @@ function Tab1Stack() {
           component={Tab1}
           options={{ headerShown: false }}
         />
-        {/* <_Tab1.Screen
-          name="TaskAdd"
-          component={TaskAdd}
-          options={{ headerShown: false }}
-        /> */}
-        {/* <_Tab1.Screen
-          name="HabitAdd"
-          component={HabitAdd}
-          options={{ headerShown: false }}
-        /> */}
-        {/* <_Tab1.Screen
-          name="NoteAdd"
-          component={NoteAdd}
-          options={{ headerShown: false }}
-        /> */}
-        <_Tab1.Screen
-          name="NoteAddChild"
-          component={NoteAddChild}
-          options={{ headerShown: false }}
-        />
+
         <_Tab1.Screen
           name="ProfileStack"
           component={ProfileStack}
@@ -136,21 +116,7 @@ function Tab2Stack() {
           options={{ headerShown: false }}
         />
 
-        <_Tab2.Screen
-          name="Note"
-          component={Note}
-          options={{ headerShown: false }}
-        />
-        {/* <_Tab2.Screen
-          name="NoteAdd"
-          component={NoteAdd}
-          options={{ headerShown: false }}
-        /> */}
-        <_Tab2.Screen
-          name="NoteAddChild"
-          component={NoteAddChild}
-          options={{ headerShown: false }}
-        />
+
         <_Tab2.Screen
           name="ProfileStack"
           component={ProfileStack}

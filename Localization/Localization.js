@@ -140,7 +140,8 @@ export let strings = new LocalizedStrings({
     goalDate: 'орындалу мерзімі',
     changeStatus: 'Мәртебесін өзгерту',
     no: 'Жоқ',
-    howgoal: 'Мақсатты қалай қоямыз?'
+    howgoal: 'Мақсатты қалай қоямыз?',
+    nameFolder: 'Папаканың атын енгізіңіз'
 
   },
   ru: {
@@ -247,7 +248,9 @@ export let strings = new LocalizedStrings({
     goalDate: 'сроки',
     changeStatus: 'Изменить статус',
     no: 'Нет',
-    howgoal: 'Как мы ставим цель?'
+    howgoal: 'Как мы ставим цель?',
+    nameFolder: 'Введите имя папки'
+
   },
   en: {
     tab1: 'Calendar',
@@ -353,6 +356,7 @@ export let strings = new LocalizedStrings({
     goalDate: 'date',
     changeStatus: 'Change status',
     no: 'No',
-    howgoal: 'How do we set a goal?'
+    howgoal: 'How do we set a goal?',
+    nameFolder: 'Enter a folder name'
   },
 });

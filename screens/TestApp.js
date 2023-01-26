@@ -1,61 +1,45 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { DraxProvider, DraxView } from 'react-native-drax';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { View, Text, TouchableOpacity } from 'react-native';
+import converter from '../markdown/index'
+import { TurndownService } from '../markdown/turndown';
 
+// const TurndownService = require('../markdown/turndown');
+
+const html = `22225555
+<div><br></div><ul><li><span style="font-size: 1.15em;">ffffffdsf</span><br></li><li><span style="font-size: 1.15em;">fsdfs</span></li><li><span style="font-size: 1.15em;">df</span></li><li><span style="font-size: 1.15em;">sf</span></li></ul><div><img style="width:390px;height:244px;" src="https://app.kemeladam.kz/media/uploads/share/2023/01/24/filename.jpg"><font size="5"><br></font></div><div><br></div>`
 export default class TestApp extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            renderedText: ""
         };
     }
 
-    render() {
-        return (
-            <GestureHandlerRootView
-                style={{ flex: 1 }}>
-                <DraxProvider>
-                    <View style={styles.container}>
-                        <DraxView
-                            style={styles.draggable}
-                            onDragStart={() => {
-                                console.log('start drag');
-                            }}
-                            payload="world"
-                        />
-                        <DraxView
-                            style={styles.receiver}
-                            onReceiveDragEnter={({ dragged: { payload } }) => {
-                                console.log(`hello ${payload}`);
-                            }}
-                            onReceiveDragExit={({ dragged: { payload } }) => {
-                                console.log(`goodbye ${payload}`);
-                            }}
-                            onReceiveDragDrop={({ dragged: { payload } }) => {
-                                console.log(`received ${payload}`);
-                            }}
-                        />
-                    </View>
-                </DraxProvider>
-            </GestureHandlerRootView>
 
+
+    render() {
+        const { renderedText } = this.state
+        return (
+            <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+                <Text> TestApp </Text>
+                <TouchableOpacity
+                    onPress={() => {
+                        const turndownService = new TurndownService();
+
+                        const markdown = turndownService.turndown(html);;
+                        this.setState({
+                            renderedText: markdown
+                        })
+
+                        console.log('sharehmtl', markdown)
+                    }}
+
+                    style={{ margin: 16 }}>
+                    <Text> TO HTML</Text>
+                </TouchableOpacity>
+
+                <Text>{renderedText}</Text>
+            </View>
         );
     }
 }
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    draggable: {
-        width: 100,
-        height: 100,
-        backgroundColor: 'blue',
-    },
-    receiver: {
-        width: 100,
-        height: 100,
-        backgroundColor: 'green',
-    },
-});
