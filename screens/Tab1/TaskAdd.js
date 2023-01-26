@@ -352,7 +352,6 @@ export default function TaskAdd({ route, navigation }) {
             setOpen(false);
           }}
           style={{
-            backgroundColor: '#F2F2F7',
             height: 'auto',
 
           }}
@@ -362,9 +361,12 @@ export default function TaskAdd({ route, navigation }) {
               locale={getLang()}
               is24hourSource="locale"
               date={datetime}
+
               onDateChange={date => {
                 setdatetime(date);
               }}
+              textColor={"black"}
+              theme={"light"}
             />
             <TouchableOpacity
               onPress={() => {

@@ -212,6 +212,8 @@ export default function AddGoal({ route, navigation }) {
               <DatePicker
                 locale={getLang()}
                 mode="date"
+                textColor={"black"}
+                theme={"light"}
                 is24hourSource="locale"
                 date={datetime}
                 onDateChange={date => {
@@ -248,6 +250,8 @@ export default function AddGoal({ route, navigation }) {
               <DatePicker
                 locale={getLang()}
                 mode="date"
+                textColor={"black"}
+                theme={"light"}
                 is24hourSource="locale"
                 date={datetime2}
                 onDateChange={date => {
