@@ -112,7 +112,7 @@ export default function NoteAdd({ route, navigation }) {
     const shareOptions = {
       title: 'Kemel Adam',
       message: markdown,
-      url: 'https://kemeladam.kz/',
+      url: 'https://app.kemeladam.kz/',
     };
 
     Share.open(shareOptions)
@@ -259,7 +259,7 @@ export default function NoteAdd({ route, navigation }) {
       .then(response => {
         console.log('AddPhoto -', response);
 
-        richText.current.insertImage(response.data.path, `width:${width}px;height:${height}px;`);
+        richText.current.insertImage(response.data.path, `width:${width / 2}px;height:${height / 2}px;`);
 
 
 
