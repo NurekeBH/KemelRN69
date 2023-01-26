@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import converter from '../markdown/index'
-import { TurndownService } from '../markdown/turndown';
-
-// const TurndownService = require('../markdown/turndown');
+import { NodeHtmlMarkdown } from 'node-html-markdown'
 
 const html = `22225555
 <div><br></div><ul><li><span style="font-size: 1.15em;">ffffffdsf</span><br></li><li><span style="font-size: 1.15em;">fsdfs</span></li><li><span style="font-size: 1.15em;">df</span></li><li><span style="font-size: 1.15em;">sf</span></li></ul><div><img style="width:390px;height:244px;" src="https://app.kemeladam.kz/media/uploads/share/2023/01/24/filename.jpg"><font size="5"><br></font></div><div><br></div>`
@@ -24,9 +21,20 @@ export default class TestApp extends Component {
                 <Text> TestApp </Text>
                 <TouchableOpacity
                     onPress={() => {
-                        const turndownService = new TurndownService();
+                        // const turndownService = new TurndownService();
 
-                        const markdown = turndownService.turndown(html);;
+                        // const markdown = turndownService.turndown(html);;
+
+                        let markdown = NodeHtmlMarkdown.translate(
+                            html,
+                            {
+                                ignore: ['img']
+                            },
+                            undefined,
+                            undefined
+                        );
+
+
                         this.setState({
                             renderedText: markdown
                         })
