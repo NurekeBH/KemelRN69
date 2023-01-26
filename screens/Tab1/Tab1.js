@@ -19,6 +19,7 @@ import {
   ButtonClass,
   getLang,
   getTemplateLabel,
+  getTemplateReminder,
   GetTime,
   Header2,
   showToast,
@@ -155,6 +156,48 @@ LocaleConfig.locales['ru'] = {
   today: 'Сегодня',
 };
 
+
+LocaleConfig.locales['en'] = {
+  monthNames: [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ],
+  monthNamesShort: [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'June',
+    'July',
+    'Aug',
+    'Sept',
+    'Oct',
+    'Nov',
+    'Dec',
+  ],
+  dayNames: [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ],
+  dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+  today: 'Today',
+};
 export const TopModalButtonStyle = ({ icon, title, titleColor, onPress }) => (
   <TouchableOpacity
     onPress={onPress}
@@ -264,6 +307,11 @@ export default class Tab1 extends Component {
       .get(`todos/reminders/`)
       .then(response => {
         console.log('RESPONSE reminder:', response);
+
+        let Arr = response.data
+        Arr.forEach(element => {
+          element.label = getTemplateReminder(element.label)
+        });
         this.setState({
           isLoadingReminder: false,
           ReminderArr: response.data
@@ -390,7 +438,7 @@ export default class Tab1 extends Component {
     axios
       .get(URL)
       .then(response => {
-        console.log('RESPONSE getTodoList:', response.data);
+        console.log('RESPONSE getTodoList:', response);
         let result = [];
         let arrTasks = [];
         let arrHabits = [];
@@ -480,10 +528,11 @@ export default class Tab1 extends Component {
 
   renderItem = ({ item, index }) => {
 
-    const { today, now, isLoadingReminder, ReminderArr } = this.state
+    const { today, now, isLoadingReminder, ReminderArr, bytype } = this.state
 
     return (
       <View style={{ margin: 16 }}>
+
         <View style={{
           flexDirection: 'row', justifyContent: 'space-between', marginBottom: 11,
           alignItems: 'center'
@@ -500,8 +549,7 @@ export default class Tab1 extends Component {
 
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             {
-              today == now ?
-                null :
+              (bytype == 1 && index == 0) || today != now ?
                 <TouchableOpacity
 
                   onPress={() => {
@@ -523,6 +571,8 @@ export default class Tab1 extends Component {
                   {dayBack}
                   <Text style={{ color: 'grey', marginLeft: 4, fontWeight: '500' }}>{strings.today}</Text>
                 </TouchableOpacity>
+                :
+                null
             }
             <TouchableOpacity
               onPress={() =>
@@ -530,7 +580,9 @@ export default class Tab1 extends Component {
                 this.props.navigation.navigate('TaskAdd', {
                   updateData: this.updateData,
                   now: now,
-                  ReminderArr: isLoadingReminder ? null : ReminderArr
+                  ReminderArr: isLoadingReminder ? null : ReminderArr,
+                  folderData: this.state.folderData
+
                 })
               }
               activeOpacity={0.7}
@@ -1238,6 +1290,7 @@ export default class Tab1 extends Component {
                     theme={{
                       textSectionTitleColor: 'rgba(0,0,0,0.5)',
                       textDayFontSize: 18,
+                      textDayFontWeight: '400'
                     }}
 
                   />

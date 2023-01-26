@@ -88,7 +88,7 @@ export default class Play extends Component {
       {this.state.isPlay && index == this.state.position ? pauseIcon : PlayIcon}
 
       <View style={{ marginLeft: 8 }}>
-        <Text style={{ fontSize: 17, fontWeight: '600' }}>{item.label}</Text>
+        <Text style={{ color: 'black', fontSize: 17, fontWeight: '600' }}>{item.label}</Text>
         <Text style={{ color: '#999999', marginTop: 2 }}>
           {' '}
           {GetDuration(item.duration)}
@@ -252,6 +252,7 @@ export default class Play extends Component {
 
               <Text
                 style={{
+                  color: 'black',
                   textAlign: 'center',
                   marginHorizontal: 15,
                   fontWeight: '700',

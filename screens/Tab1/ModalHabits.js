@@ -34,36 +34,33 @@ import Share from 'react-native-share';
 import axios from 'axios';
 import { colorApp } from '../../theme/Colors';
 
-let weekArr =
-  getLang() == 'kk'
-    ? [
-      { id: 1, label: 'Дс', acitve: false },
-      { id: 2, label: 'Cс', acitve: false },
-      { id: 3, label: 'Cр', acitve: false },
-      { id: 4, label: 'Бс', acitve: false },
-      { id: 5, label: 'Жм', acitve: false },
-      { id: 6, label: 'Cб', acitve: false },
-      { id: 7, label: 'Жс', acitve: false },
-    ]
-    : getLang() == 'en'
-      ? [
-        { id: 1, label: 'Mon', acitve: false },
-        { id: 2, label: 'Tue', acitve: false },
-        { id: 3, label: 'Wed', acitve: false },
-        { id: 4, label: 'Thu', acitve: false },
-        { id: 5, label: 'Fri', acitve: false },
-        { id: 6, label: 'Sat', acitve: false },
-        { id: 7, label: 'Sun', acitve: false },
-      ]
-      : [
-        { id: 1, label: 'Пн', acitve: false },
-        { id: 2, label: 'Вт', acitve: false },
-        { id: 3, label: 'Cр', acitve: false },
-        { id: 4, label: 'Чт', acitve: false },
-        { id: 5, label: 'Пт', acitve: false },
-        { id: 6, label: 'Cб', acitve: false },
-        { id: 7, label: 'Вс', acitve: false },
-      ];
+let weekArrKz = [
+  { id: 1, label: 'Дс', acitve: false },
+  { id: 2, label: 'Cс', acitve: false },
+  { id: 3, label: 'Cр', acitve: false },
+  { id: 4, label: 'Бс', acitve: false },
+  { id: 5, label: 'Жм', acitve: false },
+  { id: 6, label: 'Cб', acitve: false },
+  { id: 7, label: 'Жс', acitve: false },
+]
+let weekArrEn = [
+  { id: 1, label: 'Mon', acitve: false },
+  { id: 2, label: 'Tue', acitve: false },
+  { id: 3, label: 'Wed', acitve: false },
+  { id: 4, label: 'Thu', acitve: false },
+  { id: 5, label: 'Fri', acitve: false },
+  { id: 6, label: 'Sat', acitve: false },
+  { id: 7, label: 'Sun', acitve: false },
+]
+let weekArrRu = [
+  { id: 1, label: 'Пн', acitve: false },
+  { id: 2, label: 'Вт', acitve: false },
+  { id: 3, label: 'Cр', acitve: false },
+  { id: 4, label: 'Чт', acitve: false },
+  { id: 5, label: 'Пт', acitve: false },
+  { id: 6, label: 'Cб', acitve: false },
+  { id: 7, label: 'Вс', acitve: false },
+];
 
 
 
@@ -94,6 +91,9 @@ export default class ModalHabits extends Component {
   }
 
   componentDidMount() {
+
+    let LANG = getLang()
+    let weekArr = LANG == 'kk' ? weekArrKz : LANG == 'ru' ? weekArrRu : weekArrEn
     let arr = [];
 
     let weeks = this.state.modelItem.weeks;
@@ -363,7 +363,7 @@ export default class ModalHabits extends Component {
               ]}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {PurposeIcon}
-                <Text style={{ fontSize: 17, marginLeft: 10 }}>
+                <Text style={{ color: 'black', fontSize: 17, marginLeft: 10 }}>
                   {strings.maks}
                 </Text>
               </View>
@@ -405,7 +405,7 @@ export default class ModalHabits extends Component {
                     })
                   }
                 />
-                <Text>
+                <Text style={{ color: 'black', }}>
                   {getTemplateLabel(selected_template.template)}
                 </Text>
 
@@ -421,7 +421,7 @@ export default class ModalHabits extends Component {
                   marginTop: 30,
                 }}>
 
-                <Text style={{ fontSize: 14, marginRight: 10 }}>{strings.bugjet2}</Text>
+                <Text style={{ color: 'black', fontSize: 14, marginRight: 10 }}>{strings.bugjet2}</Text>
                 <TouchableOpacity
                   disabled={target_today == 0}
                   activeOpacity={0.7}

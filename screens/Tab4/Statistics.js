@@ -17,6 +17,7 @@ import FastImage from 'react-native-fast-image';
 import axios from 'axios';
 
 import PieChart from 'react-native-pie-chart';
+import { strings } from '../../Localization/Localization';
 
 
 export default class Statistics extends Component {
@@ -44,13 +45,16 @@ export default class Statistics extends Component {
         console.log('RESPONSE statistics:', response);
 
         let Sum = response.data.data.reduce((a, v) => a = a + v.value, 0)
+        console.log('RESPONSE Sum:', Sum);
+
         var series = [];
         var seriesColor = [];
         for (var i = 0; i < response.data.data.length; i++) {
-          series[i] = response.data.data[i].value ? response.data.data[i].value : 0;
+          series[i] = response.data.data[i].value ? response.data.data[i].value : 1;
           seriesColor[i] = response.data.data[i].color.value ? response.data.data[i].color.value : "#5856D6";
         }
         console.log('series', series)
+        console.log('seriesColor', seriesColor)
         this.setState({
           isLoading: false,
           response: response.data,
@@ -92,7 +96,7 @@ export default class Statistics extends Component {
           coverFill={'#FFF'}
         />
         <View style={{ position: 'absolute', alignItems: 'center' }}>
-          <Text style={{ fontSize: 17, fontWeight: '600', color: '#000000' }}>Шығындар</Text>
+          <Text style={{ fontSize: 17, fontWeight: '600', color: '#000000' }}>{strings.ras}</Text>
           <Text style={{ fontSize: 34, fontWeight: '600', color: '#000000' }}>{this.state.Sum}₸</Text>
         </View>
 
@@ -133,9 +137,9 @@ export default class Statistics extends Component {
                   style={{ width: 40 }}>
                   {Left}
                 </TouchableOpacity>
-                <Text style={{ fontSize: 22, fontWeight: '700', textTransform: 'capitalize' }}>
+                <Text style={{ color: 'black', fontSize: 22, fontWeight: '700', textTransform: 'capitalize' }}>
                   {GetTime(month, "MMMM")}
-                  <Text style={{ fontSize: 20, fontWeight: '400' }}> {GetTime(month, "YYYY")}</Text>
+                  <Text style={{ color: 'black', fontSize: 20, fontWeight: '400' }}> {GetTime(month, "YYYY")}</Text>
                 </Text>
                 <TouchableOpacity
                   // onPress={() => {
@@ -180,13 +184,14 @@ export default class Statistics extends Component {
               <View>
                 <Text
                   style={{
+                    color: 'black',
                     fontWeight: '700',
                     fontSize: 22,
                     marginHorizontal: 16,
                     marginTop: 40,
                     marginBottom: 10,
                   }}>
-                  Шығындар
+                  {strings.ras}
                 </Text>
                 {costsList.map((item, index) => (
                   <TouchableOpacity
@@ -228,6 +233,7 @@ export default class Statistics extends Component {
                       </View>
                       <Text
                         style={{
+                          color: 'black',
                           fontSize: 17,
                           fontWeight: '600',
                           marginLeft: 12,

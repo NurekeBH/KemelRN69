@@ -59,6 +59,7 @@ class FirebaseService {
 
     const isAllowed = await messaging().hasPermission();
 
+    console.log('isAllowed', isAllowed)
 
     if (isAllowed) {
 
@@ -72,6 +73,9 @@ class FirebaseService {
   }
 
   async getToken() {
+
+    console.log('getToken:1111');
+
     const token = await messaging().getToken();
 
     console.log('getToken:ffffff', token);
@@ -99,6 +103,7 @@ class FirebaseService {
     messaging().onNotificationOpenedApp(remoteMessage => {
       console.log('onNotificationOpenedApp : ', remoteMessage);
       const notificationData = remoteMessage?.data;
+      navigate('PushTable', { fromPush: true });
       // if (notificationData?.code === 'unfulfilled_tasks') {
       //   navigate('Unfulfilled_tasks');
       // }

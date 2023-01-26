@@ -282,8 +282,9 @@ export default class Wallet extends Component {
                         })
                         .catch(error => {
                             console.log('RESPONSE delete:', error.response);
-                            if (error.response && error.response.status == 401) {
-                                showToast('error', error.response.data.detail);
+                            if (error.response?.data?.detail) {
+                                // showToast('error', error.response.data.detail);
+                                Alert.alert(error.response.data.detail)
                             }
                         })
                         .finally(() => {
@@ -355,6 +356,7 @@ export default class Wallet extends Component {
                         <View>
                             <Text
                                 style={{
+                                    color: 'black',
                                     padding: 16,
                                     textAlign: 'center',
                                     fontSize: 17,
@@ -484,6 +486,7 @@ export default class Wallet extends Component {
                                 <View >
                                     <Text
                                         style={{
+                                            color: 'black',
                                             fontSize: 22,
                                             fontWeight: '700',
                                             flex: 1,
@@ -510,6 +513,7 @@ export default class Wallet extends Component {
                                         style={{ paddingBottom: 16 }}> */}
                                     {kiris.map((item1, index) => (
                                         <Swipeout
+                                            key={index}
                                             autoClose={true}
                                             style={{
                                                 backgroundColor: 'white',
@@ -600,7 +604,7 @@ export default class Wallet extends Component {
                                             ]}>
                                             <View style={styles.tableStl} key={index}>
                                                 <View style={{ flex: 1 }}>
-                                                    <Text style={{ fontSize: 17 }}>
+                                                    <Text style={{ color: 'black', fontSize: 17 }}>
                                                         {item1.comment ? item1.comment : item.label}
                                                     </Text>
                                                     <Text
@@ -614,6 +618,7 @@ export default class Wallet extends Component {
                                                 </View>
                                                 <Text
                                                     style={{
+                                                        color: 'black',
                                                         fontSize: 15,
                                                         textAlign: 'right',
                                                     }}>
@@ -629,6 +634,7 @@ export default class Wallet extends Component {
                                     {
                                         History2.map((item, index) => (
                                             <Swipeout
+                                                key={index}
                                                 autoClose={true}
                                                 style={{
                                                     backgroundColor: 'white',
@@ -683,7 +689,7 @@ export default class Wallet extends Component {
                                                 ]}>
                                                 <View style={styles.tableStl} key={index}>
                                                     <View style={{ flex: 1 }}>
-                                                        <Text style={{ fontSize: 17 }}>
+                                                        <Text style={{ color: 'black', fontSize: 17 }}>
                                                             {item.wallet_from.label}
                                                         </Text>
                                                         <Text
@@ -738,6 +744,7 @@ export default class Wallet extends Component {
                                 style={styles.www}>
                                 <Text
                                     style={{
+                                        color: 'black',
                                         fontSize: 22,
                                         fontWeight: '700',
                                         flex: 1,
@@ -756,6 +763,7 @@ export default class Wallet extends Component {
 
                                 {expence.map((item1, index) => (
                                     <Swipeout
+                                        key={index}
                                         autoClose={true}
                                         style={{
                                             backgroundColor: 'white',
@@ -840,7 +848,7 @@ export default class Wallet extends Component {
                                         ]}>
                                         <View style={styles.tableStl} key={index}>
                                             <View style={{ flex: 1 }}>
-                                                <Text style={{ fontSize: 17 }}>
+                                                <Text style={{ color: 'black', fontSize: 17 }}>
                                                     {item1.desc ? item1.desc : item1.payment_type.label}
                                                 </Text>
                                                 <Text
@@ -878,6 +886,7 @@ export default class Wallet extends Component {
                                 {
                                     History.map((item, index) => (
                                         <Swipeout
+                                            key={index}
                                             autoClose={true}
                                             style={{
                                                 backgroundColor: 'white',
@@ -930,7 +939,7 @@ export default class Wallet extends Component {
                                             ]}>
                                             <View style={styles.tableStl} key={index}>
                                                 <View style={{ flex: 1 }}>
-                                                    <Text style={{ fontSize: 17 }}>
+                                                    <Text style={{ color: 'black', fontSize: 17 }}>
                                                         {item.wallet_to.label}
                                                     </Text>
                                                     <Text

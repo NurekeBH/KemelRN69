@@ -49,7 +49,7 @@ export default class DuaList extends Component {
                 this.props.navigation.navigate('SingleDua', { item: item })
             }}>
 
-            <Text style={{ flex: 1, fontSize: 17, fontWeight: '400' }}>{item.title}</Text>
+            <Text style={{ color: 'black', flex: 1, fontSize: 17, fontWeight: '400' }}>{item.title}</Text>
             {Right}
         </TouchableOpacity>
     );

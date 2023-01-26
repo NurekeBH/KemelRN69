@@ -67,7 +67,7 @@ export default class QuestHistory extends Component {
         // this.props.navigation.pop('Tab1', { date: item.date })
       }}
       style={{ marginBottom: 16 }}>
-      <Text style={{ textTransform: 'capitalize', fontSize: 17, fontWeight: '600' }}>{GetTime(item.date, "ddd, DD MMMM")}</Text>
+      <Text style={{ color: 'black', textTransform: 'capitalize', fontSize: 17, fontWeight: '600' }}>{GetTime(item.date, "ddd, DD MMMM")}</Text>
       <View
         style={{
           marginTop: 11,

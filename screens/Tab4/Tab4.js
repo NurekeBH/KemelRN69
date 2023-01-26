@@ -21,10 +21,11 @@ import { strings } from '../../Localization/Localization';
 import 'intl';
 import 'intl/locale-data/jsonp/kk-KZ';
 import FastImage from 'react-native-fast-image';
-import { DraxProvider, DraxView } from 'react-native-drax';
+import { DraxProvider, DraxView, DraxScrollView } from 'react-native-drax';
 import { addWallet, Calendars } from '../../Component/MyIcons';
 import axios from 'axios';
 import TabHeader from '../../Component/TabHeader';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export const HeaderList = ({ title, price }) => (
     <View
@@ -33,8 +34,8 @@ export const HeaderList = ({ title, price }) => (
             alignItems: 'center',
             justifyContent: 'space-between',
         }}>
-        <Text style={{ fontSize: 17, fontWeight: '600' }}>{title}</Text>
-        <Text style={{ fontSize: 17, fontWeight: '600' }}>
+        <Text style={{ color: 'black', fontSize: 17, fontWeight: '600' }}>{title}</Text>
+        <Text style={{ color: 'black', fontSize: 17, fontWeight: '600' }}>
             {Intl.NumberFormat('kz-KZ').format(price)} ₸
         </Text>
     </View>
@@ -143,208 +144,219 @@ export default class Tab4 extends Component {
     render() {
         const { isLoading, income, types, incomeSum, typesSum } = this.state;
         return (
-            <View style={{ flex: 1, backgroundColor: '#fff' }}>
-                <StatusBar backgroundColor={'#fff'} barStyle="dark-content" />
-                <SafeAreaView style={{ flex: 1 }}>
-                    <TabHeader
-                        rightIcon={Calendars}
-                        rightOnPress={() => this.props.navigation.navigate('Statistics')}
-                        borderBottomBoll
-                        title={strings.tab4}
-                        navigation={this.props.navigation}
-                    />
-                    <ScrollView
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={isLoading}
-                                onRefresh={() => {
-                                    this.getWalletList();
-                                }}
-                            />
-                        }
-                        showsVerticalScrollIndicator={false}>
-                        <View style={{ flex: 1, padding: 16 }}>
-                            <DraxProvider>
-                                {/* ///////INCOME//////// */}
-                                <View>
-                                    <HeaderList title={strings.kiris} price={incomeSum} />
-                                    <View
-                                        style={{
-                                            flexDirection: 'row',
-                                            flexWrap: 'wrap',
-                                            marginTop: 3,
-                                            alignItems: 'center',
-                                        }}>
-                                        {income.map((item, index) => (
-                                            <DraxView
-                                                onDragEnd={event => {
-                                                    console.log('onDragEnd111', event);
-                                                    if (
-                                                        event.dragTranslation.x < 10 &&
-                                                        event.dragTranslation.x > -10 &&
-                                                        event.dragTranslation.y < 10 &&
-                                                        event.dragTranslation.y > -10
-                                                    ) {
-                                                        this.props.navigation.navigate('Wallet', {
-                                                            type: true,
-                                                            item: item,
-                                                        });
-                                                    }
-                                                }}
-                                                onReceiveDragDrop={({ dragged: { payload } }) => {
-                                                    console.log('onDragEnd3item', item);
-                                                    console.log('onDragEnd3payload', payload);
-
-                                                    this.gotranslation(payload, item);
-                                                }}
-                                                key={index}
-                                                payload={item}
-                                                style={{
-                                                    alignItems: 'center',
-                                                    marginTop: 8,
-                                                    paddingRight: (index + 1) % 4 == 0 ? 0 : 16,
-                                                    marginVertical: 8,
-                                                }}>
-                                                <Text
-                                                    numberOfLines={1}
-                                                    style={{ fontSize: 12, color: '#8E8E93' }}>
-                                                    {item.label}
-                                                </Text>
-                                                <View
-                                                    style={[
-                                                        styles.imgStl,
-                                                        {
-                                                            backgroundColor: item.color.value,
-                                                            borderWidth: 0.5,
-                                                            borderColor: 'rgba(0,0,0,0.2)'
-                                                        },
-                                                    ]}>
-                                                    <FastImage
-                                                        source={{
-                                                            uri: item.icon.icon,
-                                                        }}
-                                                        style={{
-                                                            width: 32,
-                                                            height: 32,
-                                                        }}
-                                                    />
-                                                </View>
-
-                                                <Text
-                                                    style={{
-                                                        fontSize: 13,
-                                                        marginTop: 8,
-                                                    }}>
-                                                    {Intl.NumberFormat('kz-KZ').format(item.value)} ₸
-                                                </Text>
-                                            </DraxView>
-                                        ))}
-                                        <TouchableOpacity
-                                            onPress={() =>
-                                                this.props.navigation.navigate('AddWallet', {
-                                                    type: 1,
-                                                    updateData: this.updateData,
-                                                })
-                                            }
-                                            activeOpacity={0.7}
-                                            style={styles.btnStl}>
-                                            {addWallet}
-                                        </TouchableOpacity>
-                                    </View>
-
-                                    {/* ///////WALLET//////// */}
-                                    <View
-                                        style={{ height: 1, backgroundColor: 'rgba(0, 0, 0, 0.2)' }}
+            <GestureHandlerRootView
+                style={{ flex: 1 }}>
+                <View style={{ flex: 1, backgroundColor: '#fff' }}>
+                    <StatusBar backgroundColor={'#fff'} barStyle="dark-content" />
+                    <SafeAreaView style={{ flex: 1 }}>
+                        <TabHeader
+                            rightIcon={Calendars}
+                            rightOnPress={() => this.props.navigation.navigate('Statistics')}
+                            borderBottomBoll
+                            title={strings.tab4}
+                            navigation={this.props.navigation}
+                        />
+                        <DraxProvider>
+                            <DraxScrollView
+                                refreshControl={
+                                    <RefreshControl
+                                        refreshing={isLoading}
+                                        onRefresh={() => {
+                                            this.getWalletList();
+                                        }}
                                     />
-                                    <View style={{ marginTop: 15 }}>
-                                        <HeaderList title={strings.ras} price={typesSum} />
-                                        <View style={styles.receiver}>
-                                            <View
-                                                style={{
-                                                    flexDirection: 'row',
-                                                    flexWrap: 'wrap',
-                                                    alignItems: 'center',
-                                                    marginTop: 3,
-                                                }}>
-                                                {types.map((item, index) => (
-                                                    <DraxView
-                                                        key={index}
-                                                        onDragEnd={event => {
-                                                            console.log('onDragEnd222222', event);
-                                                            if (
-                                                                event.dragTranslation.x < 10 &&
-                                                                event.dragTranslation.x > -10 &&
-                                                                event.dragTranslation.y < 10 &&
-                                                                event.dragTranslation.y > -10
-                                                            ) {
-                                                                this.props.navigation.navigate('Wallet', {
-                                                                    type: false,
-                                                                    item: item,
-                                                                });
-                                                            }
-                                                        }}
-                                                        payload={item}
-                                                        onReceiveDragDrop={({ dragged: { payload } }) => {
-                                                            console.log('onDragEnd33333', payload);
+                                }
+                                showsVerticalScrollIndicator={false}>
+                                <View style={{ flex: 1, padding: 16 }}>
 
-                                                            this.gotranslation(payload, item);
-                                                        }}
+                                    {/* ///////INCOME//////// */}
+                                    <View>
+                                        <HeaderList title={strings.kiris} price={incomeSum} />
+                                        <View
+                                            style={{
+                                                flexDirection: 'row',
+                                                flexWrap: 'wrap',
+                                                marginTop: 3,
+                                                alignItems: 'center',
+                                            }}>
+                                            {income.map((item, index) => (
+                                                <DraxView
+                                                    onDragEnd={event => {
+                                                        console.log('onDragEnd111', event);
+                                                        if (
+                                                            event.dragTranslation.x < 10 &&
+                                                            event.dragTranslation.x > -10 &&
+                                                            event.dragTranslation.y < 10 &&
+                                                            event.dragTranslation.y > -10
+                                                        ) {
+                                                            this.props.navigation.navigate('Wallet', {
+                                                                type: true,
+                                                                item: item,
+                                                            });
+                                                        }
+                                                    }}
+                                                    onReceiveDragDrop={({ dragged: { payload } }) => {
+                                                        console.log('onDragEnd3item', item);
+                                                        console.log('onDragEnd3payload', payload);
+
+                                                        this.gotranslation(payload, item);
+                                                    }}
+                                                    key={index}
+                                                    payload={item}
+                                                    style={{
+                                                        alignItems: 'center',
+                                                        marginTop: 8,
+                                                        paddingRight: (index + 1) % 4 == 0 ? 0 : 16,
+                                                        marginVertical: 8,
+                                                    }}>
+                                                    <Text
+                                                        numberOfLines={1}
+                                                        style={{ textAlign: 'center', width: 80, fontSize: 12, color: '#8E8E93' }}>
+                                                        {item.label}
+                                                    </Text>
+                                                    <View
+                                                        style={[
+                                                            styles.imgStl,
+                                                            {
+                                                                backgroundColor: item.color.value,
+                                                                borderWidth: 0.5,
+                                                                borderColor: 'rgba(0,0,0,0.2)'
+                                                            },
+                                                        ]}>
+                                                        <FastImage
+                                                            source={{
+                                                                uri: item.icon.icon,
+                                                            }}
+                                                            style={{
+                                                                width: 32,
+                                                                height: 32,
+                                                            }}
+                                                        />
+                                                    </View>
+
+                                                    <Text
                                                         style={{
-                                                            alignItems: 'center',
+                                                            color: 'black',
+                                                            fontSize: 13,
                                                             marginTop: 8,
-                                                            paddingRight: (index + 1) % 4 == 0 ? 0 : 16,
-                                                            marginVertical: 8,
                                                         }}>
-                                                        <Text style={{ fontSize: 12, color: '#8E8E93' }}>
-                                                            {item.label}
-                                                        </Text>
-                                                        <View
-                                                            style={[
-                                                                styles.imgStl,
-                                                                {
-                                                                    backgroundColor: item.color.value,
-                                                                    borderWidth: 0.5,
-                                                                    borderColor: 'rgba(0,0,0,0.2)'
-                                                                },
-                                                            ]}>
-                                                            <FastImage
-                                                                source={{
-                                                                    uri: item.icon.icon,
-                                                                }}
-                                                                style={{
-                                                                    width: 32,
-                                                                    height: 32,
-                                                                }}
-                                                            />
-                                                        </View>
+                                                        {Intl.NumberFormat('kz-KZ').format(item.value)} ₸
+                                                    </Text>
+                                                </DraxView>
+                                            ))}
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    this.props.navigation.navigate('AddWallet', {
+                                                        type: 1,
+                                                        updateData: this.updateData,
+                                                    })
+                                                }
+                                                activeOpacity={0.7}
+                                                style={styles.btnStl}>
+                                                {addWallet}
+                                            </TouchableOpacity>
+                                        </View>
 
-                                                        <Text style={{ fontSize: 13, marginTop: 8 }}>
-                                                            {Intl.NumberFormat('kz-KZ').format(item.value)} ₸
-                                                        </Text>
-                                                    </DraxView>
-                                                ))}
-                                                <TouchableOpacity
-                                                    onPress={() =>
-                                                        this.props.navigation.navigate('AddWallet', {
-                                                            type: 2,
-                                                            updateData: this.updateData,
-                                                        })
-                                                    }
-                                                    activeOpacity={0.7}
-                                                    style={styles.btnStl}>
-                                                    {addWallet}
-                                                </TouchableOpacity>
+                                        {/* ///////WALLET//////// */}
+                                        <View
+                                            style={{ height: 1, backgroundColor: 'rgba(0, 0, 0, 0.2)' }}
+                                        />
+                                        <View style={{ marginTop: 15 }}>
+                                            <HeaderList title={strings.ras} price={typesSum} />
+                                            <View style={styles.receiver}>
+                                                <View
+                                                    style={{
+                                                        flexDirection: 'row',
+                                                        flexWrap: 'wrap',
+                                                        alignItems: 'center',
+                                                        marginTop: 3,
+                                                    }}>
+                                                    {types.map((item, index) => (
+                                                        <DraxView
+                                                            key={index}
+                                                            onDragEnd={event => {
+                                                                console.log('onDragEnd222222', event);
+                                                                if (
+                                                                    event.dragTranslation.x < 10 &&
+                                                                    event.dragTranslation.x > -10 &&
+                                                                    event.dragTranslation.y < 10 &&
+                                                                    event.dragTranslation.y > -10
+                                                                ) {
+                                                                    this.props.navigation.navigate('Wallet', {
+                                                                        type: false,
+                                                                        item: item,
+                                                                    });
+                                                                }
+                                                            }}
+                                                            payload={item}
+                                                            onReceiveDragDrop={({ dragged: { payload } }) => {
+                                                                console.log('onDragEnd33333', payload);
+
+                                                                this.gotranslation(payload, item);
+                                                            }}
+                                                            style={{
+                                                                alignItems: 'center',
+                                                                marginTop: 8,
+                                                                paddingRight: (index + 1) % 4 == 0 ? 0 : 16,
+                                                                marginVertical: 8,
+                                                            }}>
+                                                            <Text
+                                                                numberOfLines={1}
+                                                                style={{
+                                                                    textAlign: 'center', width: 80,
+                                                                    color: '#8E8E93'
+                                                                }}>
+                                                                {item.label}
+                                                            </Text>
+                                                            <View
+                                                                style={[
+                                                                    styles.imgStl,
+                                                                    {
+                                                                        backgroundColor: item.color.value,
+                                                                        borderWidth: 0.5,
+                                                                        borderColor: 'rgba(0,0,0,0.2)'
+                                                                    },
+                                                                ]}>
+                                                                <FastImage
+                                                                    source={{
+                                                                        uri: item.icon.icon,
+                                                                    }}
+                                                                    style={{
+                                                                        width: 32,
+                                                                        height: 32,
+                                                                    }}
+                                                                />
+                                                            </View>
+
+                                                            <Text style={{ color: 'black', fontSize: 13, marginTop: 8 }}>
+                                                                {Intl.NumberFormat('kz-KZ').format(item.value)} ₸
+                                                            </Text>
+                                                        </DraxView>
+                                                    ))}
+                                                    <TouchableOpacity
+                                                        onPress={() =>
+                                                            this.props.navigation.navigate('AddWallet', {
+                                                                type: 2,
+                                                                updateData: this.updateData,
+                                                            })
+                                                        }
+                                                        activeOpacity={0.7}
+                                                        style={styles.btnStl}>
+                                                        {addWallet}
+                                                    </TouchableOpacity>
+                                                </View>
                                             </View>
                                         </View>
+
+                                        {/* ///////EXPENSES//////// */}
                                     </View>
 
-                                    {/* ///////EXPENSES//////// */}
                                 </View>
-                            </DraxProvider>
-                        </View>
-                    </ScrollView>
-                </SafeAreaView>
-            </View>
+                            </DraxScrollView>
+                        </DraxProvider>
+                    </SafeAreaView>
+                </View>
+            </GestureHandlerRootView>
         );
     }
 }

@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {View, Text, StatusBar, SafeAreaView, ScrollView} from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, StatusBar, SafeAreaView, ScrollView } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {ButtonClass, height, width} from '../../Component/Component';
+import { ButtonClass, height, width } from '../../Component/Component';
 import Header from '../../Component/Header2';
-import {strings} from '../../Localization/Localization';
+import { strings } from '../../Localization/Localization';
 import HTML from 'react-native-render-html';
 
 export default class Book extends Component {
@@ -16,18 +16,18 @@ export default class Book extends Component {
   }
 
   render() {
-    const {item, type} = this.state;
+    const { item, type } = this.state;
     console.log('item', item);
     return (
-      <View style={{flex: 1, backgroundColor: '#fff'}}>
+      <View style={{ flex: 1, backgroundColor: '#fff' }}>
         <StatusBar barStyle="dark-content" />
-        <SafeAreaView style={{flex: 1}}>
+        <SafeAreaView style={{ flex: 1 }}>
           <Header
             title={strings.book}
             onLeftPress={() => this.props.navigation.goBack()}
           />
           <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={{alignItems: 'center'}}>
+            <View style={{ alignItems: 'center' }}>
               <FastImage
                 source={{
                   uri: item.cover,
@@ -39,10 +39,10 @@ export default class Book extends Component {
                   borderRadius: 6,
                 }}
               />
-              <Text style={{marginTop: 20, fontSize: 22, fontWeight: '700'}}>
+              <Text style={{ color: 'black', marginTop: 20, fontSize: 22, fontWeight: '700' }}>
                 {item.label}
               </Text>
-              <Text style={{marginTop: 8, fontSize: 16}}>{item.author}</Text>
+              <Text style={{ color: 'black', marginTop: 8, fontSize: 16 }}>{item.author}</Text>
             </View>
             <HTML
               source={{
@@ -65,7 +65,7 @@ export default class Book extends Component {
             <ButtonClass
               onPress={() => {
                 if (type == 'book') {
-                  this.props.navigation.navigate('ReadBook', {item: item});
+                  this.props.navigation.navigate('ReadBook', { item: item });
                 }
               }}
               style={{

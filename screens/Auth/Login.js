@@ -145,7 +145,7 @@ export default class Login extends Component {
               {strings.log}
             </Text>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('Registration')}
+              onPress={() => this.props.navigation.navigate('Registr')}
               activeOpacity={0.7}>
               <View style={styles.btnStl}>
                 <Text style={{ fontSize: 15, fontWeight: '600', color: '#fff' }}>
@@ -170,6 +170,7 @@ export default class Login extends Component {
                   fontSize: 34,
                   fontWeight: '700',
                   marginTop: 24,
+                  color: 'black',
                 }}>
                 Өз уақытың мен өз өміріңді қолға ал!
               </Text>
@@ -179,8 +180,7 @@ export default class Login extends Component {
               <View
                 style={{
                   backgroundColor: colorApp.fone,
-                  paddingHorizontal: 12,
-                  paddingVertical: 4,
+                  padding: 12,
                   borderRadius: 8,
                   marginTop: 15,
                 }}>
@@ -199,15 +199,14 @@ export default class Login extends Component {
               <View
                 style={{
                   backgroundColor: colorApp.fone,
-                  paddingHorizontal: 12,
-                  paddingVertical: 4,
+                  padding: 12,
                   borderRadius: 8,
                   marginTop: 8,
                 }}>
                 <View
                   style={[
                     styles.inpVwStl,
-                    { justifyContent: 'space-between', flexDirection: 'row' },
+                    { justifyContent: 'space-between', flexDirection: 'row', },
                   ]}>
                   <TextInput
                     style={{ fontSize: 17, width: width - 90 }}

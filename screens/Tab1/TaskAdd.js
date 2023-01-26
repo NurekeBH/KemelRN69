@@ -11,6 +11,7 @@ import {
   TextInput,
   Dimensions,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
 import {
   ButtonClass,
@@ -50,15 +51,16 @@ export default function TaskAdd({ route, navigation }) {
   const [isSend, setisSend] = useState(false);
   const [openModal, setopenModal] = useState(false);
   const [isSaveZametka, setIsSaveZametka] = useState(false);
+  const [folderData, setFolderData] = useState(route.params?.folderData);
   const [modalValue, setmodalValue] = useState({
     id: null,
-    label: 'Нет',
+    label: strings.no
   });
   const [toolbarKeyboard, settoolbarKeyboard] = useState(false);
   const richText = useRef();
   useEffect(() => {
     Moment.locale(getLang());
-
+    console.log('folderData', folderData)
   }, []);
 
 
@@ -89,12 +91,43 @@ export default function TaskAdd({ route, navigation }) {
         })
         .then(response => {
           console.log('RESPONSE add:', response.data);
-          route.params.updateData();
-          navigation.goBack();
+          if (isSaveZametka) {
+            axios
+              .post('notes/note/', {
+                label: theme,
+                desc: zametka,
+                parent: null,
+                folder: folderData[0].id,
+              })
+              .then(response => {
+                console.log('RESPONSE add:', response.data);
+                route.params.updateData();
+                navigation.goBack();
+                setisSend(false);
+              })
+              .catch(error => {
+                console.log('RESPONSE error:', error.response);
+                if (error.response && error.response.status == 401) {
+                  showToast('error', error.response.data.detail);
+                }
+                route.params.updateData();
+                navigation.goBack();
+                setisSend(false);
+              });
+          } else {
+            setisSend(false);
+            route.params.updateData();
+            navigation.goBack();
+          }
+
+
+
+
 
         })
         .catch(error => {
           console.log('RESPONSE error:', error.response);
+          setisSend(false);
           if (error.response && error.response.status == 401) {
             showToast('error', error.response.data.detail);
           }
@@ -114,10 +147,15 @@ export default function TaskAdd({ route, navigation }) {
             activeOpacity={0.7}>
             {Left_icon}
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => onAddPress()}>
-            <Text style={{ fontSize: 17, fontWeight: '600', color: '#3F49DC' }}>
-              {strings.save}
-            </Text>
+          <TouchableOpacity onPress={() => !isSend && onAddPress()}>
+            {isSend ?
+              <ActivityIndicator color={"#3F49DC"} />
+              :
+              <Text style={{ fontSize: 17, fontWeight: '600', color: '#3F49DC' }}>
+                {strings.save}
+              </Text>
+            }
+
           </TouchableOpacity>
         </View>
         <ScrollView style={{ paddingHorizontal: 16, minHeight: 400 }}>
@@ -138,56 +176,25 @@ export default function TaskAdd({ route, navigation }) {
               />
             </View>
 
-            <View
+            <TouchableOpacity
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 paddingVertical: 16,
-              }}>
-              <Text style={{ fontSize: 17 }}>{strings.vremya}</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  setOpen(true);
-                }}>
-                <Text style={{ fontSize: 17, color: '#3F49DC' }}>
-                  {Moment(datetime).format('lll')}
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                alignItems: 'center',
-                borderBottomColor: 'rgba(0, 0, 0, 0.2)',
-                borderBottomWidth: 1,
-              }}>
-              <DatePicker
-                modal
-                locale={'en_GB'}
-                open={open}
-                date={datetime}
-                onConfirm={date => {
-                  setOpen(false);
-                  setdatetime(date);
-                }}
-                onCancel={() => {
-                  setOpen(false);
-                }}
-              />
-
-              {/* <DatePicker
-              modal={true}
-              open={true}
-              mode="datetime"
-              date={datetime}
-              style={{width: width}}
-              is24hourSource="locale"
-              locale={getLang()}
-              onDateChange={e => {
-                setdatetime(e);
               }}
-              androidVariant="nativeAndroid"
-            /> */}
-            </View>
+              onPress={() => {
+                setOpen(!open);
+              }}
+            >
+              <Text style={{ fontSize: 17 }}>{strings.vremya}</Text>
+
+              <Text style={{ fontSize: 17, color: '#3F49DC' }}>
+                {Moment(datetime).format('lll')}
+              </Text>
+
+            </TouchableOpacity>
+
+
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
@@ -205,7 +212,7 @@ export default function TaskAdd({ route, navigation }) {
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}>
-                <Text style={{ fontSize: 17, }}>{strings.reminder}</Text>
+                <Text style={{ color: 'black', fontSize: 17, }}>{strings.reminder}</Text>
               </View>
               <Text style={{ fontSize: 17, color: '#3F49DC' }}>
                 {modalValue.label}
@@ -225,7 +232,7 @@ export default function TaskAdd({ route, navigation }) {
                   alignItems: 'center',
                 }}>
                 {RightRed}
-                <Text style={{ fontSize: 17, marginLeft: 12 }}>Приоритет</Text>
+                <Text style={{ color: 'black', fontSize: 17, marginLeft: 12 }}>Приоритет</Text>
               </View>
               <Switch
                 value={priority}
@@ -246,7 +253,7 @@ export default function TaskAdd({ route, navigation }) {
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}>
-                <Text style={{ fontSize: 17, marginLeft: 0 }}>
+                <Text style={{ color: 'black', fontSize: 17, marginLeft: 0 }}>
                   {strings.addzamk}
                 </Text>
               </View>
@@ -337,6 +344,43 @@ export default function TaskAdd({ route, navigation }) {
           /> */}
 
         <Modal
+
+          position="bottom"
+          backButtonClose
+          isOpen={open}
+          onClosed={() => {
+            setOpen(false);
+          }}
+          style={{
+            backgroundColor: '#F2F2F7',
+            height: 'auto',
+
+          }}
+        >
+          <View style={{ alignItems: 'center', justifyContent: 'flex-end', marginBottom: 40 }}>
+            <DatePicker
+              locale={getLang()}
+              is24hourSource="locale"
+              date={datetime}
+              onDateChange={date => {
+                setdatetime(date);
+              }}
+            />
+            <TouchableOpacity
+              onPress={() => {
+                setOpen(false);
+              }}
+            >
+              <Text style={{ color: '#3F49DC', fontSize: 16, textAlign: 'center', fontWeight: '600' }}>OK</Text>
+            </TouchableOpacity>
+          </View>
+
+        </Modal>
+
+
+
+
+        <Modal
           position="bottom"
           backButtonClose
           isOpen={openModal}
@@ -356,11 +400,11 @@ export default function TaskAdd({ route, navigation }) {
                 setopenModal(false);
                 setmodalValue({
                   id: null,
-                  label: 'Нет',
+                  label: strings.no,
                 });
               }}>
               <Text styl={{ fontSize: 17, fontWeight: '500', color: '#000000' }}>
-                Нет
+                {strings.no}
               </Text>
             </TouchableOpacity>
 

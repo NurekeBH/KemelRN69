@@ -213,7 +213,7 @@ export default function ModalHabits({ isOpen, modelItemData, RefreshModal }) {
             ))}
           </View>
           <View style={styles.mdlVwStl2}>
-            <Text style={{ fontSize: 17 }}>{strings.vremya}</Text>
+            <Text style={{ color: 'black', fontSize: 17 }}>{strings.vremya}</Text>
             <TouchableOpacity
               onPress={() => {
                 setopen(!open);
@@ -231,8 +231,9 @@ export default function ModalHabits({ isOpen, modelItemData, RefreshModal }) {
             mode="datetime"
             date={new Date(datetime)}
             is24hourSource="locale"
-            title={null}
             confirmText={strings.save}
+            cancelText={strings.close}
+            title={null}
             locale={getLang()}
             onConfirm={date => {
               setdatetime(date);
@@ -250,7 +251,7 @@ export default function ModalHabits({ isOpen, modelItemData, RefreshModal }) {
             ]}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               {PurposeIcon}
-              <Text style={{ fontSize: 17, marginLeft: 10 }}>{strings.maks}</Text>
+              <Text style={{ color: 'black', fontSize: 17, marginLeft: 10 }}>{strings.maks}</Text>
             </View>
             <Switch
               value={is_purpose}
@@ -322,8 +323,8 @@ export default function ModalHabits({ isOpen, modelItemData, RefreshModal }) {
                 {Minuse}
               </TouchableOpacity>
               <View style={{ width: 140, alignItems: 'center' }}>
-                <Text style={{ fontSize: 28, fontWeight: '700' }}>{ind}</Text>
-                <Text style={{ fontSize: 13, opacity: 0.4 }}>рет</Text>
+                <Text style={{ color: 'black', fontSize: 28, fontWeight: '700' }}>{ind}</Text>
+                <Text style={{ color: 'black', fontSize: 13, opacity: 0.4 }}>рет</Text>
               </View>
               <TouchableOpacity
                 disabled={ind == 1000}

@@ -327,7 +327,7 @@ export default class Unfulfilled_tasks extends Component {
                             activeOpacity={0.7}>
                             {Left_icon}
                         </TouchableOpacity>
-                        <Text style={{ flex: 1, textAlign: 'center', fontWeight: '500', fontSize: 16 }} numberOfLines={1}>{title}</Text>
+                        <Text style={{ color: 'black', flex: 1, textAlign: 'center', fontWeight: '500', fontSize: 16 }} numberOfLines={1}>{title}</Text>
 
                     </View>
                     <View style={{ flex: 1 }}>

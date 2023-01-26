@@ -39,7 +39,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
   const [address, setaddress] = useState(modelItemData.address);
   const [reminder, setReminder] = useState(modelItemData.reminder ? modelItemData.reminder : {
     id: null,
-    label: 'Нет',
+    label: strings.no,
   });
   const [openModal, setopenModal] = useState(false);
   const [isSave, setisSave] = useState(false);
@@ -204,7 +204,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
                 />
               </View>
               <View style={styles.mdlVwStl2}>
-                <Text style={{ fontSize: 17 }}>{strings.reminder}</Text>
+                <Text style={{ color: 'black', fontSize: 17 }}>{strings.reminder}</Text>
                 <TouchableOpacity
                   onPress={() => {
                     setopenModal(true);
@@ -217,7 +217,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
 
 
               <View style={styles.mdlVwStl2}>
-                <Text style={{ fontSize: 17 }}>{strings.vremya}</Text>
+                <Text style={{ color: 'black', fontSize: 17 }}>{strings.vremya}</Text>
                 <TouchableOpacity
                   onPress={() => {
                     setopen(!open);
@@ -238,6 +238,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
                 title={null}
                 confirmText={strings.save}
                 locale={getLang()}
+                cancelText={strings.close}
                 onConfirm={date => {
                   console.log('datedate', date);
                   setdatetime(date);
@@ -261,7 +262,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
                     alignItems: 'center',
                   }}>
                   {RightRed}
-                  <Text style={{ fontSize: 17, marginLeft: 12 }}>Приоритет</Text>
+                  <Text style={{ color: 'black', fontSize: 17, marginLeft: 12 }}>Приоритет</Text>
                 </View>
                 <Switch
                   value={priority}
@@ -289,8 +290,8 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
                     flexDirection: 'row',
                     alignItems: 'center',
                   }}>
-                  <Text style={{ fontSize: 17, marginLeft: 0 }}>
-                    Заметкаға қосу
+                  <Text style={{ color: 'black', fontSize: 17, marginLeft: 0 }}>
+                    {strings.addzamk}
                   </Text>
                 </View>
                 <Switch
@@ -349,6 +350,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
                 style={{ minHeight: 100, marginHorizontal: -5 }}
                 ref={richText}
                 placeholder={strings.zamk}
+                androidHardwareAccelerationDisabled={true}
                 initialContentHTML={zametka}
                 onChange={zametka => {
                   setzametka(zametka);
@@ -387,7 +389,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
 
             }}>
             <Text styl={{ fontSize: 17, fontWeight: '500', color: '#000000' }}>
-              Нет
+              {strings.no}
             </Text>
           </TouchableOpacity>
 

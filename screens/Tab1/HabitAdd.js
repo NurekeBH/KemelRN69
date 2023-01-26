@@ -81,6 +81,17 @@ export default class HabitAdd extends Component {
 
   componentDidMount() {
 
+    // axios.get('todos/weeks/')
+    //   .then((response) => {
+    //     console.log('weeks weeks', response)
+    //   })
+    //   .catch((error) => {
+
+    //     console.log(' error', error)
+    //   })
+
+
+
     axios.get('todos/target-templates/')
       .then((response) => {
         console.log('templates response', response)
@@ -125,7 +136,7 @@ export default class HabitAdd extends Component {
             target_template: selected_template,
           })
           .then(response => {
-            console.log('RESPONSE habits add:', response.data);
+            console.log('RESPONSE habits add:', response);
             this.props.route.params.updateData();
             this.props.navigation.goBack();
           })
@@ -177,7 +188,7 @@ export default class HabitAdd extends Component {
               />
             </View>
             <View>
-              <Text style={{ fontSize: 22, fontWeight: '700', marginTop: 16 }}>
+              <Text style={{ color: 'black', fontSize: 22, fontWeight: '700', marginTop: 16 }}>
                 {strings.kunder}
               </Text>
               <View style={styles.weekVwStl}>
@@ -232,7 +243,7 @@ export default class HabitAdd extends Component {
                   alignItems: 'center',
                 }}>
                 {Flag}
-                <Text style={{ fontSize: 17, marginLeft: 12 }}>
+                <Text style={{ color: 'black', fontSize: 17, marginLeft: 12 }}>
                   {strings.maks}
                 </Text>
               </View>

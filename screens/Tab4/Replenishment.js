@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -9,11 +9,11 @@ import {
   StyleSheet,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {ButtonClass, showToast, width} from '../../Component/Component';
+import { ButtonClass, showToast, width } from '../../Component/Component';
 import Header from '../../Component/Header2';
-import {TwoLeft} from '../../Component/MyIcons';
+import { TwoLeft } from '../../Component/MyIcons';
 import CurrencyInput from 'react-native-currency-input';
-import {strings} from '../../Localization/Localization';
+import { strings } from '../../Localization/Localization';
 import axios from 'axios';
 
 export default class Replenishment extends Component {
@@ -33,11 +33,11 @@ export default class Replenishment extends Component {
   onChangeText = price => {
     price = parseInt(price.replace(/\.|,|RM/g, ' ')) / 3;
     console.log(price);
-    this.setState({price: price});
+    this.setState({ price: price });
   };
 
   onAddpress() {
-    const {item, price, title} = this.state;
+    const { item, price, title } = this.state;
     if (price) {
       axios
         .post('wallets/replenishment/add/', {
@@ -59,12 +59,12 @@ export default class Replenishment extends Component {
   }
 
   render() {
-    const {item, price, title} = this.state;
+    const { item, price, title } = this.state;
     return (
-      <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <SafeAreaView style={{flex: 1}}>
+      <View style={{ flex: 1, backgroundColor: '#fff' }}>
+        <SafeAreaView style={{ flex: 1 }}>
           <Header onLeftPress={() => this.props.navigation.goBack()} />
-          <View style={{backgroundColor: 'rgba(0, 0, 0, 0.02)', flex: 1}}>
+          <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.02)', flex: 1 }}>
             <ScrollView>
               <View
                 style={{
@@ -92,7 +92,7 @@ export default class Replenishment extends Component {
                     }}
                   />
                 </View>
-                <Text numberOfLines={1} style={{fontSize: 13, marginTop: 7}}>
+                <Text numberOfLines={1} style={{ color: 'black', fontSize: 13, marginTop: 7 }}>
                   {item.label}
                 </Text>
               </View>
@@ -122,10 +122,10 @@ export default class Replenishment extends Component {
                   separator=" "
                   autoFocus
                   precision={0}
-                  style={{fontSize: 40}}
+                  style={{ fontSize: 40 }}
                   keyboardType="number-pad"
                   maxLength={12}
-                  onChangeValue={price => this.setState({price})}
+                  onChangeValue={price => this.setState({ price })}
                   value={price}
                   onSubmitEditing={() => this.inpRef.focus()}
                   returnKeyType="next"
@@ -138,14 +138,14 @@ export default class Replenishment extends Component {
                   value={title}
                   placeholderTextColor={'rgba(0,0,0,0.4)'}
                   placeholder={'Комментарий'}
-                  onChangeText={title => this.setState({title})}
-                  style={{fontSize: 17, width: width - 58}}
+                  onChangeText={title => this.setState({ title })}
+                  style={{ fontSize: 17, width: width - 58 }}
                   returnKeyType={'done'}
                 />
               </View>
 
               <ButtonClass
-                style={{marginHorizontal: 16, marginTop: 50}}
+                style={{ marginHorizontal: 16, marginTop: 50 }}
                 title={'Толықтыру'}
                 onPress={() => this.onAddpress()}
               />

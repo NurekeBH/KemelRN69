@@ -79,6 +79,7 @@ export default function TabHeader({
                   fontWeight: '600',
                   marginLeft: 15,
                   textTransform: 'capitalize',
+                  color: 'black'
                 }}>
                 {title}
               </Text>

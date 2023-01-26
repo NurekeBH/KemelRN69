@@ -14,18 +14,35 @@ import {
   StyleSheet,
   FlatList,
   Alert,
+  Dimensions,
 } from 'react-native';
+import DatePicker from 'react-native-date-picker';
 import {
   ButtonClass,
+  getLang,
   HeaderStyle,
   showToast,
   width,
 } from '../../Component/Component';
 import { LeftIcon, Left_icon } from '../../Component/MyIcons';
 import { strings } from '../../Localization/Localization';
+import Modal from 'react-native-modalbox';
+import moment from 'moment';
+
+
 
 export default function AddGoal({ route, navigation }) {
   const [label, setLabel] = useState('');
+  const [desc, setDesc] = useState('');
+  const [fromDate, setFromDate] = useState('');
+  const [toDate, setToDate] = useState('');
+
+  const [datetime, setdatetime] = useState(new Date());
+  const [open, setOpen] = useState(false);
+
+  const [datetime2, setdatetime2] = useState(new Date());
+  const [open2, setOpen2] = useState(false);
+
 
   const [category_id, setCategory] = useState(route.params?.category_id);
   const [section_id, setSectionId] = useState(route.params?.section_id);
@@ -38,6 +55,9 @@ export default function AddGoal({ route, navigation }) {
           category: category_id,
           section: section_id,
           done: false,
+          date_from: fromDate,
+          date_to: toDate,
+          desc: desc
         })
         .then(response => {
           console.log('RESPONSE add:', response);
@@ -83,32 +103,173 @@ export default function AddGoal({ route, navigation }) {
                   marginHorizontal: 10,
                 }}
                 placeholderTextColor="#D1D1D6"
-                multiline
                 autoFocus
                 onChangeText={label => {
                   setLabel(label);
                 }}
                 value={label}
                 returnKeyType="next"
+                placeholder={strings.goalTitle}
               />
               <View
                 style={{
-                  height: 1,
+                  height: 0.5,
                   backgroundColor: 'rgba(0, 0, 0, 0.2)',
                   marginVertical: 10,
                   marginHorizontal: 10,
                 }}
               />
+
+              <View style={{ paddig: 16 }}>
+                <Text style={{ color: 'rgba(0,0,0,0.6)', marginBottom: 4, marginLeft: 4 }}>{strings.goalDate}</Text>
+
+                <View style={{ marginVertical: 8, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setOpen(true)
+                    }}
+                    style={{ backgroundColor: '#F2F2F7', borderRadius: 8, width: Dimensions.get('window').width / 2 - 20, paddingVertical: 8 }} >
+                    {/* <TextInput
+                      style={{ fontSize: 16, color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 2 - 20, paddingVertical: 8 }}
+                      numberOfLines={1}
+                      onChangeText={fromDate => {
+                        setFromDate(fromDate);
+                      }}
+                      value={fromDate}
+                    /> */}
+                    <Text style={{ fontSize: 16, color: 'black', textAlign: 'center', }}>
+                      {fromDate}
+                    </Text>
+                  </TouchableOpacity>
+                  <Text style={{ color: 'black', margin: 8 }}>-</Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setOpen2(true)
+                    }}
+                    style={{ backgroundColor: '#F2F2F7', borderRadius: 8, width: Dimensions.get('window').width / 2 - 20, paddingVertical: 8 }}
+
+                  >
+                    {/* <TextInput
+                      style={{ fontSize: 16, color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 2 - 20, paddingVertical: 8 }}
+                      numberOfLines={1}
+                      onChangeText={toDate => {
+                        setToDate(toDate);
+                      }}
+                      value={toDate}
+                    /> */}
+                    <Text style={{ fontSize: 16, color: 'black', textAlign: 'center', }}>
+                      {toDate}
+                    </Text>
+
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View
+                style={{
+                  height: 0.5,
+                  backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                  marginVertical: 10,
+                  marginHorizontal: 10,
+                }}
+              />
+
+
+
+              <TextInput
+                // placeholder={strings.tem}
+                style={{
+                  fontSize: 16,
+                  fontWeight: '400',
+                  marginHorizontal: 10,
+                }}
+                placeholderTextColor="#D1D1D6"
+                multiline
+                placeholder={strings.goalDesc}
+                onChangeText={desc => {
+                  setDesc(desc);
+                }}
+                value={desc}
+                returnKeyType="next"
+              />
+
+
             </KeyboardAvoidingView>
           </ScrollView>
-          {/* <ButtonClass
-            onPress={() => onSaveClick()}
-            title={strings.save}
-            style={{ marginHorizontal: 16, marginBottom: 100 }}
-          /> */}
+
+          <Modal
+            position="bottom"
+            backButtonClose
+            isOpen={open}
+            onClosed={() => {
+              setOpen(false);
+            }}
+            style={{
+              backgroundColor: '#F2F2F7',
+              height: 'auto',
+            }}
+          >
+            <View style={{ alignItems: 'center', justifyContent: 'flex-end', marginBottom: 40 }}>
+              <DatePicker
+                locale={getLang()}
+                mode="date"
+                is24hourSource="locale"
+                date={datetime}
+                onDateChange={date => {
+                  setdatetime(date);
+                  setFromDate(moment(date).format('DD.MM.YYYY'))
+                }}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  setFromDate(moment(datetime).format('DD.MM.YYYY'))
+                  setOpen(false);
+                }}
+              >
+                <Text style={{ color: '#3F49DC', fontSize: 16, textAlign: 'center', fontWeight: '600' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+
+          </Modal>
+
+
+          <Modal
+            position="bottom"
+            backButtonClose
+            isOpen={open2}
+            onClosed={() => {
+              setOpen2(false);
+            }}
+            style={{
+              backgroundColor: '#F2F2F7',
+              height: 'auto',
+            }}
+          >
+            <View style={{ alignItems: 'center', justifyContent: 'flex-end', marginBottom: 40 }}>
+              <DatePicker
+                locale={getLang()}
+                mode="date"
+                is24hourSource="locale"
+                date={datetime2}
+                onDateChange={date => {
+                  setdatetime2(date);
+                  setToDate(moment(date).format('DD.MM.YYYY'))
+                }}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  setToDate(moment(datetime2).format('DD.MM.YYYY'))
+                  setOpen2(false);
+                }}
+              >
+                <Text style={{ color: '#3F49DC', fontSize: 16, textAlign: 'center', fontWeight: '600' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+
+          </Modal>
+
         </View>
-      </SafeAreaView>
-    </View>
+      </SafeAreaView >
+    </View >
   );
 }
 

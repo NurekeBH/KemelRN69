@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -8,11 +8,11 @@ import {
   Modal,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {ButtonClass, width} from '../../Component/Component';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ButtonClass, width } from '../../Component/Component';
 import Header from '../../Component/Header2';
-import {strings} from '../../Localization/Localization';
-import {colorApp} from '../../theme/Colors';
+import { strings } from '../../Localization/Localization';
+import { colorApp } from '../../theme/Colors';
 import Toast from 'react-native-simple-toast';
 
 export default class RestorePassword extends Component {
@@ -26,7 +26,7 @@ export default class RestorePassword extends Component {
 
   postEmail = () => {
     if (this.validate()) {
-      this.setState({visible: true});
+      this.setState({ visible: true });
     } else {
       Toast.show(strings.neperr);
     }
@@ -42,22 +42,22 @@ export default class RestorePassword extends Component {
   };
 
   render() {
-    const {email, visible} = this.state;
+    const { email, visible } = this.state;
     return (
-      <View style={{flex: 1, backgroundColor: '#fff'}}>
+      <View style={{ flex: 1, backgroundColor: '#fff' }}>
         <StatusBar barStyle="dark-content" backgroundColor={'#fff'} />
-        <SafeAreaView style={{flex: 1}}>
+        <SafeAreaView style={{ flex: 1 }}>
           <Header onLeftPress={() => this.props.navigation.goBack()} />
           <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={{paddingHorizontal: 20, paddingTop: 35}}>
+            <View style={{ paddingHorizontal: 20, paddingTop: 35 }}>
               <FastImage
                 source={require('../../assets/logo.png')}
-                style={{width: 80, aspectRatio: 1, marginBottom: 24}}
+                style={{ width: 80, aspectRatio: 1, marginBottom: 24 }}
               />
-              <Text style={{fontWeight: '700', fontSize: 34}}>
+              <Text style={{ fontWeight: '700', fontSize: 34 }}>
                 {strings.umytt}
               </Text>
-              <Text style={{fontSize: 20, marginTop: 8}}>{strings.umyttt}</Text>
+              <Text style={{ fontSize: 20, marginTop: 8 }}>{strings.umyttt}</Text>
               <View
                 style={{
                   backgroundColor: colorApp.fone,
@@ -66,14 +66,14 @@ export default class RestorePassword extends Component {
                   marginTop: 15,
                 }}>
                 <TextInput
-                  style={{fontSize: 17, width: width - 65}}
+                  style={{ fontSize: 17, width: width - 65 }}
                   placeholder={'Email'}
                   placeholderTextColor={'rgba(0,0,0,0.4)'}
                   keyboardType={'email-address'}
                   returnKeyType={'done'}
                   textContentType="emailAddress"
                   value={email}
-                  onChangeText={email => this.setState({email})}
+                  onChangeText={email => this.setState({ email })}
                 />
               </View>
               <ButtonClass
@@ -83,10 +83,10 @@ export default class RestorePassword extends Component {
             </View>
           </ScrollView>
           <Modal visible={visible} animationType="fade">
-            <SafeAreaView style={{flex: 1}}>
+            <SafeAreaView style={{ flex: 1 }}>
               <Header
                 onLeftPress={() =>
-                  this.setState({visible: false}, () =>
+                  this.setState({ visible: false }, () =>
                     this.props.navigation.goBack(),
                   )
                 }
@@ -101,12 +101,12 @@ export default class RestorePassword extends Component {
                 }}>
                 <FastImage
                   source={require('../../assets/logo.png')}
-                  style={{width: 80, aspectRatio: 1, marginBottom: 24}}
+                  style={{ width: 80, aspectRatio: 1, marginBottom: 24 }}
                 />
-                <Text style={{fontWeight: '700', fontSize: 34}}>
+                <Text style={{ fontWeight: '700', fontSize: 34 }}>
                   {strings.email}
                 </Text>
-                <Text style={{fontSize: 20, marginTop: 8}}>
+                <Text style={{ fontSize: 20, marginTop: 8 }}>
                   {strings.pcht + email + strings.pcht2}
                 </Text>
               </View>

@@ -6,13 +6,13 @@ function getContentCSS() {
         img {max-width: 98%;vertical-align: middle;}
         table {width: 100% !important;}
         table td {width: inherit;}
-        table span { font-size: 12px !important; }
+        table span { font-size: 14px !important; }
         .x-todo li {list-style:none;}
         .x-todo-box {position: relative; left: -24px;}
         .x-todo-box input{position: absolute;}
         blockquote{border-left: 6px solid #ddd;padding: 5px 0 5px 10px;margin: 15px 0 15px 15px;}
         hr{display: block;height: 0; border: 0;border-top: 1px solid #ccc; margin: 15px 0; padding: 0;}
-        pre{padding: 10px 5px 10px 10px;margin: 15px 0;display: block;line-height: 18px;background: #F0F0F0;border-radius: 6px;font-size: 13px; font-family: 'monaco', 'Consolas', "Liberation Mono", Courier, monospace; word-break: break-all; word-wrap: break-word;overflow-x: auto;}
+        pre{padding: 10px 5px 10px 10px;margin: 15px 0;display: block;line-height: 18px;background: #F0F0F0;border-radius: 6px;font-size: 14px; font-family: 'monaco', 'Consolas', "Liberation Mono", Courier, monospace; word-break: break-all; word-wrap: break-word;overflow-x: auto;}
         pre code {display: block;font-size: inherit;white-space: pre-wrap;color: inherit;}
     </style>
     `;
@@ -50,7 +50,7 @@ function createHTML(options = {}) {
     <style>
         ${initialCSSText}
         * {outline: 0px solid transparent;-webkit-tap-highlight-color: rgba(0,0,0,0);-webkit-touch-callout: none;box-sizing: border-box;}
-        html, body { margin: 0; padding: 0;font-family: Arial, Helvetica, sans-serif; font-size:1.1em; height: 100%}
+        html, body { margin: 0; padding: 0;font-family: Arial, Helvetica, sans-serif; font-size:1.15em; height: 100%}
         body { overflow-y: hidden; -webkit-overflow-scrolling: touch;background-color: ${backgroundColor};caret-color: ${caretColor};}
         .content {font-family: Arial, Helvetica, sans-serif;color: ${color}; width: 100%;${!useContainer ? 'height:100%;' : ''}-webkit-overflow-scrolling: touch;padding-left: 0;padding-right: 0;}
         .pell { height: 100%;} .pell-content { outline: 0; overflow-y: auto;padding: 10px;height: 100%;${contentCSSText}}

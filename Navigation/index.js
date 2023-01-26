@@ -24,9 +24,9 @@ import { strings } from '../Localization/Localization';
 import { Text, View } from 'react-native';
 import FirstScreen from '../screens/Auth/FirstScreen';
 import Login from '../screens/Auth/Login';
-import Registration from '../screens/Auth/Registration';
+import Registr from '../screens/Auth/Registr';
 import RestorePassword from '../screens/Auth/RestorePassword';
-import Note from '../screens/Tab2/Note';
+
 import NoteAdd from '../screens/Tab2/NoteAdd';
 import AboutUs from '../screens/Profile/AboutUs';
 import AboutProgram from '../screens/Profile/AboutProgram';
@@ -51,7 +51,6 @@ import Goals from '../screens/Profile/Goals';
 import AddGoal from '../screens/Profile/AddGoal';
 import Replenishment from '../screens/Tab4/Replenishment';
 import ReadBook from '../screens/Tab3/ReadBook';
-import NoteAddChild from '../screens/Tab2/NoteAddChild';
 import AddFolder from '../screens/Tab2/AddFolder';
 import NotesList from '../screens/Tab2/NotesList';
 import ModalDrax from '../screens/Tab1/ModalDrax';
@@ -60,6 +59,8 @@ import SingleDua from '../screens/Dua/SingleDua';
 import SearchNote from '../screens/Tab2/SearchNote';
 import { navigationRef } from './RootNavigation';
 import Unfulfilled_tasks from '../screens/Unfulfilled_tasks';
+import TestApp from '../screens/TestApp';
+import Splash from '../screens/Splash';
 /////////STACKS/////////
 
 const _Tab1 = createNativeStackNavigator();
@@ -79,26 +80,7 @@ function Tab1Stack() {
           component={Tab1}
           options={{ headerShown: false }}
         />
-        <_Tab1.Screen
-          name="TaskAdd"
-          component={TaskAdd}
-          options={{ headerShown: false }}
-        />
-        <_Tab1.Screen
-          name="HabitAdd"
-          component={HabitAdd}
-          options={{ headerShown: false }}
-        />
-        {/* <_Tab1.Screen
-          name="NoteAdd"
-          component={NoteAdd}
-          options={{ headerShown: false }}
-        /> */}
-        <_Tab1.Screen
-          name="NoteAddChild"
-          component={NoteAddChild}
-          options={{ headerShown: false }}
-        />
+
         <_Tab1.Screen
           name="ProfileStack"
           component={ProfileStack}
@@ -134,21 +116,7 @@ function Tab2Stack() {
           options={{ headerShown: false }}
         />
 
-        <_Tab2.Screen
-          name="Note"
-          component={Note}
-          options={{ headerShown: false }}
-        />
-        {/* <_Tab2.Screen
-          name="NoteAdd"
-          component={NoteAdd}
-          options={{ headerShown: false }}
-        /> */}
-        <_Tab2.Screen
-          name="NoteAddChild"
-          component={NoteAddChild}
-          options={{ headerShown: false }}
-        />
+
         <_Tab2.Screen
           name="ProfileStack"
           component={ProfileStack}
@@ -507,9 +475,9 @@ function AuthStack() {
       />
 
       <AuthTab.Screen
-        name="Registration"
+        name="Registr"
         options={{ headerShown: false }}
-        component={Registration}
+        component={Registr}
       />
       <AuthTab.Screen
         name="RestorePassword"
@@ -527,11 +495,43 @@ function App() {
     <NavigationContainer
       ref={navigationRef}
     >
-      <Stack.Navigator initialRouteName={'AuthStack'}>
+      <Stack.Navigator initialRouteName={'Splash'}>
+
+        <Stack.Screen
+          name="Splash"
+          options={{ headerShown: false }}
+          component={Splash}
+        />
+
+        <Stack.Screen
+          name="AuthStack"
+          options={{ headerShown: false }}
+          component={AuthStack}
+        />
+
         <Stack.Screen
           name="TabStack"
           options={{ headerShown: false }}
           component={TabStack}
+        />
+
+        <Stack.Screen
+          name="TestApp"
+          options={{ headerShown: false }}
+          component={TestApp}
+        />
+
+        <Stack.Screen
+          name="TaskAdd"
+          component={TaskAdd}
+          options={{ headerShown: false }}
+        />
+
+
+        <Stack.Screen
+          name="HabitAdd"
+          component={HabitAdd}
+          options={{ headerShown: false }}
         />
 
         <Stack.Screen
@@ -553,11 +553,7 @@ function App() {
           options={{ headerShown: false }}
         />
 
-        <Stack.Screen
-          name="AuthStack"
-          options={{ headerShown: false }}
-          component={AuthStack}
-        />
+
         <Stack.Screen
           name="EditLocal"
           component={EditLocal}

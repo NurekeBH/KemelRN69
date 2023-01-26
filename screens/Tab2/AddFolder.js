@@ -202,7 +202,7 @@ export default class AddFolder extends Component {
             })
           }>
           {folder}
-          <Text style={{ fontSize: 17, marginLeft: 12 }}>{item.label}</Text>
+          <Text style={{ color: 'black', fontSize: 17, marginLeft: 12 }}>{item.label}</Text>
         </TouchableOpacity>
       </Swipeout>
     );
@@ -295,6 +295,7 @@ export default class AddFolder extends Component {
             }}>
             <Text
               style={{
+                color: 'black',
                 fontSize: 17,
                 fontWeight: '600',
                 flex: 1,
@@ -315,7 +316,7 @@ export default class AddFolder extends Component {
             baseStyle={{fontSize: 17, marginTop: 8}}
           /> */}
           {description ? (
-            <Text numberOfLines={1} style={{ marginTop: 8, fontSize: 17 }}>
+            <Text numberOfLines={1} style={{ color: 'black', marginTop: 8, fontSize: 17 }}>
               {description}
             </Text>
           ) : null}
@@ -325,7 +326,7 @@ export default class AddFolder extends Component {
   };
 
   render() {
-    const { folderName, data, dataNote } = this.state;
+    const { isLoading, folderName, data, dataNote } = this.state;
     return (
       <View style={{ flex: 1, backgroundColor: '#fff' }}>
         <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -349,6 +350,14 @@ export default class AddFolder extends Component {
             {Search}
             <Text style={{ marginLeft: 8, fontSize: 16, color: 'grey' }}>{strings.search}</Text>
           </TouchableOpacity>
+          {isLoading ?
+            <View style={{ padding: 16 }}>
+              <ActivityIndicator color={'#3F49DC'} />
+            </View>
+            :
+            null
+          }
+
           <FlatList
             data={data}
             keyExtractor={(item, index) => index.toString()}
@@ -378,8 +387,8 @@ export default class AddFolder extends Component {
               marginHorizontal: 10,
               borderRadius: 14,
             }}>
-            <Text style={{ marginHorizontal: 16, marginTop: 24 }}>
-              Папаканың атын енгізіңіз
+            <Text style={{ color: 'black', marginHorizontal: 16, marginTop: 24 }}>
+              {strings.nameFolder}
             </Text>
             <TextInput
               placeholder={strings.papka}

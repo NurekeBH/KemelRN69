@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -11,10 +11,10 @@ import {
   Dimensions,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {Header2, showToast} from '../../Component/Component';
-import {PlayWhite} from '../../Component/MyIcons';
+import { Header2, showToast } from '../../Component/Component';
+import { PlayWhite } from '../../Component/MyIcons';
 import TabHeader from '../../Component/TabHeader';
-import {strings} from '../../Localization/Localization';
+import { strings } from '../../Localization/Localization';
 import Player from '../../screens/Player/Player';
 export default class Tab3 extends Component {
   constructor(props) {
@@ -72,10 +72,10 @@ export default class Tab3 extends Component {
       });
   }
 
-  renderBooks = ({item, index}) => (
+  renderBooks = ({ item, index }) => (
     <TouchableOpacity
       onPress={() =>
-        this.props.navigation.navigate('Book', {item, type: 'book'})
+        this.props.navigation.navigate('Book', { item, type: 'book' })
       }
       activeOpacity={0.7}
       style={{
@@ -85,22 +85,22 @@ export default class Tab3 extends Component {
         marginTop: 13,
       }}>
       <FastImage
-        style={{width: 126, height: 192, borderRadius: 4}}
-        source={{uri: item.cover}}
+        style={{ width: 126, height: 192, borderRadius: 4 }}
+        source={{ uri: item.cover }}
       />
       <Text
         numberOfLines={2}
-        style={{marginTop: 8, fontSize: 15, fontWeight: '600'}}>
+        style={{ color: 'black', marginTop: 8, fontSize: 15, fontWeight: '600' }}>
         {item.label}
       </Text>
-      <Text style={{marginTop: 4, color: '#8E8E93'}}>{item.author}</Text>
+      <Text style={{ marginTop: 4, color: '#8E8E93' }}>{item.author}</Text>
     </TouchableOpacity>
   );
 
-  renderAudioBooks = ({item, index}) => (
+  renderAudioBooks = ({ item, index }) => (
     <TouchableOpacity
       onPress={() =>
-        this.props.navigation.navigate('Book', {item, type: 'audio'})
+        this.props.navigation.navigate('Book', { item, type: 'audio' })
       }
       activeOpacity={0.7}
       style={{
@@ -125,19 +125,19 @@ export default class Tab3 extends Component {
       </FastImage>
       <Text
         numberOfLines={2}
-        style={{marginTop: 8, fontSize: 15, fontWeight: '600'}}>
+        style={{ color: 'black', marginTop: 8, fontSize: 15, fontWeight: '600' }}>
         {item.label}
       </Text>
-      <Text style={{marginTop: 4, color: '#8E8E93'}}>{item.author}</Text>
+      <Text style={{ marginTop: 4, color: '#8E8E93' }}>{item.author}</Text>
     </TouchableOpacity>
   );
 
   render() {
-    const {books, audioBooks} = this.state;
+    const { books, audioBooks } = this.state;
     const _width = Dimensions.get('window').width;
     return (
-      <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <SafeAreaView style={{flex: 1}}>
+      <View style={{ flex: 1, backgroundColor: '#fff' }}>
+        <SafeAreaView style={{ flex: 1 }}>
           <TabHeader
             title={strings.books}
             borderBottomBoll
@@ -152,7 +152,7 @@ export default class Tab3 extends Component {
                 borderBottomColor: 'rgba(0, 0, 0, 0.1)',
               }}>
               <Text
-                style={{fontSize: 20, fontWeight: '600', marginHorizontal: 15}}>
+                style={{ color: 'black', fontSize: 20, fontWeight: '600', marginHorizontal: 15 }}>
                 {strings.books}
               </Text>
               <FlatList
@@ -172,7 +172,7 @@ export default class Tab3 extends Component {
                 showsHorizontalScrollIndicator={false}
                 renderItem={this.renderBooks}
                 horizontal
-                contentContainerStyle={{marginHorizontal: 4}}
+                contentContainerStyle={{ marginHorizontal: 4 }}
               />
             </View>
             {audioBooks.length == 0 ? null : (
@@ -184,6 +184,7 @@ export default class Tab3 extends Component {
                   style={{
                     fontSize: 20,
                     fontWeight: '600',
+                    color: 'black',
                     marginHorizontal: 15,
                   }}>
                   {strings.auidoBooks}
@@ -194,7 +195,7 @@ export default class Tab3 extends Component {
                   showsHorizontalScrollIndicator={false}
                   renderItem={this.renderAudioBooks}
                   horizontal
-                  contentContainerStyle={{marginHorizontal: 4}}
+                  contentContainerStyle={{ marginHorizontal: 4 }}
                 />
               </View>
             )}
