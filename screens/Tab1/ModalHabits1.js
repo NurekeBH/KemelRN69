@@ -234,6 +234,8 @@ export default function ModalHabits({ isOpen, modelItemData, RefreshModal }) {
             confirmText={strings.save}
             cancelText={strings.close}
             title={null}
+            textColor={"black"}
+            theme={"light"}
             locale={getLang()}
             onConfirm={date => {
               setdatetime(date);

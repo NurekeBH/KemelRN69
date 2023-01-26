@@ -236,6 +236,8 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
                 date={new Date(datetime)}
                 is24hourSource="locale"
                 title={null}
+                textColor={"black"}
+                theme={"light"}
                 confirmText={strings.save}
                 locale={getLang()}
                 cancelText={strings.close}

@@ -72,8 +72,8 @@ const App: () => React$Node = () => {
 
     <ProviderApp>
 
-      {/* <Index /> */}
-      <TestApp />
+      <Index />
+      {/* <TestApp /> */}
       <Toast config={toastConfig} />
     </ProviderApp>
   )

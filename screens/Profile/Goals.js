@@ -724,6 +724,8 @@ export default class Goals extends Component {
             <DatePicker
               locale={getLang()}
               mode="date"
+              textColor={"black"}
+              theme={"light"}
               is24hourSource="locale"
               date={datetime}
               onDateChange={date => {
@@ -769,6 +771,8 @@ export default class Goals extends Component {
             <DatePicker
               locale={getLang()}
               mode="date"
+              textColor={"black"}
+              theme={"light"}
               is24hourSource="locale"
               date={datetime2}
               onDateChange={date => {

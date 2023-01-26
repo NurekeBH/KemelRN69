@@ -168,6 +168,8 @@ export default function TaskAdd({ route, navigation }) {
                 cancelText={strings.close}
                 title={null}
                 open={open}
+                textColor={"black"}
+                theme={"light"}
                 date={datetime}
 
                 onConfirm={date => {

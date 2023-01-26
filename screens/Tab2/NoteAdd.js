@@ -23,7 +23,9 @@ import { strings } from '../../Localization/Localization';
 import { actions, RichEditor, RichToolbar } from '../../HtmlEditor';
 import { editorFile, FileIcon, iconFile, Left30Sec, PluseFile, ShareNote } from '../../Component/MyIcons';
 import ImageCropPicker from 'react-native-image-crop-picker';
-import converter from '../../markdown/index'
+
+import { NodeHtmlMarkdown } from 'node-html-markdown'
+
 
 
 const arrAction = [
@@ -90,31 +92,34 @@ export default function NoteAdd({ route, navigation }) {
 
 
   const share = () => {
-    let hmtl = theme + '\n' + text;
+    let html = theme + '\n' + text;
 
 
-    console.log('hmtl', hmtl)
+    console.log('hmtl', html)
 
-    var markdown = converter.convert(hmtl);
+    let markdown = NodeHtmlMarkdown.translate(
+      html,
+      {
+        ignore: ['img']
+      },
+      undefined,
+      undefined
+    );
+
 
     console.log('sharehmtl', markdown)
 
-    // const regex = /(<([^>]+)>)/ig;
-    // const result = hmtl.replace(regex, '');
-    // console.log('sharehmtl', descriptionText)
-    // console.log('sharehmtl', hmtl)
-    // console.log('sharehmtlresult', result)
-    // const shareOptions = {
-    //   title: 'Kemel Adam',
-    //   message: result,
-    //   url: 'https://kemeladam.kz/',
-    // };
+    const shareOptions = {
+      title: 'Kemel Adam',
+      message: markdown,
+      url: 'https://app.kemeladam.kz/',
+    };
 
-    // Share.open(shareOptions)
-    //   .then(res => { })
-    //   .catch(err => {
-    //     err && console.log(err);
-    //   });
+    Share.open(shareOptions)
+      .then(res => { })
+      .catch(err => {
+        err && console.log(err);
+      });
   };
 
   const onSaveClick = () => {
@@ -254,7 +259,7 @@ export default function NoteAdd({ route, navigation }) {
       .then(response => {
         console.log('AddPhoto -', response);
 
-        richText.current.insertImage(response.data.path, `width:${width}px;height:${height}px;`);
+        richText.current.insertImage(response.data.path, `width:${width / 2}px;height:${height / 2}px;`);
 
 
 
