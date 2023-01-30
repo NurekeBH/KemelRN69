@@ -275,7 +275,8 @@ export default class Goals extends Component {
       fromDate,
       toDate,
     } = this.state;
-    const procentDone = parseInt((doneCount * 100) / allCount);
+    const procentDone = allCount == 0 ? 0 : parseInt((doneCount * 100) / allCount);
+
 
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>

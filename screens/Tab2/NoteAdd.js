@@ -26,7 +26,7 @@ import ImageCropPicker from 'react-native-image-crop-picker';
 
 import { NodeHtmlMarkdown } from 'node-html-markdown'
 
-
+import { ImageDetail } from 'react-native-image-modal';
 
 const arrAction = [
   actions.insertImage,
@@ -44,6 +44,8 @@ import Share from 'react-native-share';
 import DocumentPicker, {
   types,
 } from 'react-native-document-picker'
+import Modal from 'react-native-modalbox';
+import FastImage from 'react-native-fast-image';
 
 
 
@@ -80,6 +82,15 @@ export default function NoteAdd({ route, navigation }) {
   const [ind, setInd] = useState(1);
 
   const [files, setFiles] = useState([]);
+
+
+  const [isVisible, setIsVisible] = useState(false)
+  const [modalUrl, setModalUrl] = useState(null)
+
+
+
+  const _screenWidth = Dimensions.get('screen').width
+
 
   const richText = useRef();
 
@@ -224,8 +235,8 @@ export default function NoteAdd({ route, navigation }) {
   const getPhoto = () => {
     ImageCropPicker.openPicker({
       multiple: false,
-      width: Dimensions.get('screen').width,
-      height: Dimensions.get('screen').width,
+      width: _screenWidth * 2,
+      height: _screenWidth * 2,
       cropping: true,
       mediaType: 'photo',
       freeStyleCropEnabled: true,
@@ -258,11 +269,7 @@ export default function NoteAdd({ route, navigation }) {
       })
       .then(response => {
         console.log('AddPhoto -', response);
-
-        richText.current.insertImage(response.data.path, `width:${width / 2}px;height:${height / 2}px;`);
-
-
-
+        richText.current.insertImage(response.data.path, `width:${_screenWidth / 2}px;height:${_screenWidth / 2}px;`);
       })
       .catch(error => {
         console.log('AddPhoto error -', error.response);
@@ -426,6 +433,12 @@ export default function NoteAdd({ route, navigation }) {
                 androidHardwareAccelerationDisabled={true}
                 placeholder={strings.zamk}
                 initialContentHTML={text}
+                onImageClick={(event) => {
+                  if (event?.data) {
+                    setModalUrl(event.data)
+                    setIsVisible(true)
+                  }
+                }}
                 onChange={descriptionText => {
                   setText(descriptionText);
                 }}
@@ -433,27 +446,33 @@ export default function NoteAdd({ route, navigation }) {
                 onFocus={() => setTollbar(true)}
                 onBlur={() => setTollbar(false)}
 
-              // onMessage={(event) => {
-              //   console.log('event', event)
-
-              //   let url = event?.data
-              //   let type = event?.type
-              //   type == 'link' && Linking.canOpenURL(url).then(supported => {
-              //     if (supported) {
-              //       Linking.openURL(url);
-              //     } else {
-              //       console.log('Don\'t know how to open URI: ' + url);
-              //     }
-              //   });
-              // }}
-              // onLayout={({ nativeEvent }) => {
-              //   setTimeout(() => {
-              //     richText.current?.setContentHTML(text)
-              //   }, 200)
-              // }}
               />
 
             </ScrollView>
+
+
+            <ImageDetail
+              isOpen={isVisible}
+              resizeMode="contain"
+              backgroundColor="#000000"
+              swipeToDismiss={true}
+              source={{
+                uri: modalUrl,
+              }}
+              origin={{
+                x: -100,
+                y: -100,
+                width: 50,
+                height: 50,
+
+              }}
+              onClose={() => {
+                setIsVisible(false);
+                setModalUrl(null)
+
+              }
+              }
+            />
           </View>
         </SafeAreaView>
       </KeyboardAvoidingView>

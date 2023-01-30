@@ -6,6 +6,7 @@ import {
   StatusBar,
   TouchableOpacity,
   Linking,
+  ScrollView,
 } from 'react-native';
 import Header from '../../Component/Header2';
 import { BSoft, Instagram, Site, Telega } from '../../Component/MyIcons';
@@ -26,45 +27,47 @@ export default class AboutProgram extends Component {
             title={strings.oprog}
             onLeftPress={() => this.props.navigation.goBack()}
           />
-          <View style={{ padding: 24 }}>
-            <Text style={{ color: 'black', fontSize: 17, fontWeight: '600', marginBottom: 8 }}>
-              {strings.bs}
-            </Text>
-            {BSoft}
-            <Text style={{ fontSize: 16, marginTop: 16 }}>Версия: 2.1</Text>
-            <View style={{ flexDirection: 'row' }}>
-              <TouchableOpacity
-                onPress={() => {
-                  let url = 'https://buginholding.com/'
-                  Linking.canOpenURL(url).then(supported => {
-                    if (supported) {
-                      Linking.openURL(url);
-                    } else {
-                      console.log("Don't know how to open URI: " + url);
-                    }
-                  })
-                }}
-                activeOpacity={0.7}
-                style={{ marginTop: 24, marginRight: 16 }}>
-                {Site}
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  let url = 'https://www.instagram.com/buginsoft/'
-                  Linking.canOpenURL(url).then(supported => {
-                    if (supported) {
-                      Linking.openURL(url);
-                    } else {
-                      console.log("Don't know how to open URI: " + url);
-                    }
-                  })
-                }}
-                activeOpacity={0.7}
-                style={{ marginTop: 24, marginRight: 16 }}>
-                {Instagram}
-              </TouchableOpacity>
+          <ScrollView>
+            <View style={{ padding: 24 }}>
+              <Text style={{ color: 'black', fontSize: 17, fontWeight: '600', marginBottom: 8 }}>
+                {strings.bs}
+              </Text>
+              {BSoft}
+              <Text style={{ fontSize: 16, marginTop: 16 }}>{strings.bsd}</Text>
+              <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    let url = 'https://buginholding.com/'
+                    Linking.canOpenURL(url).then(supported => {
+                      if (supported) {
+                        Linking.openURL(url);
+                      } else {
+                        console.log("Don't know how to open URI: " + url);
+                      }
+                    })
+                  }}
+                  activeOpacity={0.7}
+                  style={{ marginTop: 24, marginRight: 16 }}>
+                  {Site}
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    let url = 'https://www.instagram.com/buginsoft/'
+                    Linking.canOpenURL(url).then(supported => {
+                      if (supported) {
+                        Linking.openURL(url);
+                      } else {
+                        console.log("Don't know how to open URI: " + url);
+                      }
+                    })
+                  }}
+                  activeOpacity={0.7}
+                  style={{ marginTop: 24, marginRight: 16 }}>
+                  {Instagram}
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
+          </ScrollView>
         </SafeAreaView>
       </View>
     );
