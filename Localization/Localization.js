@@ -75,6 +75,13 @@ export let strings = new LocalizedStrings({
     exit: 'Профильден шығу',
     vyi: 'Аккаунттан шынымен шыққыңыз келе ме?',
     bs: 'Қолданбаны әзірлеген',
+    bsd: `Біздің компания – "Bugin Soft" ЖШС нарықта 6 жылдан астам жұмыс істейді. Осы уақыт ішінде біз "eGOV", "EGEMEN QAZAQSTAN", "Хабар", "BariBar", "BUGIN.KZ", "Qamshy.kz" және т. б. осындай табысты, танымал, цифрлық жобалардан кейін танымал және сұранысқа ие бола алдық. Біздің командаға цифрлық жобаларды әзірлеу бойынша бірқатар жетекші IT мамандар кіреді. Егер сіздің соңғы өніміңіздің ыңғайлы, танымал және жүйелі болуы Сіз үшін өте маңызды болса, онда уақытты жоғалтпаңыз және бізге хабарласыңыз!
+
+    Біз не ұсынамыз?
+    Әр түрлі даму жүйелері, жаңалықтар порталдары, бизнес-сайттар, онлайн-қызметтер, интернет-дүкендер, чат-боттар, landing page бизнес-процестерін басқаруға арналған БАҒДАРЛАМАЛАР, сондай-ақ желілік бизнеске арналған сайттар;
+    IOS, Android және әлеуметтік қосымшаларға арналған қосымшаларды әзірлеу.желілер;
+    Веб-дизайнды, Мобильді қосымшаларды жобалауды, тұжырымдаманы әзірлеуді және сайттарды қайта құруды дамыту;
+    Техникалық қолдау, қайта құру, сайттарды қайта құру. Мазмұнды басқару жүйесін ауыстыру, корпоративтік поштаға қызмет көрсету, функционалдылықты жақсарту және қателерді түзету.`,
     jab: 'Тапсырманы көру',
     uvednot: 'Сізде ешқандай хабарламалар жоқ',
     ques: 'Тапсырмалар тарихы',
@@ -182,6 +189,15 @@ export let strings = new LocalizedStrings({
     exit: 'Выйти из профиля',
     vyi: 'Вы действительно хотите выйти из аккаунта?',
     bs: 'Разработка приложения',
+    bsd: `Наша компания – ТОО «Bugin Soft » работает на рынке уже более 6 лет. За это время мы успели стать узнаваемыми и востребованными после таких успешных, всеми известных, цифровых проектов как «eGOV», «EGEMEN QAZAQSTAN», «Хабар», «BariBar», «BUGIN.KZ», «Qamshy.kz» и т.д.
+
+    В нашу команду входит целый ряд ведущих IT специалистов по разработкам цифровых проектов. Если для Вас действительно важно, чтобы Ваш конечный продукт был удобен, популярен и систематизирован, то не теряйте время и обращайтесь к нам!
+    
+    Что мы предлагаем?
+    Различные системы разработок, новостных порталов, бизнес-сайтов, онлайн-сервисов, интернет магазинов, чат-ботов, программ для управления бизнес процессами landing page, а также сайтов для сетевых бизнесов;
+    Разработка приложений для iOS, Android и приложений для соц.сетей;
+    Разработка веб-дизайна, дизайна для мобильных приложений, разработка концепции и редизайн сайтов;
+    Техническая поддержка, реконструкция, редизайн сайтов. Замена системы управления контентом, обслуживание корпоративной почты, доработка функционала и исправление ошибок.`,
     jab: 'Смотрите, что не закрыто',
     uvednot: 'У вас нет уведомлений',
     ques: 'История заданий',
@@ -289,6 +305,15 @@ export let strings = new LocalizedStrings({
     exit: 'Exit profile',
     vyi: 'Are you sure you want to log out?',
     bs: 'Application Development',
+    bsd: `Our company – "Bugin Soft" LLP has been working on the market for more than 6 years. During this time, we managed to become recognizable and in demand after such successful, well-known digital projects as "eGov", "EGEMEN QAZAQSTAN", "Khabar", "BariBar", "BUGIN.KZ ", "Qamshy.kz " etc.
+
+    Our team includes a number of leading IT specialists in the development of digital projects. If it is really important for you that your final product is convenient, popular and systematized, then do not waste time and contact us!
+    
+    What do we offer?
+    Various development systems, news portals, business websites, online services, online stores, chatbots, landing page business process management programs, as well as websites for online businesses;
+    Development of applications for iOS, Android and social media applications.networks;
+    Development of web design, design for mobile applications, concept development and website redesign;
+    Technical support, reconstruction, redesign of sites. Replacement of the content management system, maintenance of corporate mail, improvement of functionality and correction of errors.`,
     jab: `See what's not closed`,
     uvednot: 'You have no notifications',
     ques: 'Quest History',
