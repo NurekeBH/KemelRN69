@@ -554,6 +554,12 @@ function createHTML(options = {}) {
             }
             function handleClick(event){
                 var ele = event.target;
+
+             
+                if(ele.nodeName === 'IMG'){
+                     _postMessage({type: 'IMG_CLICK', data: ele.src});
+
+                }
                 if (ele.nodeName === 'INPUT' && ele.type === 'checkbox'){
                     // Set whether the checkbox is selected by default
                     if (ele.checked) ele.setAttribute('checked', '');
