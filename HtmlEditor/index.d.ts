@@ -1,5 +1,5 @@
-import {WebViewProps} from 'react-native-webview';
-import {ImageSourcePropType, StyleProp, ViewStyle} from 'react-native';
+import { WebViewProps } from 'react-native-webview';
+import { ImageSourcePropType, StyleProp, ViewStyle } from 'react-native';
 import React from 'react';
 
 /** The RichTextEditor accepts all props from Webview */
@@ -7,7 +7,7 @@ export interface RichEditorProps extends WebViewProps {
     /**
      * Used for placement of editor
      */
-    contentInset?: {top: number; bottom: number};
+    contentInset?: { top: number; bottom: number };
 
     /**
      * Wrap the editor webview inside a container.
@@ -85,18 +85,18 @@ export interface RichEditorProps extends WebViewProps {
     /**
      * Callback when the user keyup some content
      */
-    onKeyUp?: ({keyCode: number, key: string}) => void;
+    onKeyUp?: ({ keyCode: number, key: string }) => void;
 
     /**
      * Callback when the user keydown some content
      */
-    onKeyDown?: ({keyCode: number, key: string}) => void;
+    onKeyDown?: ({ keyCode: number, key: string }) => void;
 
     /**
      * Callback input chat
      * Android and iOS inputType are not the same
      */
-    onInput?: ({data: string, inputType: string}) => void;
+    onInput?: ({ data: string, inputType: string }) => void;
 
     /**
      * Callback when the editor focus some content
@@ -111,14 +111,14 @@ export interface RichEditorProps extends WebViewProps {
     /**
      * Callback Enter the position of the cursor
      */
-    onCursorPosition?: (offsetY: number)=> void;
+    onCursorPosition?: (offsetY: number) => void;
 
     /**
      * Callback after height change
      */
     onHeightChange?: (height: number) => void;
 
-    onMessage?: (message: {type: string; id: string; data?: any}) => void;
+    onMessage?: (message: { type: string; id: string; data?: any }) => void;
 
     /**
      * When first gaining focus, the cursor moves to the end of the text
@@ -142,7 +142,7 @@ export interface RichEditorProps extends WebViewProps {
 
 export type SelectionChangeListener = (items: string[]) => void;
 
-export const actions: {[key: string]: string};
+export const actions: { [key: string]: string };
 
 export type defaultActions = ['image', 'bold', 'italic', 'unorderedList', 'orderedList', 'link'];
 
@@ -202,13 +202,13 @@ export class RichEditor extends React.Component<RichEditorProps> {
      * The background color of the selected text
      * @param color
      */
-    setHiliteColor: (color: string)=> void;
+    setHiliteColor: (color: string) => void;
 
     /**
      * The color of the selected text
      * @param color
      */
-    setForeColor: (color: string)=> void;
+    setForeColor: (color: string) => void;
 
     /**
      * $ = document.querySelector
@@ -305,4 +305,4 @@ export interface RichToolbarProps {
     actions?: Partial<defaultActions> | string[];
 }
 
-export class RichToolbar extends React.Component<RichToolbarProps> {}
+export class RichToolbar extends React.Component<RichToolbarProps> { }

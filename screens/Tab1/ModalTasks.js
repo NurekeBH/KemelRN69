@@ -24,6 +24,8 @@ const arrAction = [
   actions.insertBulletsList,
   actions.insertOrderedList,
   actions.heading1,
+  'customAction',
+  'customAction1'
 ];
 import axios from 'axios';
 import KeyboardSpacer from '../../Component/KeyboardSpacer';
@@ -47,6 +49,8 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
   const [toolbarKeyboard, settoolbarKeyboard] = useState(false);
   const richText = useRef();
   const purposeMdl = useRef();
+  const [Size, setSize] = useState(4)
+
 
   console.log('modelItemData', modelItemData);
 
@@ -116,6 +120,31 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
         err && console.log(err);
       });
   };
+
+
+  const handleFontSize = (value) => {
+
+    if (1 <= Size && Size <= 7) {
+      let FS = Size;
+      if (value) {
+        FS = FS + 1
+      } else {
+        FS = FS - 1
+      }
+      setSize(FS)
+      richText.current.setFontSize(FS)
+    } else {
+      if (Size < 1) {
+        setSize(1)
+      }
+      if (Size > 7) {
+        setSize(7)
+      }
+    }
+
+    console.log('Size', Size)
+  }
+
 
   return (
     <Modal
@@ -338,13 +367,16 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
                     [actions.heading1]: ({ tintColor }) => (
                       <Text style={[{ color: tintColor }]}>H1</Text>
                     ),
-                    [actions.heading2]: ({ tintColor }) => (
-                      <Text style={[{ color: tintColor }]}>H2</Text>
+                    customAction: ({ tintColor }) => (
+                      <Text style={[{ color: tintColor, fontSize: 20 }]}>+</Text>
                     ),
-                    [actions.heading3]: ({ tintColor }) => (
-                      <Text style={[{ color: tintColor }]}>H3</Text>
+                    customAction1: ({ tintColor }) => (
+                      <Text style={[{ color: tintColor, fontSize: 20 }]}>-</Text>
                     ),
                   }}
+                  customAction={() => handleFontSize(true)}
+                  customAction1={() => handleFontSize(false)}
+
                 />
               )}
 

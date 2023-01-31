@@ -35,17 +35,15 @@ const arrAction = [
   actions.insertBulletsList,
   actions.insertOrderedList,
   actions.heading1,
+  'customAction',
+  'customAction1'
 ];
 
 import Header from '../../Component/Header2';
 import Share from 'react-native-share';
-
-
 import DocumentPicker, {
   types,
 } from 'react-native-document-picker'
-import Modal from 'react-native-modalbox';
-import FastImage from 'react-native-fast-image';
 
 
 
@@ -53,7 +51,6 @@ import FastImage from 'react-native-fast-image';
 
 export default function NoteAdd({ route, navigation }) {
 
-  console.log('routeroute', route.params?.item)
   const [theme, setTheme] = useState(
     route.params?.item ? route.params.item.label : '',
   );
@@ -86,6 +83,8 @@ export default function NoteAdd({ route, navigation }) {
 
   const [isVisible, setIsVisible] = useState(false)
   const [modalUrl, setModalUrl] = useState(null)
+
+  const [Size, setSize] = useState(4)
 
 
 
@@ -183,52 +182,74 @@ export default function NoteAdd({ route, navigation }) {
     }
   };
 
+  const handleFontSize = (value) => {
+    if (1 <= Size && Size <= 7) {
+      let FS = Size;
+      if (value) {
+        FS = FS + 1
+      } else {
+        FS = FS - 1
+      }
+      setSize(FS)
+      richText.current.setFontSize(FS)
+    } else {
+      if (Size < 1) {
+        setSize(1)
+      }
+      if (Size > 7) {
+        setSize(7)
+      }
+    }
+  }
 
   const handleCustomAction = () => {
-    setIsLoading(true)
-    DocumentPicker.pick({
-      type: [types.pdf, types.docx, types.plainText, types.pptx, types.xlsx, types.zip],
-    })
-      .then((result) => {
-        console.log('result', result)
-        if (result.length > 0) {
-
-          const formData = new FormData();
-          formData.append('file', {
-            uri: result[0].uri,
-            type: result[0].type,
-            name: result[0].name,
-          });
-
-          console.log('formData', formData)
-
-
-          axios
-            .post('notes/note/share/upload/', formData, {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-            })
-            .then(response => {
-              console.log('file  -', response);
-              richText.current.insertLink(result[0].name, DomainUrl + response.data.path);
-              richText.current.insertHTML('<div><br></div>');
-              setIsLoading(false)
-            })
-            .catch(error => {
-              console.log('file error -', error.response);
-
-              // Alert.alert(error.response);
-            });
 
 
 
+    // setIsLoading(true)
+    // DocumentPicker.pick({
+    //   type: [types.pdf, types.docx, types.plainText, types.pptx, types.xlsx, types.zip],
+    // })
+    //   .then((result) => {
+    //     console.log('result', result)
+    //     if (result.length > 0) {
 
-        }
-      })
-      .catch((e) => {
-        console.log('result', result)
-      })
+    //       const formData = new FormData();
+    //       formData.append('file', {
+    //         uri: result[0].uri,
+    //         type: result[0].type,
+    //         name: result[0].name,
+    //       });
+
+    //       console.log('formData', formData)
+
+
+    //       axios
+    //         .post('notes/note/share/upload/', formData, {
+    //           headers: {
+    //             'Content-Type': 'multipart/form-data',
+    //           },
+    //         })
+    //         .then(response => {
+    //           console.log('file  -', response);
+    //           richText.current.insertLink(result[0].name, DomainUrl + response.data.path);
+    //           richText.current.insertHTML('<div><br></div>');
+    //           setIsLoading(false)
+    //         })
+    //         .catch(error => {
+    //           console.log('file error -', error.response);
+
+    //           // Alert.alert(error.response);
+    //         });
+
+
+
+
+    //     }
+    //   })
+    //   .catch((e) => {
+    //     console.log('result', result)
+    //   })
   }
 
 
@@ -377,10 +398,15 @@ export default function NoteAdd({ route, navigation }) {
                     ),
 
                     customAction: ({ tintColor }) => (
-                      editorFile
+                      <Text style={[{ color: tintColor, fontSize: 20 }]}>+</Text>
+                    ),
+                    customAction1: ({ tintColor }) => (
+                      <Text style={[{ color: tintColor, fontSize: 20 }]}>-</Text>
                     ),
                   }}
-                  customAction={handleCustomAction}
+                  customAction={() => handleFontSize(true)}
+                  customAction1={() => handleFontSize(false)}
+
                 />
                 {/* <Animated.View style={{height: useKeyboardHeight}} /> */}
               </View>
