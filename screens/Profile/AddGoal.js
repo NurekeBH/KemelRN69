@@ -218,12 +218,12 @@ export default function AddGoal({ route, navigation }) {
                 date={datetime}
                 onDateChange={date => {
                   setdatetime(date);
-                  setFromDate(moment(date).format('DD.MM.YYYY'))
+                  setFromDate(moment(date).format('DD MMMM YYYY'))
                 }}
               />
               <TouchableOpacity
                 onPress={() => {
-                  setFromDate(moment(datetime).format('DD.MM.YYYY'))
+                  setFromDate(moment(datetime).format('DD MMMM YYYY'))
                   setOpen(false);
                 }}
               >
@@ -256,12 +256,12 @@ export default function AddGoal({ route, navigation }) {
                 date={datetime2}
                 onDateChange={date => {
                   setdatetime2(date);
-                  setToDate(moment(date).format('DD.MM.YYYY'))
+                  setToDate(moment(date).format('DD MMMM YYYY'))
                 }}
               />
               <TouchableOpacity
                 onPress={() => {
-                  setToDate(moment(datetime2).format('DD.MM.YYYY'))
+                  setToDate(moment(datetime2).format('DD MMMM YYYY'))
                   setOpen2(false);
                 }}
               >
