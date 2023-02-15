@@ -222,11 +222,11 @@ export const getTemplateReminder = (label) => {
 export const getLabelGoal = (label) => {
   switch (label) {
     case 'Руханият': return getLang() == 'ru' ? 'Духовный интеллект' : getLang() == 'en' ? "Spirituality" : label;
-    case 'Интелектуалдық даму': return getLang() == 'ru' ? 'Интеллектуальной развитие' : getLang() == 'en' ? "Intellectual development" : label
+    case 'Интелектуалдық даму': return getLang() == 'ru' ? 'Интеллектуальное развитие' : getLang() == 'en' ? "Intellectual development" : label
     case 'Отбасы': return getLang() == 'ru' ? 'Семья' : getLang() == 'en' ? "Family" : label
-    case 'Қаржы тәуелсіздігі': return getLang() == 'ru' ? 'Финансовый независимость' : getLang() == 'en' ? "Financial independence" : label
+    case 'Қаржы тәуелсіздігі': return getLang() == 'ru' ? 'Финансовая независимость' : getLang() == 'en' ? "Financial independence" : label
     case 'Денсаулық': return getLang() == 'ru' ? 'Здоровья' : getLang() == 'en' ? "Health" : label
-    case 'Қарым-қатынас': return getLang() == 'ru' ? 'Отношение' : getLang() == 'en' ? "Attitude" : label
+    case 'Қарым-қатынас': return getLang() == 'ru' ? 'Отношения' : getLang() == 'en' ? "Attitude" : label
     case 'Қоғамдық жұмыс': return getLang() == 'ru' ? 'Общественные дела' : getLang() == 'en' ? "Public affairs" : label
     case 'Хобби / Демалыс': return getLang() == 'ru' ? 'Хобби / Отдых' : getLang() == 'en' ? "Hobby / Leisure" : label
     case '3 ай': return '3 месяц';
