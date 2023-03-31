@@ -26,17 +26,14 @@ export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      pwd: '',
+      email: 'nurbaqyt@gmail.com',
+      pwd: 'NURIK&)$',
       loader: false,
       eye: true
     };
   }
 
   onLoginClick() {
-
-
-
     const { email, pwd } = this.state;
     if (email && pwd) {
       this.setState({ loader: true });

@@ -40,6 +40,7 @@ export let strings = new LocalizedStrings({
   kz: {
     tab1: 'Жоспаргер',
     tab2: 'Жазбалар',
+    tabchat: 'Топтар',
     tab3: 'Серпер',
     tab4: 'Әмиян',
     tab5: 'Профиль',
@@ -112,7 +113,7 @@ export let strings = new LocalizedStrings({
     dobz: 'Тапсырма қосу',
     address: 'мекен-жәй',
     zamk: 'Жазба қосу',
-    addzamk: 'Жазба қосу',
+    addzamk: 'Жазбаға қосу',
     reminder: 'Еске салу',
     adetk: 'Әдет қосу',
     adets: 'Әдеттер',
@@ -148,12 +149,21 @@ export let strings = new LocalizedStrings({
     changeStatus: 'Мәртебесін өзгерту',
     no: 'Жоқ',
     howgoal: 'Мақсатты қалай қоямыз?',
-    nameFolder: 'Папаканың атын енгізіңіз'
+    nameFolder: 'Папаканың атын енгізіңіз',
+
+
+    /////  CHAT 
+    newGroup: "Жаңа топ",
+    groupname: 'Топ атауы',
+    groupdesc: "Топ сипаттамасы",
+    shtraf: 'Штрафпен',
+
 
   },
   ru: {
     tab1: 'Планер',
     tab2: 'Заметки',
+    tabchat: 'Группы',
     tab3: 'Медитация',
     tab4: 'Кошелек',
     tab5: 'Профиль',
@@ -271,6 +281,7 @@ export let strings = new LocalizedStrings({
   en: {
     tab1: 'Calendar',
     tab2: 'Notes',
+    tabchat: 'Groups',
     tab3: 'Meditation',
     tab4: 'Wallet',
     tab5: 'Profile',

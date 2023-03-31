@@ -343,7 +343,7 @@ export default function TaskAdd({ route, navigation }) {
                 marginHorizontal: -5,
               }}
               ref={richText}
-              placeholder={strings.zamk}
+              placeholder={strings.addzamk}
               initialContentHTML={zametka}
               onChange={zametka => {
                 setzametka(zametka);

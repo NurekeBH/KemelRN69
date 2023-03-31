@@ -9,6 +9,7 @@ import { StateContext } from '../ProviderApp';
 
 import firebase from '@react-native-firebase/app';
 import messaging from '@react-native-firebase/messaging';
+import NetInfo from "@react-native-community/netinfo";
 
 
 export default class Splash extends Component {
@@ -119,13 +120,38 @@ export default class Splash extends Component {
     getData = async click => {
         try {
             const fcmToken = await AsyncStorage.getItem('fcmToken');
+            const token = await AsyncStorage.getItem('token');
             const email = await AsyncStorage.getItem('email');
             const pwd = await AsyncStorage.getItem('pwd');
             const avatar = await AsyncStorage.getItem('avatar');
             if (avatar) this.globalState.setAvatar(avatar);
-            if (email !== null && pwd !== null) {
+            if (token !== null) {
                 console.log('YES')
-                this.onLoginClick(email, pwd, fcmToken);
+
+                NetInfo.fetch().then(state => {
+                    if (state.isConnected) {
+                        this.onLoginClick(email, pwd, fcmToken);
+                    } else {
+                        const AuthStr = 'Bearer '.concat(token);
+                        axios.defaults.headers.common['Authorization'] = AuthStr;
+
+                        if (this.state.fromPush) {
+                            console.log('fromPush7')
+
+                            console.log('cccccccc')
+                            this.props.navigation.replace('PushTable', { fromPush: true });
+
+                        } else {
+                            console.log('fromPush8')
+
+                            this.props.navigation.replace('TabStack');
+                        }
+
+                    }
+                });
+
+
+
             } else {
                 console.log('No')
 
@@ -149,8 +175,10 @@ export default class Splash extends Component {
             .then(response => {
                 console.log('RESPONSE LOGIN:', response);
 
+                AsyncStorage.setItem('token', response.data.access);
                 const AuthStr = 'Bearer '.concat(response.data.access);
                 axios.defaults.headers.common['Authorization'] = AuthStr;
+
 
                 axios
                     .post('accounts/firebase/', {

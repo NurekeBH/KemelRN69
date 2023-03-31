@@ -29,6 +29,9 @@ import HTML from 'react-native-render-html';
 import axios from 'axios';
 import Swipeout from '../../Swipeout/index'
 import Share from 'react-native-share';
+import { GetNotesByID, InsertQueryNotes } from '../../database/KemelSQLite';
+import NetInfo from "@react-native-community/netinfo";
+
 
 export default class NotesList extends Component {
   constructor(props) {
@@ -44,9 +47,26 @@ export default class NotesList extends Component {
   }
 
   componentDidMount() {
-    const unsubscribe = this.props.navigation.addListener('focus', () => {
-      this.getNoteList();
+    this.unsubscribe = this.props.navigation.addListener('focus', () => {
+
+      this.unsubscribeNet = NetInfo.addEventListener(async state => {
+        if (state.isConnected) {
+          this.getNoteList();
+        } else {
+          let notes = await GetNotesByID(this.state.parentId)
+
+
+          this.setState({
+            data: notes._array,
+            searchData: notes._array,
+            isLoading: false,
+          });
+
+        }
+      })
+
     });
+
   }
 
   getNoteList() {
@@ -55,10 +75,17 @@ export default class NotesList extends Component {
       .then(response => {
         console.log('RESPONSE notes:', response);
 
+        let result = response.data
+        for (let r = 0; r < result.length; r++) {
+          let element = result[r]
+          element.dessc = element.desc
+        }
         this.setState({
-          data: response.data,
-          searchData: response.data,
+          data: result,
+          searchData: result,
           isLoading: false,
+        }, () => {
+          InsertQueryNotes(result)
         });
       })
       .catch(error => {

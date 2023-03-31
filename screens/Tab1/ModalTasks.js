@@ -383,7 +383,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
               <RichEditor
                 style={{ minHeight: 100, marginHorizontal: -5 }}
                 ref={richText}
-                placeholder={strings.zamk}
+                placeholder={strings.addzamk}
                 androidHardwareAccelerationDisabled={true}
                 initialContentHTML={zametka}
                 onChange={zametka => {

@@ -274,7 +274,6 @@ export default class ModalHabits extends Component {
                   textDecorationLine: done ? 'line-through' : 'none',
                   color: done ? '#8E8E93' : '#000',
                 }}
-                placeholder={strings.address}
                 value={label}
                 onChangeText={label => this.setState({ label })}
               />

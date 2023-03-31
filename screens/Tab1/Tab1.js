@@ -6,10 +6,6 @@ import {
   TouchableOpacity,
   FlatList,
   StyleSheet,
-  Switch,
-  TextInput,
-  NativeModules,
-  NativeEventEmitter,
   Modal,
   Alert,
   ActivityIndicator,
@@ -21,7 +17,6 @@ import {
   getTemplateLabel,
   getTemplateReminder,
   GetTime,
-  Header2,
   showToast,
   width,
 } from '../../Component/Component';
@@ -33,21 +28,14 @@ import {
   LeftIcon,
   LeftIcon2,
   MonthIcon,
-  Nodes,
   PluseBtn,
   WeekIcon,
-  PurposeIcon,
-  Minuse,
-  Plusee,
   Priority,
-  CircleDone,
   clock,
   swipeDelete,
   ShareNote,
-  iconFile,
   closeIcon,
   PurposeIconGrey,
-  FileIcon,
   threeDot,
   addHabitsIcon,
   reminderIcon,
@@ -71,6 +59,9 @@ import TabHeader from '../../Component/TabHeader';
 
 import SoundPlayer from 'react-native-sound-player';
 import CalendarStrip from '../../Component/CalendarStrip';
+import { GetHabitsDB, GetReminderDB, GetTasksDB, InsertQueryHabits, InsertQueryReminder, InsertQueryTasks } from '../../database/KemelSQLite';
+import NetInfo from "@react-native-community/netinfo";
+
 
 LocaleConfig.locales['kk'] = {
   monthNames: [
@@ -261,18 +252,37 @@ export default class Tab1 extends Component {
         : moment().format('YYYY-MM-DD'),
       isLoadingReminder: true,
       ReminderArr: [],
-      today: moment().format('YYYY-MM-DD')
+      today: moment().format('YYYY-MM-DD'),
+      isConnected: null,
     };
   }
 
   componentDidMount() {
 
+
+
     LocaleConfig.defaultLocale = getLang();
 
 
-    this.getTodoList();
-    this.getNotes();
-    this.GetReminder()
+
+    this.unsubscribeNet = NetInfo.addEventListener(async state => {
+
+      if (state.isConnected) {
+        this.setState({
+          isConnected: true,
+        }, () => {
+          this.GetReminder()
+          this.getTodoList();
+          this.getNotes();
+        })
+      } else {
+        Alert.alert('NO')
+        this.GetFromSQLite()
+      }
+    });
+
+
+
 
 
 
@@ -302,6 +312,50 @@ export default class Tab1 extends Component {
     );
   }
 
+
+
+  async GetFromSQLite() {
+
+    const { open, now } = this.state;
+    console.log('resultresult now', now)
+
+
+    let RarrHabits = await GetHabitsDB(now)
+    let RarrTasks = await GetTasksDB(now)
+    let arrHabits = RarrHabits._array
+    let arrTasks = RarrTasks._array
+
+    console.log('resultresult arrHabits', arrHabits)
+    console.log('resultresult arrTasks', arrTasks)
+
+    let DoneTasks = arrTasks.filter(item => item.done).length;
+    let DoneHabits = arrHabits.filter(item => item.done).length;
+
+
+    let result = [
+      {
+        date: now,
+        habits: arrHabits,
+        tasks: arrTasks,
+        isCollapsed: false,
+        doneTasksCount: DoneTasks,
+        doneHabitsCount: DoneHabits,
+      },
+    ]
+
+
+    console.log('resultresult', result)
+    this.setState({
+      isConnected: false,
+      todos: result,
+      tasks: arrTasks,
+      habbits: arrHabits,
+      isLoading: false,
+    });
+
+  }
+
+
   GetReminder() {
     axios
       .get(`todos/reminders/`)
@@ -312,9 +366,11 @@ export default class Tab1 extends Component {
         Arr.forEach(element => {
           element.label = getTemplateReminder(element.label)
         });
+
+        InsertQueryReminder(Arr)
         this.setState({
           isLoadingReminder: false,
-          ReminderArr: response.data
+          ReminderArr: Arr
         })
       })
       .catch(error => {
@@ -328,7 +384,6 @@ export default class Tab1 extends Component {
   PlaySound() {
     try {
       console.log('pppppppp');
-
       SoundPlayer.playSoundFile('sound', 'mp3');
     } catch (e) {
       console.log(`cannot play the sound file`, e);
@@ -343,9 +398,9 @@ export default class Tab1 extends Component {
         this.setState({
           folderData: response.data,
         });
+
       })
       .catch(error => {
-
         console.log('RESPONSE error:', error.response);
         if (error.response && error.response.status == 401) {
           showToast('error', error.response.data.detail);
@@ -366,18 +421,10 @@ export default class Tab1 extends Component {
           (_marketData[val] = {
             marked: true,
             dotColor: '#FF3B30',
-            // customStyles: {
-            //   container: {
-            //     borderRadius: 50,
-            //     borderWidth: 2,
-            //     borderColor: '#24B445',
-            //     alignItems: 'center',
-            //     justifyContent: 'center',
-            //   },
-            // },
           }),
         );
-        console.log('RESPONSE _marketData:', _marketData);
+        console.log('RESPONSE _marketData1:', _marketData);
+        console.log('RESPONSE _marketData2:', x);
 
         this.setState({
           calendarData: _marketData,
@@ -408,23 +455,7 @@ export default class Tab1 extends Component {
       });
   }
 
-  getRandomizer() {
-    axios
-      .get(`todos/randomizer/generate/`)
-      .then(response => {
-        console.log('RESPONSE generate:', response);
-        this.setState({
-          rContent: response.data.content,
-        });
-      })
-      .catch(error => {
-        Alert.alert('error', error.response.data.substring(0, 200));
-        console.log('RESPONSE error:', error.response);
-        if (error.response && error.response.status == 401) {
-          showToast('error', error.response.data.detail);
-        }
-      });
-  }
+
 
   getTodoList() {
     this.GetHistory();
@@ -461,37 +492,52 @@ export default class Tab1 extends Component {
             for (let j = 0; j < arrHabits.length; j++) {
               let HAB = arrHabits[j]
               HAB.click_date = moment(result[r].date).format('YYYY-MM-DD')
+              HAB.dessc = HAB.desc
               HAB.done = true;
               if (HAB.history && HAB.history.habit === HAB.id) {
                 HAB.done = HAB.history.done;;
               } else {
                 HAB.done = false;
               }
+
             }
             result[r].doneHabitsCount = arrHabits.filter(item => item.done === true).length
-
           }
-
-
-
           result = result.sort((a, b) => a.date - b.date);
         } else {
           arrTasks = response.data.tasks;
           arrHabits = response.data.habits;
 
+          for (let j = 0; j < arrTasks.length; j++) {
+            let TAS = arrTasks[j]
+            TAS.dessc = TAS.desc
+          }
+
           for (let j = 0; j < arrHabits.length; j++) {
             let HAB = arrHabits[j]
+
             HAB.done = false;
             HAB.click_date = now
+            HAB.dessc = HAB.desc
             if (HAB.history && HAB.history.habit === HAB.id) {
               HAB.done = HAB.history.done;
             } else {
               HAB.done = false;
             }
+            let ids = '';
+            HAB.weeks.forEach(element => {
+              ids = ids + element.id + ' '
+
+            });
+            HAB.week = ids
+
+            console.log('HAB', HAB)
           }
 
           let DoneTasks = arrTasks.filter(item => item.done === true).length;
           let DoneHabits = arrHabits.filter(item => item.done === true).length;
+
+
 
 
           result = [
@@ -504,8 +550,6 @@ export default class Tab1 extends Component {
               doneHabitsCount: DoneHabits,
             },
           ];
-
-
         }
 
 
@@ -515,10 +559,15 @@ export default class Tab1 extends Component {
           tasks: arrTasks,
           habbits: arrHabits,
           isLoading: false,
+        }, () => {
+          console.log('result.habits', arrHabits)
+          InsertQueryHabits(arrHabits)
+          InsertQueryTasks(arrTasks)
         });
+
+
       })
       .catch(error => {
-        Alert.alert('error', error.response.data.substring(0, 200));
         console.log('RESPONSE error:', error.response);
         if (error.response && error.response.status == 401) {
           showToast('error', error.response.data.detail);
@@ -669,7 +718,7 @@ export default class Tab1 extends Component {
             <FlatList
               listKey={(item, index) => 'B' + index.toString()}
               data={item.habits}
-              keyExtractor={(item, index) => item.date}
+              keyExtractor={(item, index) => index}
               renderItem={this.renderItemHabits}
               showsVerticalScrollIndicator={false}
             />
@@ -1014,7 +1063,7 @@ export default class Tab1 extends Component {
           time: item.time,
           weeks: item.weeks,
           purpose: item.purpose,
-          desc: item.desc,
+          desc: item.dessc,
           target: item.target,
           target_template: item.target_template.id,
         })
@@ -1175,7 +1224,14 @@ export default class Tab1 extends Component {
                   modal: false,
                 },
                 () => {
-                  this.getTodoList();
+                  //yyyyyyy
+                  if (this.state.isConnected) {
+                    this.getTodoList();
+                  } else {
+                    this.GetFromSQLite()
+
+                  }
+
                 },
               );
             }}
@@ -1393,19 +1449,7 @@ export default class Tab1 extends Component {
                   />
                 </View>
               </ModalBox>
-              {/* <TouchableOpacity
-                onPress={() =>
-                  // this.mdlRef.open()
-                  this.props.navigation.navigate('TaskAdd', {
-                    updateData: this.updateData,
-                    now: now,
-                    ReminderArr: isLoadingReminder ? null : ReminderArr
-                  })
-                }
-                activeOpacity={0.7}
-                style={styles.btnStl}>
-                {PluseBtn}
-              </TouchableOpacity> */}
+
             </View>
           </View>
         </SafeAreaView>

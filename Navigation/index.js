@@ -17,6 +17,7 @@ import {
   Tab2Icon,
   Tab3Icon,
   Tab4Icon,
+  TabChatIcon,
 } from '../Component/MyIcons';
 import { colorApp } from '../theme/Colors';
 import FastImage from 'react-native-fast-image';
@@ -61,6 +62,8 @@ import { navigationRef } from './RootNavigation';
 import Unfulfilled_tasks from '../screens/Unfulfilled_tasks';
 import TestApp from '../screens/TestApp';
 import Splash from '../screens/Splash';
+import TabChat from '../screens/TabChat/TabChat';
+import NewGroup from '../screens/TabChat/NewGroup';
 /////////STACKS/////////
 
 const _Tab1 = createNativeStackNavigator();
@@ -124,6 +127,28 @@ function Tab2Stack() {
         />
       </_Tab2.Navigator>
       {/* <Player style={{bottom: heightBottom}} /> */}
+    </View>
+  );
+}
+
+
+const _TabChat = createNativeStackNavigator();
+function ChatStack() {
+
+  return (
+    <View style={{ flex: 1 }}>
+      <_TabChat.Navigator>
+        <_TabChat.Screen
+          name="TabChat"
+          component={TabChat}
+          options={{ headerShown: false }}
+        />
+
+
+
+
+      </_TabChat.Navigator>
+
     </View>
   );
 }
@@ -392,6 +417,25 @@ function TabStack() {
           ),
         }}
       />
+
+      <Tab.Screen
+        name="Chat"
+        component={ChatStack}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color }) => <TabChatIcon stroke={color} />,
+          tabBarLabel: ({ color }) => (
+            <Text
+              style={{
+                fontSize: 12,
+                color: color,
+              }}>
+              {strings.tabchat}
+            </Text>
+          ),
+        }}
+      />
+
       <Tab.Screen
         name="Tab3Stack"
         component={TabDuaStack}
@@ -594,6 +638,15 @@ function App() {
           component={SearchNote}
           options={{ headerShown: false }}
         />
+
+        <Stack.Screen
+          name="NewGroup"
+          component={NewGroup}
+          options={{ headerShown: false }}
+        />
+
+
+
 
       </Stack.Navigator>
     </NavigationContainer>

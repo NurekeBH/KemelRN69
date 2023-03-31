@@ -13,7 +13,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert, Text, View } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import { firebaseService } from './FirebaseService';
-import TestApp from './screens/TestApp'
+import { CreateBD } from './database/KemelSQLite';
+
 
 
 const codePushOptions = {
@@ -29,7 +30,7 @@ const toastConfig = {
 const App: () => React$Node = () => {
 
   axios.defaults.baseURL = DomainUrl + '/api/';
-
+  CreateBD()
 
   // TrackPlayer.updateOptions({
   //   stopWithApp: true,

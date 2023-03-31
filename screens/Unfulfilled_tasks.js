@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import React, { Component } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity, ActivityIndicator, FlatList, StyleSheet } from 'react-native';
-import { GetTime, Header2, HeaderStyle, showToast, width } from '../Component/Component';
+import { getTemplateReminder, GetTime, Header2, HeaderStyle, showToast, width } from '../Component/Component';
 import { alarmIcon, clock, LeftIcon, Left_icon, swipeDelete, threeDot } from '../Component/MyIcons';
 import moment from 'moment';
 import Swipeout from '../Swipeout';
@@ -65,9 +65,16 @@ export default class Unfulfilled_tasks extends Component {
             .get(`todos/reminders/`)
             .then(response => {
                 console.log('RESPONSE reminder:', response);
+
+                let Arr = response.data
+                Arr.forEach(element => {
+                    element.label = getTemplateReminder(element.label)
+                });
+
+
                 this.setState({
                     isLoadingReminder: false,
-                    ReminderArr: response.data
+                    ReminderArr: Arr
                 })
             })
             .catch(error => {

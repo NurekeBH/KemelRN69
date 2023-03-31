@@ -358,7 +358,7 @@ export default function TaskAdd({ route, navigation }) {
               }}
               ref={richText}
               androidHardwareAccelerationDisabled={true}
-              placeholder={strings.zamk}
+              placeholder={strings.addzamk}
               initialContentHTML={zametka}
               onChange={zametka => {
                 setzametka(zametka);
