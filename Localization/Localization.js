@@ -150,6 +150,7 @@ export let strings = new LocalizedStrings({
     no: 'Жоқ',
     howgoal: 'Мақсатты қалай қоямыз?',
     nameFolder: 'Папаканың атын енгізіңіз',
+    admin: 'админ',
 
 
     /////  CHAT 
@@ -157,6 +158,9 @@ export let strings = new LocalizedStrings({
     groupname: 'Топ атауы',
     groupdesc: "Топ сипаттамасы",
     shtraf: 'Штрафпен',
+    addUsers: "Мүшелерді қосу",
+    infogroup: 'Топ ақпараты'
+
 
 
   },
@@ -275,8 +279,8 @@ export let strings = new LocalizedStrings({
     changeStatus: 'Изменить статус',
     no: 'Нет',
     howgoal: 'Как мы ставим цель?',
-    nameFolder: 'Введите имя папки'
-
+    nameFolder: 'Введите имя папки',
+    admin: 'админ',
   },
   en: {
     tab1: 'Calendar',
@@ -393,6 +397,7 @@ export let strings = new LocalizedStrings({
     changeStatus: 'Change status',
     no: 'No',
     howgoal: 'How do we set a goal?',
-    nameFolder: 'Enter a folder name'
+    nameFolder: 'Enter a folder name',
+    admin: 'admin',
   },
 });

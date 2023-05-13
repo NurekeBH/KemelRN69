@@ -41,7 +41,6 @@ import {
   reminderIcon,
   dayBack,
 } from '../../Component/MyIcons';
-import { getStatusBarHeight } from '../../Component/getStatusBarHeight';
 import { strings } from '../../Localization/Localization';
 import Collapsible from 'react-native-collapsible';
 import ModalBox from 'react-native-modalbox';
@@ -61,6 +60,7 @@ import SoundPlayer from 'react-native-sound-player';
 import CalendarStrip from '../../Component/CalendarStrip';
 import { GetHabitsDB, GetReminderDB, GetTasksDB, InsertQueryHabits, InsertQueryReminder, InsertQueryTasks } from '../../database/KemelSQLite';
 import NetInfo from "@react-native-community/netinfo";
+import { StatusBarHeightPlatform } from '../../Component/GeneralStatusBarColor';
 
 
 LocaleConfig.locales['kk'] = {
@@ -276,7 +276,6 @@ export default class Tab1 extends Component {
           this.getNotes();
         })
       } else {
-        Alert.alert('NO')
         this.GetFromSQLite()
       }
     });
@@ -1291,7 +1290,7 @@ export default class Tab1 extends Component {
         style={{
           flex: 1,
           backgroundColor: '#fff',
-          paddingTop: getStatusBarHeight,
+          paddingTop: StatusBarHeightPlatform,
         }}>
         <StatusBar backgroundColor={'#fff'} barStyle="dark-content" />
         <SafeAreaView style={{ flex: 1 }}>

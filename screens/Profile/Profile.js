@@ -13,7 +13,6 @@ import FastImage from 'react-native-fast-image';
 import { HeaderStyle, showToast, width } from '../../Component/Component';
 import { Left_icon, no_avatar, Right } from '../../Component/MyIcons';
 import { strings } from '../../Localization/Localization';
-import { getStatusBarHeight } from '../../Component/getStatusBarHeight';
 import Header from '../../Component/Header2';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';

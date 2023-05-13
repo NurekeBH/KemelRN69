@@ -64,6 +64,12 @@ import TestApp from '../screens/TestApp';
 import Splash from '../screens/Splash';
 import TabChat from '../screens/TabChat/TabChat';
 import NewGroup from '../screens/TabChat/NewGroup';
+import AddUsers from '../screens/TabChat/AddUsers';
+import DetailChat from '../screens/TabChat/DetailChat';
+import ChatMessage from '../screens/TabChat/ChatMessage';
+import GroupProfile from '../screens/TabChat/GroupProfile';
+import ChangeGroupProfile from '../screens/TabChat/ChangeGroupProfile';
+import GroupHabits from '../screens/TabChat/GroupHabits';
 /////////STACKS/////////
 
 const _Tab1 = createNativeStackNavigator();
@@ -644,7 +650,42 @@ function App() {
           component={NewGroup}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="AddUsers"
+          component={AddUsers}
+          options={{ headerShown: false }}
+        />
 
+
+        <Stack.Screen
+          name="DetailChat"
+          component={DetailChat}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="ChatMessage"
+          component={ChatMessage}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="GroupProfile"
+          component={GroupProfile}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="ChangeGroupProfile"
+          component={ChangeGroupProfile}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="GroupHabits"
+          component={GroupHabits}
+          options={{ headerShown: false }}
+        />
 
 
 

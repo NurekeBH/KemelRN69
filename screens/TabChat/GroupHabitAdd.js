@@ -13,21 +13,45 @@ import { weekArray } from './weeks';
 const GroupHabitAdd = ({
     visible,
     setVisible,
-    targetArr
+    targetArr,
+    addHabit
 }) => {
 
 
     const bordercolor = 'rgba(0, 0, 0, 0.2)';
     const [label, setLabel] = useState(null)
-    const [desc, setDesc] = useState(null)
     const [weekArr, setWeekArr] = useState(weekArray)
     const [ischange, setIsChange] = useState(true)
 
     const [week_day_ids, setWeek_day_ids] = useState([1, 2, 3, 4, 5, 6, 7])
     const [is_purpose, setIsPurpose] = useState(false)
-    const [target, setTarget] = useState(null)
-    const [selected_template, setSelected_template] = useState(null)
+    const [target, setTarget] = useState(0)
+    const [selected_template, setSelected_template] = useState(targetArr[0].id)
+    const [template, setTemplate] = useState(targetArr[0])
 
+
+    const addHabitClick = () => {
+        if (label && week_day_ids.length > 0) {
+            let habit = {
+                "label": label,
+                "desc": label,
+                "time": "08:00:00",
+                "weeks": week_day_ids,
+                "purpose": is_purpose,
+                "target": target,
+                "target_template": selected_template,
+                "template": template
+            }
+            console.log('click add', habit);
+            addHabit(habit)
+            setVisible(false)
+
+        }
+
+
+
+
+    }
 
     return (
         <Modal
@@ -37,6 +61,10 @@ const GroupHabitAdd = ({
             coverScreen
             onClosed={() => {
                 setVisible(false)
+            }}
+            onOpened={() => {
+                setWeek_day_ids([1, 2, 3, 4, 5, 6, 7])
+                setWeekArr(weekArray)
             }}
 
             style={{ height: 'auto', backgroundColor: 'transparent' }}
@@ -166,6 +194,7 @@ const GroupHabitAdd = ({
                                     console.log('itemitem', item)
 
                                     setSelected_template(item.id)
+                                    setTemplate(item)
                                 }}
                             />
 
@@ -176,6 +205,7 @@ const GroupHabitAdd = ({
                 <SimpleButton
                     text={strings.save}
                     style={{ marginTop: 16 }}
+                    onPress={addHabitClick}
                 />
 
                 <View style={{ height: 50, }} />

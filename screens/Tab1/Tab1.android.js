@@ -41,7 +41,6 @@ import {
   reminderIcon,
   dayBack,
 } from '../../Component/MyIcons';
-import { getStatusBarHeight } from '../../Component/getStatusBarHeight';
 import { strings } from '../../Localization/Localization';
 import Collapsible from 'react-native-collapsible';
 import ModalBox from 'react-native-modalbox';

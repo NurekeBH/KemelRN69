@@ -1,13 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { KeyboardAvoidingView, SafeAreaView, ScrollView, StatusBar, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StatusBar, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { getTemplateLabel, height, width } from '../../Component/Component';
 import Header from '../../Component/Header2';
-import { addHabitsIcon, addPhoto, Priority } from '../../Component/MyIcons';
+import { addHabitsIcon, addPhoto, Done, Priority, swipeDelete } from '../../Component/MyIcons';
 import { strings } from '../../Localization/Localization';
 import { colorApp } from '../../theme/Colors';
 import ModalBox from 'react-native-modalbox';
 import GroupHabitAdd from './GroupHabitAdd';
 import axios from 'axios';
+import Swipeout from '../../Swipeout';
+import SimpleButton from '../../Component/SimpleButton';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const NewGroup = ({ navigation }) => {
 
@@ -15,11 +18,15 @@ const NewGroup = ({ navigation }) => {
     const input2 = useRef();
     const [label, setLabel] = useState(null)
     const [desc, setDesc] = useState(null)
-    const [priority, setpriority] = useState(false)
-    const [selected, setSelected] = useState(1)
+    const [fine, setFine] = useState(false)
+    const [finesArray, setFinesArray] = useState([])
+
+    const [selected, setSelected] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
 
-    const [targetArr, setTargetArr] = useState(true)
+    const [targetArr, setTargetArr] = useState([])
+
+    const [habitArr, setHabitArr] = useState([])
 
 
     useEffect(() => {
@@ -48,7 +55,72 @@ const NewGroup = ({ navigation }) => {
             .catch((error) => {
 
             })
+
+
+
+        axios.get(`https://test.kemeladam.kz/api/chat/fines/`)
+            .then((response) => {
+                console.log('fines response', response)
+                setFinesArray(response?.data)
+            })
+            .catch((error) => {
+                console.log('fines error', error?.response)
+
+            })
+
     }
+
+    const addHabit = (habit) => {
+        console.log('habithabit', habit);
+        let arr = habitArr
+        arr.push(habit)
+        setHabitArr(arr)
+
+        console.log('habitArr', habitArr);
+
+    }
+
+    const deleteHabit = (index) => {
+        console.log('habithabit', index);
+        let arr = habitArr
+        arr.splice(index, 1);
+        setHabitArr([...arr])
+
+        console.log('habitArr', habitArr);
+
+    }
+
+    const onNextPress = () => {
+        let params = {
+            "label": label,
+            "desc": desc,
+            "habits": habitArr,
+            "fine": fine ? finesArray[selected]?.id : ''
+        }
+
+        console.log('params', params)
+        axios.post('https://test.kemeladam.kz/api/chat/groups/', params)
+            .then(response => {
+                console.log("RESPONSE groups:", response);
+                if (response?.data?.id) {
+                    navigation.navigate('AddUsers', { group_id: response?.data?.id })
+                }
+            })
+            .catch(error => {
+                console.log("error groups:", error.response);
+
+            })
+
+    }
+
+    const renderFines = ({ item, index }) => (
+        <TouchableOpacity
+            onPress={() => setSelected(index)}
+            style={styles.buttoncontainer(selected == index)}
+        >
+            <Text style={styles.buttontext}>{item?.value}</Text>
+        </TouchableOpacity>
+    )
 
 
 
@@ -61,9 +133,8 @@ const NewGroup = ({ navigation }) => {
                 title={strings.newGroup}
                 onLeftPress={() => navigation.goBack()}
             />
-            <KeyboardAvoidingView behavior={'padding'}>
-                <ScrollView showsVerticalScrollIndicator={false}
-                    style={{ minHeight: height, backgroundColor: '#F5F5F5' }}>
+            <KeyboardAwareScrollView>
+                <View style={{ flex: 1, minHeight: height - Platform.select({ ios: 44, android: 56 }) * 3, backgroundColor: '#F5F5F5' }}>
                     <View style={{ backgroundColor: 'white', paddingTop: 16, }}>
                         <TouchableOpacity
                             activeOpacity={0.5}
@@ -117,6 +188,7 @@ const NewGroup = ({ navigation }) => {
                                 returnKeyType={'next'}
                                 value={desc}
                                 autoCapitalize='none'
+                                multiline={true}
                                 onChangeText={setDesc}
 
                             // onSubmitEditing={() => {
@@ -133,58 +205,25 @@ const NewGroup = ({ navigation }) => {
                             <Text style={{ flex: 1, color: '#000000', fontSize: 17, marginLeft: 12 }}>{strings.shtraf}</Text>
 
                             <Switch
-                                value={priority}
+                                value={fine}
                                 onValueChange={(value) => {
-                                    setpriority(value)
-                                    if (!value) {
-                                        setSelected(1)
-                                    }
+                                    setFine(value)
+                                    setSelected(value ? 0 : null)
+
                                 }}
                             />
                         </View>
                         {
-                            priority ?
+                            fine ?
                                 <View style={{ marginHorizontal: 24, paddingVertical: 16 }}>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                                        <TouchableOpacity
-                                            onPress={() => setSelected(1)}
-                                            style={styles.buttoncontainer(selected == 1)}
-                                        >
-                                            <Text style={styles.buttontext}>100</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            onPress={() => setSelected(2)}
-                                            style={styles.buttoncontainer(selected == 2)}
-                                        >
-                                            <Text style={styles.buttontext}>200</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            onPress={() => setSelected(3)}
-                                            style={styles.buttoncontainer(selected == 3)}
-                                        >
-                                            <Text style={styles.buttontext}>500</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                    <View style={{ marginTop: 16, flexDirection: 'row', justifyContent: 'space-around' }}>
-                                        <TouchableOpacity
-                                            onPress={() => setSelected(4)}
-                                            style={styles.buttoncontainer(selected == 4)}
-                                        >
-                                            <Text style={styles.buttontext}>1000</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            onPress={() => setSelected(5)}
-                                            style={styles.buttoncontainer(selected == 5)}
-                                        >
-                                            <Text style={styles.buttontext}>2000</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            onPress={() => setSelected(6)}
-                                            style={styles.buttoncontainer(selected == 6)}
-                                        >
-                                            <Text style={styles.buttontext}>5000</Text>
-                                        </TouchableOpacity>
-                                    </View>
+                                    <FlatList
+                                        data={finesArray}
+                                        keyExtractor={(item, index) => index.toString()}
+                                        showsHorizontalScrollIndicator={false}
+                                        renderItem={renderFines}
+                                        numColumns={3}
+                                    />
+
                                 </View>
                                 :
                                 null
@@ -203,16 +242,113 @@ const NewGroup = ({ navigation }) => {
                                     marginBottom: 0,
                                 },
                             ]}>
+                            <View style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                            }}>
+                                <Text style={{ flex: 1, fontSize: 17, fontWeight: '600' }}>{strings.adets}</Text>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        setModalVisible(true)
+                                    }}
+                                    style={{ marginRight: 8, width: 30, height: 30, alignItems: 'center', justifyContent: 'center', borderRadius: 15, }}>
+                                    {addHabitsIcon}
+                                </TouchableOpacity>
+                            </View>
 
-                            <Text style={{ flex: 1, fontSize: 17, fontWeight: '600' }}>{strings.adets}</Text>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    setModalVisible(true)
-                                }}
-                                style={{ marginRight: 8, width: 30, height: 30, alignItems: 'center', justifyContent: 'center', borderRadius: 15, }}>
-                                {addHabitsIcon}
-                            </TouchableOpacity>
+                            {
+                                habitArr.map((item, index) => {
+                                    return (
+                                        <Swipeout
+                                            autoClose={true}
+                                            style={{
+                                                borderRadius: 10,
+                                                maxHeight: 200,
+                                                marginTop: 4,
+                                                borderWidth: 0.5,
+                                                borderColor: 'rgba(0,0,0,0.2)'
+                                            }}
+                                            right={[
+
+                                                {
+                                                    component: (
+                                                        <View
+                                                            style={{
+                                                                backgroundColor: '#f0dcda',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'center',
+                                                                flex: 1,
+                                                                maxHeight: 200,
+                                                            }}>
+                                                            {swipeDelete}
+                                                            <Text style={{ marginTop: 4, fontSize: 8, color: '#FF3B30' }}>
+                                                                {strings.delete}
+                                                            </Text>
+                                                        </View>
+                                                    ),
+                                                    onPress: () => {
+                                                        deleteHabit(index)
+                                                    },
+                                                },
+                                            ]}>
+                                            <View
+                                                style={[
+                                                    styles.vwStl,
+                                                    {
+                                                        flexDirection: 'row',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'space-between',
+                                                        minHeight: 55,
+                                                        paddingVertical: 8,
+                                                        backgroundColor: '#fff',
+                                                    },
+                                                ]}>
+                                                <View style={{
+                                                    flexDirection: 'row',
+                                                    alignItems: 'center',
+                                                }}>
+                                                    <View
+                                                        style={[
+                                                            styles.doneStl2,
+                                                            {
+                                                                borderColor: '#DADADA',
+                                                            },
+                                                        ]}
+                                                    />
+                                                    <Text
+                                                        style={{
+                                                            fontSize: 15,
+                                                            color: '#000',
+                                                            marginLeft: 12
+                                                        }}>
+                                                        {item.label}
+                                                    </Text>
+                                                </View>
+
+
+                                                {item.purpose ? <Text style={{ color: '#2BA149', fontSize: 16 }}>{item.target} {getTemplateLabel(item?.template?.template)}</Text>
+                                                    :
+                                                    null}
+
+
+                                            </View>
+                                        </Swipeout>
+                                    )
+                                })
+                            }
+
+
                         </View>
+                        <SimpleButton
+                            style={{ marginTop: 24 }}
+                            text={strings.save}
+                            onPress={onNextPress}
+                        //     () => {
+
+
+                        // }}
+                        />
                     </View>
 
                     {
@@ -221,14 +357,13 @@ const NewGroup = ({ navigation }) => {
                                 visible={modalVisible}
                                 setVisible={setModalVisible}
                                 targetArr={targetArr}
+                                addHabit={addHabit}
                             />
                             :
                             null
                     }
-
-                </ScrollView>
-            </KeyboardAvoidingView>
-
+                </View>
+            </KeyboardAwareScrollView>
 
 
         </SafeAreaView>
@@ -255,6 +390,7 @@ const styles = StyleSheet.create({
                 shadowOpacity: 0.25,
                 shadowRadius: 3.84,
                 elevation: 5,
+                margin: 4
 
             }
             :
@@ -263,7 +399,8 @@ const styles = StyleSheet.create({
                 alignItems: 'center',
                 backgroundColor: 'white',
                 paddingVertical: 4,
-                borderRadius: 8
+                borderRadius: 8,
+                margin: 4
 
             }),
     buttontext: {
@@ -275,8 +412,22 @@ const styles = StyleSheet.create({
         paddingVertical: 6,
         backgroundColor: '#FFFFFF',
         borderRadius: 6,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+
     },
+
+    doneStl: {
+        width: 24,
+        aspectRatio: 1,
+        borderRadius: 12,
+        backgroundColor: '#34C759',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    doneStl2: {
+        width: 24,
+        aspectRatio: 1,
+        borderRadius: 12,
+        borderWidth: 2,
+    },
+
 })
