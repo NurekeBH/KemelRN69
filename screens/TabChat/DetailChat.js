@@ -10,6 +10,8 @@ import ItemHabitUser from './ItemHabitUser';
 import GeneralStatusBarColor from '../../Component/GeneralStatusBarColor';
 import axios from 'axios';
 import moment from 'moment';
+import { headerArr } from './ConstantChat';
+import ModalHabits from '../Tab1/ModalHabits';
 
 const DetailChat = ({ navigation, route }) => {
 
@@ -20,6 +22,9 @@ const DetailChat = ({ navigation, route }) => {
     const [response, setResponse] = useState(null)
     const [isLoading, setLoading] = useState(true)
     const [selected, setSelected] = useState(0)
+    const [modelHabits, setModalHabits] = useState(null)
+
+    const [isDone, setISDone] = useState(true)
     const today = moment().format('YYYY-MM-DD')
 
     const item = route.params.item
@@ -28,36 +33,17 @@ const DetailChat = ({ navigation, route }) => {
 
     useEffect(() => {
 
-        const Arr = [
-            {
-                'name': 'Бүгін',
-                'day': 0
-            },
-            {
-                'name': 'Кеше',
-                'day': 1
-            },
-            {
-                'name': 'Апта',
-                'day': 7
-            },
-            {
-                'name': '40 күн',
-                'day': 40
-            },
-            {
-                'name': '6 ай',
-                'day': 180
-            },
-            {
-                'name': '1 жыл',
-                'day': 365
-            }
-        ]
 
-        setDataArray(Arr)
+        const unsubscribe = navigation.addListener('focus', () => {
 
-        getData(today)
+
+            setDataArray(headerArr)
+
+            getData(today)
+        });
+
+        return unsubscribe;
+
 
 
 
@@ -147,6 +133,7 @@ const DetailChat = ({ navigation, route }) => {
     const donePress = (item) => {
         console.log('item done', item)
         let params = {
+            // "date": "2023-05-13",
             "date": today,
             "done": true
         }
@@ -154,7 +141,11 @@ const DetailChat = ({ navigation, route }) => {
             params)
             .then(response => {
                 console.log("RESPONSE done:", response);
-                getData(today)
+                if (response.status == 200 || response.status == 201) {
+                    item.done = true
+                    console.log("RESPONSE done: TRUE");
+
+                }
             })
             .catch(error => {
                 console.log("error done:", error.response);
@@ -165,14 +156,34 @@ const DetailChat = ({ navigation, route }) => {
         return (
             <View>
                 <ItemHabitUser
+                    group_id={group_id}
                     item={item}
-                    isSelected={item?.selected}
+                    isSelected={true}
                     dataArray={dataArray}
                     donePress={donePress}
+                    menuPress={menuPress}
                 />
             </View>
         )
     }
+
+    const menuPress = (item) => {
+        console.log('item', item);
+        setModalHabits(item)
+
+    }
+
+
+    const RefreshHabits = (ModalHabits, isSave) => {
+        console.log('isSave', isSave);
+        console.log('ModalHabits', ModalHabits);
+        // if (isSave) {
+        //   this.DoneHabits(ModalHabits);
+        // }
+
+        setModalHabits(null)
+    };
+
 
     return (
         <View style={{ flex: 1, backgroundColor: '#F5F5F5' }}>
@@ -184,7 +195,7 @@ const DetailChat = ({ navigation, route }) => {
                 childComponent={(
                     <TouchableOpacity
                         onPress={() => {
-                            navigation.navigate('GroupProfile', { group_id: group_id })
+                            navigation.navigate('GroupProfile', { group_id: group_id, group: item })
                         }}
                         style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <FastImage
@@ -193,7 +204,7 @@ const DetailChat = ({ navigation, route }) => {
                                 height: 30,
                                 borderRadius: 15
                             }}
-                            source={response?.cover ? { uri: response?.cover } : require('../../assets/logo.png')}
+                            source={item?.cover ? { uri: item?.cover } : require('../../assets/logo.png')}
                         />
                         <View style={{ marginLeft: 8 }}>
                             <Text style={{ fontSize: 16, fontWeight: '600', color: '#000000' }}>{item?.label}</Text>
@@ -204,7 +215,7 @@ const DetailChat = ({ navigation, route }) => {
                 right_icon={moreMenu}
                 rightSvg
                 onRightPress={() => {
-                    navigation.navigate('GroupProfile', { group_id: group_id })
+                    navigation.navigate('GroupProfile', { group_id: group_id, group: item })
                 }}
             />
 
@@ -251,12 +262,20 @@ const DetailChat = ({ navigation, route }) => {
 
             </View>
 
+            {modelHabits ? (
+                <ModalHabits
+                    isOpen={modelHabits}
+                    modelItemData={modelHabits}
+                    RefreshModal={RefreshHabits}
+                />
+            ) : null}
+
 
 
             <TouchableOpacity
                 activeOpacity={0.5}
                 onPress={() => {
-                    navigation.navigate('ChatMessage')
+                    navigation.navigate('ChatMessage', { item: item })
                 }}
                 style={{ position: 'absolute', right: 24, bottom: 40, alignItems: 'center', justifyContent: 'center', width: 64, height: 64, backgroundColor: '#3F49DC', borderRadius: 32 }}>
                 {chatFatIcon}

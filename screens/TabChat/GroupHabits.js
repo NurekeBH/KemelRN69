@@ -40,6 +40,15 @@ const GroupHabits = ({ navigation, route }) => {
         console.log('habithabit', habit);
 
 
+        axios.post(`https://test.kemeladam.kz/api/chat/group/${group_id}/habits/`, habit)
+            .then((response) => {
+                console.log('habithabit response', response)
+                getData()
+            })
+            .catch((error) => {
+                console.log('habithabit error', error)
+
+            })
 
     }
 

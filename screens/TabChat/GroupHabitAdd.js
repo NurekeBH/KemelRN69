@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Switch, TouchableOpacity } from 'react-native';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -20,14 +20,20 @@ const GroupHabitAdd = ({
 
     const bordercolor = 'rgba(0, 0, 0, 0.2)';
     const [label, setLabel] = useState(null)
-    const [weekArr, setWeekArr] = useState(weekArray)
+    const [weekArr, setWeekArr] = useState([])
     const [ischange, setIsChange] = useState(true)
 
-    const [week_day_ids, setWeek_day_ids] = useState([1, 2, 3, 4, 5, 6, 7])
+    const [week_day_ids, setWeek_day_ids] = useState([])
     const [is_purpose, setIsPurpose] = useState(false)
     const [target, setTarget] = useState(0)
-    const [selected_template, setSelected_template] = useState(targetArr[0].id)
+    const [selected_template, setSelected_template] = useState(targetArr[0]?.id)
     const [template, setTemplate] = useState(targetArr[0])
+
+
+    useEffect(() => {
+        setWeek_day_ids([1, 2, 3, 4, 5, 6, 7])
+        setWeekArr(weekArray)
+    }, [visible]);
 
 
     const addHabitClick = () => {
@@ -61,6 +67,8 @@ const GroupHabitAdd = ({
             coverScreen
             onClosed={() => {
                 setVisible(false)
+                setWeek_day_ids([1, 2, 3, 4, 5, 6, 7])
+                setWeekArr(weekArray)
             }}
             onOpened={() => {
                 setWeek_day_ids([1, 2, 3, 4, 5, 6, 7])
@@ -106,6 +114,7 @@ const GroupHabitAdd = ({
                                     } else {
                                         arr.splice(arr.indexOf(item.id), 1);
                                     }
+                                    console.log('arr', arr)
                                     setWeek_day_ids(arr)
                                     setIsChange(!ischange)
 

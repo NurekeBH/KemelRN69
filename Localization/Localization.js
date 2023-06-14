@@ -159,7 +159,9 @@ export let strings = new LocalizedStrings({
     groupdesc: "Топ сипаттамасы",
     shtraf: 'Штрафпен',
     addUsers: "Мүшелерді қосу",
-    infogroup: 'Топ ақпараты'
+    infogroup: 'Топ ақпараты',
+    mute: 'Дауыссыз',
+    unmute: 'Дауысты',
 
 
 

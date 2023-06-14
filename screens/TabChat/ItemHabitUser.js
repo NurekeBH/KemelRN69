@@ -6,27 +6,58 @@ import FastImage from 'react-native-fast-image';
 import { getTemplateLabel, height, width } from '../../Component/Component';
 import { addHabitsIcon, addPhoto, Done, Bottom, swipeDelete, threeDot } from '../../Component/MyIcons';
 import Swipeout from '../../Swipeout';
+import axios from 'axios';
+import moment from 'moment';
+const today = moment().format('YYYY-MM-DD')
 
 
 const ItemHabitUser = ({
+    group_id,
     item,
     isSelected,
     donePress,
+    menuPress,
     ...params
 }) => {
 
+    let itemUser = item
     const [selected, setSelected] = useState(isSelected)
-    const procentDone = parseInt(item.doneHabitsCount * 100 / item.habits.length);
 
 
-    // useEffect(() => {
-    //     item?.selected = !item?.selected
-    // }, [selected]);
+    const [done, setDone] = useState(false)
+    const procentDone = itemUser.doneHabitsCount == 0 ? 0 : parseInt(itemUser.doneHabitsCount * 100 / itemUser.habits.length);
+
+
+    const DonePress = (item) => {
+        console.log('item done', item)
+        let params = {
+            // "date": "2023-05-13",
+            "date": today,
+            "done": !item.done
+        }
+        axios.post(`https://test.kemeladam.kz/api/chat/group/${group_id}/habit/${item.id}/history/`,
+            params)
+            .then(response => {
+                console.log("RESPONSE done:", response);
+                if (response.status == 200 || response.status == 201) {
+                    item.done = !item.done
+                    itemUser.doneHabitsCount = !item.done ? itemUser.doneHabitsCount - 1 : itemUser.doneHabitsCount + 1
+                    setDone(!done)
+                    console.log("RESPONSE done: TRUE");
+
+                }
+            })
+            .catch(error => {
+                console.log("error done:", error.response);
+            })
+    }
 
 
     const renderItemHabits = ({ item, index }) => {
+        let isOwner = itemUser.owner
         return (
             <Swipeout
+                disabled={!isOwner}
                 autoClose={true}
                 style={{
                     borderRadius: 10,
@@ -67,8 +98,10 @@ const ItemHabitUser = ({
                     <TouchableOpacity
                         style={{ height: 40, justifyContent: 'center', width: 40, }}
                         activeOpacity={0.8}
+                        disabled={!isOwner}
                         onPress={() => {
-                            donePress(item)
+                            DonePress(item)
+                            // donePress(item)
                         }}>
                         {item?.priority ? (
                             Priority
@@ -112,8 +145,9 @@ const ItemHabitUser = ({
                     </TouchableOpacity>
 
                     <TouchableOpacity
+                        disabled={!isOwner}
                         onPress={() => {
-
+                            menuPress(item)
                         }}
 
                         style={{ height: 40, justifyContent: 'center', alignItems: 'flex-end', width: 40, }}
@@ -122,7 +156,7 @@ const ItemHabitUser = ({
                     </TouchableOpacity>
 
                 </View>
-            </Swipeout>
+            </Swipeout >
         )
     }
 

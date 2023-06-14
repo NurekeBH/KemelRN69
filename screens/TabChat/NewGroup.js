@@ -11,6 +11,9 @@ import axios from 'axios';
 import Swipeout from '../../Swipeout';
 import SimpleButton from '../../Component/SimpleButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import ImageCropPicker from 'react-native-image-crop-picker';
+import FastImage from 'react-native-fast-image';
+
 
 const NewGroup = ({ navigation }) => {
 
@@ -27,6 +30,10 @@ const NewGroup = ({ navigation }) => {
     const [targetArr, setTargetArr] = useState([])
 
     const [habitArr, setHabitArr] = useState([])
+
+    const [avatar, setAvatar] = useState(null)
+    const [path, setPath] = useState(null)
+    const [mime, setMime] = useState(null)
 
 
     useEffect(() => {
@@ -91,14 +98,37 @@ const NewGroup = ({ navigation }) => {
     }
 
     const onNextPress = () => {
+
+
         let params = {
             "label": label,
             "desc": desc,
             "habits": habitArr,
-            "fine": fine ? finesArray[selected]?.id : ''
+
+        }
+        if (fine) {
+            params.fine = finesArray[selected]?.id
         }
 
-        console.log('params', params)
+        // const formData = new FormData();
+
+        // path &&
+        //     mime &&
+        //     formData.append('cover', {
+        //         uri: path,
+        //         type: mime,
+        //         name: 'filename.jpg',
+        //     });
+        // label && formData.append('label', label);
+        // desc && formData.append('desc', desc);
+        // fine && formData.append('fine', finesArray[selected]?.id);
+        // habitArr.forEach(tag => formData.append('habits', tag))
+        // formData.append('habits', habitArr)
+
+
+
+
+        // console.log('params', params)
         axios.post('https://test.kemeladam.kz/api/chat/groups/', params)
             .then(response => {
                 console.log("RESPONSE groups:", response);
@@ -122,6 +152,26 @@ const NewGroup = ({ navigation }) => {
         </TouchableOpacity>
     )
 
+    const AddAvatar = () => {
+        ImageCropPicker.openPicker({
+            multiple: false,
+            cropping: true,
+            mediaType: 'photo',
+        }).then(images => {
+            const { path, mime } = images;
+
+            setAvatar(images.path)
+            setPath(path)
+            setMime(mime)
+            console.log(images);
+            // this.setState({
+            //     avatar: images.path,
+            //     path,
+            //     mime,
+            // });
+        });
+    }
+
 
 
     return (
@@ -138,11 +188,27 @@ const NewGroup = ({ navigation }) => {
                     <View style={{ backgroundColor: 'white', paddingTop: 16, }}>
                         <TouchableOpacity
                             activeOpacity={0.5}
+                            onPress={AddAvatar}
                         >
+
+
                             <View
                                 style={{ alignSelf: 'center', alignItems: 'center', justifyContent: 'center', width: 132, height: 132, backgroundColor: '#E2E5FF', borderRadius: 66 }}>
-                                {addPhoto}
+                                {
+                                    avatar ?
+                                        <FastImage
+                                            style={{ width: 132, aspectRatio: 1, borderRadius: 66 }}
+                                            source={{
+                                                uri: avatar,
+                                            }}
+                                        />
+                                        :
+                                        null}
+                                <View style={{ position: 'absolute' }}>
+                                    {addPhoto(avatar ? "white" : '#3F49DC')}
+                                </View>
                             </View>
+
 
                         </TouchableOpacity>
                     </View>

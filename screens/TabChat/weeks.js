@@ -30,3 +30,4 @@ export const weekArray =
                 { id: 6, week: 'Cб', acitve: true },
                 { id: 7, week: 'Вс', acitve: true },
             ]
+

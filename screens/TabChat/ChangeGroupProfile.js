@@ -8,6 +8,9 @@ import { colorApp } from '../../theme/Colors';
 import { width } from '../../Component/Component';
 import { strings } from '../../Localization/Localization';
 import axios from 'axios';
+import ImageCropPicker from 'react-native-image-crop-picker';
+
+
 
 const ChangeGroupProfile = ({ navigation, route }) => {
 
@@ -17,6 +20,11 @@ const ChangeGroupProfile = ({ navigation, route }) => {
     const [label, setLabel] = useState(groupInfo?.label)
     const [desc, setDesc] = useState(groupInfo?.desc)
 
+    const [avatar, setAvatar] = useState(groupInfo?.cover)
+    const [path, setPath] = useState(null)
+    const [mime, setMime] = useState(null)
+
+
 
     console.log('groupInfo', groupInfo)
 
@@ -25,11 +33,26 @@ const ChangeGroupProfile = ({ navigation, route }) => {
 
     const onSavePress = () => {
         console.log('aaaaaa')
+
+        const formData = new FormData();
+
+        path &&
+            mime &&
+            formData.append('cover', {
+                uri: path,
+                type: mime,
+                name: 'filename.jpg',
+            });
+        label && formData.append('label', label);
+        desc && formData.append('desc', desc);
+
+
         axios.put(`https://test.kemeladam.kz/api/chat/group/${groupInfo.id}/`,
-            {
-                label: label,
-                desc: desc,
-            })
+            formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
             .then(response => {
                 console.log('RESPONSE LOGIN:', response);
                 route.params?.getData()
@@ -44,6 +67,25 @@ const ChangeGroupProfile = ({ navigation, route }) => {
     }
 
 
+    const AddAvatar = () => {
+        ImageCropPicker.openPicker({
+            multiple: false,
+            cropping: true,
+            mediaType: 'photo',
+        }).then(images => {
+            const { path, mime } = images;
+
+            setAvatar(images.path)
+            setPath(path)
+            setMime(mime)
+            console.log(images);
+            // this.setState({
+            //     avatar: images.path,
+            //     path,
+            //     mime,
+            // });
+        });
+    }
 
 
     return (
@@ -67,10 +109,11 @@ const ChangeGroupProfile = ({ navigation, route }) => {
 
                 <FastImage
                     style={{ width: 132, height: 132, backgroundColor: 'rgba(61, 61, 61, 0.4)', borderRadius: 66 }}
-                    source={{ uri: groupInfo?.cover }}
+                    source={{ uri: avatar }}
                 />
                 <TouchableOpacity
                     activeOpacity={0.8}
+                    onPress={AddAvatar}
                     style={{ alignItems: 'center', justifyContent: 'center', position: 'absolute', backgroundColor: 'white', borderRadius: 20, width: 40, height: 40 }}
                 >
                     {penEdit('#007AFF')}

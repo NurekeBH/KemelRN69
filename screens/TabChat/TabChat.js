@@ -74,7 +74,7 @@ const TabChat = ({ navigation }) => {
 
 
     return (
-        <SafeAreaView style={{ flex: 1, }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
 
             <FlatList
                 data={groups}

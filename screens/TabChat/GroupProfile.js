@@ -1,21 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
-import { RightGray, addAdmin, addUser, backRound, exitGroup, habitsIcon, mediaIcon, moreMenu, penEdit, swipeDelete, threeDotWhite } from '../../Component/MyIcons';
+import { RightGray, addAdmin, addUser, backRound, closeIcon, exitGroup, habitsIcon, mediaIcon, moreMenu, penEdit, swipeDelete, threeDotWhite } from '../../Component/MyIcons';
 import { StatusBarHeightPlatform } from '../../Component/GeneralStatusBarColor';
 import FastImage from 'react-native-fast-image';
 import Swipeout from '../../Swipeout';
 import { strings } from '../../Localization/Localization';
 import axios from 'axios';
+import { showToast } from '../../Component/Component';
 
 
 const GroupProfile = ({ navigation, route }) => {
     const group_id = route.params.group_id
+    const group = route.params.group
+
+
+
     const [groupInfo, setGroupInfo] = useState(null)
     const [isLoading, setLoading] = useState(true)
 
     useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
 
-        getData()
+            getData()
+        });
+
+        return unsubscribe;
+
 
     }, []);
 
@@ -32,14 +42,18 @@ const GroupProfile = ({ navigation, route }) => {
     }
 
 
-    const makeAdmin = (id) => {
-        axios.post(`https://test.kemeladam.kz/api/chat/group/${group_id}/account/${id}/admin/`)
+    const makeAdmin = (id, admin) => {
+        axios.post(`https://test.kemeladam.kz/api/chat/group/${group_id}/account/${id}/admin/`,
+            {
+                admin: admin
+            })
             .then(response => {
                 console.log("RESPONSE admin:", response);
                 getData()
             })
             .catch(error => {
                 console.log("error admin:", error.response);
+                showToast('error', error?.response?.data?.detail)
             })
     }
 
@@ -62,7 +76,7 @@ const GroupProfile = ({ navigation, route }) => {
             <View style={{ height: 256, width: '100%' }}>
                 <FastImage
                     style={{ width: '100%', height: '100%' }}
-                    source={{ uri: groupInfo?.cover }}
+                    source={{ uri: group?.cover }}
                 >
                     <View style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.3)' }} />
 
@@ -84,7 +98,7 @@ const GroupProfile = ({ navigation, route }) => {
                         </TouchableOpacity>
                     </View>
                     <View style={{ position: 'absolute', bottom: 24, left: 24 }}>
-                        <Text style={{ fontSize: 28, fontWeight: '700', color: '#FFFFFF' }}>{groupInfo?.label}</Text>
+                        <Text style={{ fontSize: 28, fontWeight: '700', color: '#FFFFFF' }}>{group?.label}</Text>
                     </View>
                 </FastImage>
 
@@ -154,16 +168,25 @@ const GroupProfile = ({ navigation, route }) => {
                                                 </Text>
                                             </View>
                                             :
-                                            <View style={{
-                                                flex: 1,
-                                                backgroundColor: 'white',
-                                            }}>
-
+                                            <View
+                                                style={{
+                                                    backgroundColor: '#B8B8D2',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    flex: 1,
+                                                    maxHeight: 200,
+                                                }}>
+                                                {closeIcon}
+                                                <Text style={{ marginTop: 4, fontSize: 8, color: 'white' }}>
+                                                    delete
+                                                </Text>
                                             </View>
                                     ),
                                     onPress: () => {
                                         if (item.role != 'admin') {
-                                            makeAdmin(item.id)
+                                            makeAdmin(item.id, true)
+                                        } else {
+                                            makeAdmin(item.id, false)
                                         }
                                     },
                                 },

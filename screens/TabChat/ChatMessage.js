@@ -8,40 +8,24 @@ import FastImage from 'react-native-fast-image';
 import { PluseBtn, chatBg1, chatBg2, chatCamera, chatFatIcon, chatSend, moreMenu, userSelected } from '../../Component/MyIcons';
 import ItemHabitUser from './ItemHabitUser';
 import GeneralStatusBarColor from '../../Component/GeneralStatusBarColor';
+import { headerArr } from './ConstantChat';
 
-const ChatMessage = ({ navigation }) => {
+const ChatMessage = ({ navigation, route }) => {
 
 
 
+    const item = route.params.item
+    const group_id = item.id
 
-    const [dataArray, setDataArray] = useState([])
+
+    const [dataArray, setDataArray] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
     const [selected, setSelected] = useState(0)
 
 
     useEffect(() => {
 
-        const Arr = [
-            {
-                'name': 'Бүгін'
-            },
-            {
-                'name': 'Кеше'
-            },
-            {
-                'name': 'Апта'
-            },
-            {
-                'name': '40 күн'
-            },
-            {
-                'name': '6 ай'
-            },
-            {
-                'name': '1 жыл'
-            }
-        ]
 
-        setDataArray(Arr)
+
 
     }, []);
 
@@ -83,19 +67,7 @@ const ChatMessage = ({ navigation }) => {
 
                         <Text style={{ textAlign: 'right', color: 'grey', marginTop: 4 }}>19:40</Text>
 
-                        {/* <FastImage
-                            style={{
-                                width: '100%',
-                                height: 80,
-                                backgroundColor: 'grey',
-                                borderRadius: 12,
-                                alignItems: 'flex-end',
-                                justifyContent: 'flex-end',
-                                padding: 4
-                            }}
-                        >
-                            <Text style={{ textAlign: 'right', color: 'white', marginTop: 4 }}>19:40</Text>
-                        </FastImage> */}
+
 
                     </View>
                 </View>
@@ -116,7 +88,7 @@ const ChatMessage = ({ navigation }) => {
                 childComponent={(
                     <TouchableOpacity
                         onPress={() => {
-                            navigation.navigate('GroupProfile')
+                            navigation.navigate('GroupProfile', { group_id: group_id, group: item })
                         }}
                         style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <FastImage
@@ -125,10 +97,11 @@ const ChatMessage = ({ navigation }) => {
                                 height: 30,
                                 borderRadius: 15
                             }}
-                            source={require('../../assets/logo.png')}
+                            source={item?.cover ? { uri: item?.cover } : require('../../assets/logo.png')}
+
                         />
                         <View style={{ marginLeft: 8 }}>
-                            <Text style={{ fontSize: 16, fontWeight: '600', color: '#000000' }}>Кітап оқу</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '600', color: '#000000' }}>{item?.label}</Text>
                             <Text style={{ fontSize: 12, color: '#8A8A8D', fontWeight: '400' }}>{strings.infogroup}</Text>
                         </View>
                     </TouchableOpacity>
