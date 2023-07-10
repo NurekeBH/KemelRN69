@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StatusBar, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { getTemplateLabel, height, width } from '../../Component/Component';
+import { getTemplateLabel, height, showToast, width } from '../../Component/Component';
 import Header from '../../Component/Header2';
 import { addHabitsIcon, addPhoto, Done, Priority, swipeDelete } from '../../Component/MyIcons';
 import { strings } from '../../Localization/Localization';
@@ -37,6 +37,10 @@ const NewGroup = ({ navigation }) => {
 
 
     useEffect(() => {
+
+
+
+
         getTarget()
 
     }, []);
@@ -87,6 +91,21 @@ const NewGroup = ({ navigation }) => {
 
     }
 
+
+
+    const GetFines = () => {
+        axios.get(`https://test.kemeladam.kz/api/chat/fines/`)
+            .then((response) => {
+                console.log('fines response', response)
+                setFinesArray(response?.data)
+                setFine(true)
+                setSelected(0)
+            })
+            .catch((error) => {
+                console.log('fines error', error?.response)
+
+            })
+    }
     const deleteHabit = (index) => {
         console.log('habithabit', index);
         let arr = habitArr
@@ -100,40 +119,86 @@ const NewGroup = ({ navigation }) => {
     const onNextPress = () => {
 
 
-        let params = {
-            "label": label,
-            "desc": desc,
-            "habits": habitArr,
+        // let params = {
+        //     "label": label,
+        //     "desc": desc,
+        //     "habits": habitArr,
+        //     "mute": false,
 
+
+        // }
+        // if (fine) {
+        //     params.fine = finesArray[selected]?.id
+        // }
+
+        const formData = new FormData();
+
+
+        label && formData.append('label', label);
+        desc && formData.append('desc', desc);
+        fine && formData.append('fine', finesArray[selected]?.id);
+
+        for (let i = 0; i < habitArr.length; i++) {
+            const element = habitArr[i];
+            for (const [key, value] of Object.entries(element)) {
+                console.log(`${key}: ${value}`);
+                if (Array.isArray(value)) {
+                    for (let j = 0; j < value.length; j++) {
+                        const element = value[j];
+                        formData.append(`habits[${i}][${key}][${j}]`, element)
+                    }
+                } else if (typeof value === 'object') {
+                    for (const [key2, value2] of Object.entries(value)) {
+                        formData.append(`habits[${i}][${key}][${key2}]`, value2)
+                    }
+                }
+                else {
+                    formData.append(`habits[${i}][${key}]`, value)
+                }
+
+
+
+            }
         }
-        if (fine) {
-            params.fine = finesArray[selected]?.id
-        }
-
-        // const formData = new FormData();
-
-        // path &&
-        //     mime &&
-        //     formData.append('cover', {
-        //         uri: path,
-        //         type: mime,
-        //         name: 'filename.jpg',
-        //     });
-        // label && formData.append('label', label);
-        // desc && formData.append('desc', desc);
-        // fine && formData.append('fine', finesArray[selected]?.id);
-        // habitArr.forEach(tag => formData.append('habits', tag))
-        // formData.append('habits', habitArr)
-
-
-
-
-        // console.log('params', params)
-        axios.post('https://test.kemeladam.kz/api/chat/groups/', params)
+        console.log('params', formData)
+        axios.post('https://test.kemeladam.kz/api/chat/groups/', formData)
             .then(response => {
                 console.log("RESPONSE groups:", response);
                 if (response?.data?.id) {
-                    navigation.navigate('AddUsers', { group_id: response?.data?.id })
+                    if (path && mime) {
+                        const formData1 = new FormData();
+
+                        path &&
+                            mime &&
+                            formData1.append('cover', {
+                                uri: path,
+                                type: mime,
+                                name: 'filename.jpg',
+                            });
+                        label && formData1.append('label', label);
+                        desc && formData1.append('desc', desc);
+
+
+                        axios.put(`https://test.kemeladam.kz/api/chat/group/${response?.data?.id}/`,
+                            formData1, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data',
+                            },
+                        })
+                            .then(response => {
+                                console.log('RESPONSE LOGIN:', response);
+                                navigation.navigate('AddUsers', { group_id: response?.data?.id })
+
+                            })
+                            .catch(error => {
+                                console.log('RESPONSE error:', error.response);
+                                if (error.response && error.response.status == 401) {
+                                    showToast('error', error.response.data.detail);
+                                }
+                            });
+                    } else {
+                        navigation.navigate('AddUsers', { group_id: response?.data?.id })
+                    }
                 }
             })
             .catch(error => {
@@ -145,6 +210,7 @@ const NewGroup = ({ navigation }) => {
 
     const renderFines = ({ item, index }) => (
         <TouchableOpacity
+            key={index}
             onPress={() => setSelected(index)}
             style={styles.buttoncontainer(selected == index)}
         >
@@ -273,14 +339,19 @@ const NewGroup = ({ navigation }) => {
                             <Switch
                                 value={fine}
                                 onValueChange={(value) => {
-                                    setFine(value)
-                                    setSelected(value ? 0 : null)
+                                    if (finesArray.length > 0) {
+                                        setFine(value)
+                                        setSelected(value ? 0 : null)
+                                    } else {
+                                        GetFines()
+                                    }
+
 
                                 }}
                             />
                         </View>
                         {
-                            fine ?
+                            finesArray.length > 0 && fine ?
                                 <View style={{ marginHorizontal: 24, paddingVertical: 16 }}>
                                     <FlatList
                                         data={finesArray}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, PermissionsAndroid, SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Header from '../../Component/Header2';
 import { strings } from '../../Localization/Localization';
 import { Search, userSelected } from '../../Component/MyIcons';
@@ -7,7 +7,8 @@ import FastImage from 'react-native-fast-image';
 import ItemUsers from './ItemUsers';
 import SimpleButton from '../../Component/SimpleButton';
 import axios from 'axios';
-
+import { checkPermission, getAll, getCount } from "react-native-contacts";
+import { Platform } from 'react-native';
 
 
 
@@ -16,6 +17,7 @@ const AddUsers = ({ navigation, route }) => {
 
 
     const [users, setUsers] = useState([])
+    const [nexturl, setNextUrl] = useState(null)
 
     const group_id = route.params.group_id
 
@@ -25,13 +27,61 @@ const AddUsers = ({ navigation, route }) => {
     useEffect(() => {
         getData('')
 
+        if (Platform.OS === "android") {
+            PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS, {
+                title: "Contacts",
+                message: "This app would like to view your contacts."
+            }).then(() => {
+                loadContacts();
+            });
+        } else {
+            loadContacts();
+        }
+
     }, []);
+
+
+    const loadContacts = () => {
+
+        console.log('aaaaaa', 'ssss')
+        getAll()
+            .then(contacts => {
+                this.setState({ contacts, loading: false });
+            })
+            .catch(e => {
+                this.setState({ loading: false });
+            });
+
+        getCount().then(count => {
+            this.setState({ searchPlaceholder: `Search ${count} contacts` });
+        });
+        checkPermission();
+    }
+
+
 
     const getData = (search) => {
         axios.get(`https://test.kemeladam.kz/api/chat/group/${group_id}/account/autocomplete/?limit=20&offset=0&search=${search}`)
             .then(response => {
                 console.log("RESPONSE chat:", response);
                 setUsers(response?.data?.results)
+                setNextUrl(response?.data?.next)
+            })
+            .catch(error => {
+                console.log("error chat:", error.response);
+
+            })
+    }
+
+
+
+
+    const handleLoadMore = (info) => {
+        axios.get(nexturl)
+            .then(response => {
+                console.log("RESPONSE chat:", response);
+                setUsers([...users, ...response?.data?.results])
+                setNextUrl(response?.data?.next)
             })
             .catch(error => {
                 console.log("error chat:", error.response);
@@ -103,6 +153,10 @@ const AddUsers = ({ navigation, route }) => {
                 keyExtractor={(item, index) => index.toString()}
                 showsVerticalScrollIndicator={false}
                 renderItem={renderItemUser}
+                onEndReachedThreshold={0.01}
+                onEndReached={(info) => {
+                    handleLoadMore(info);
+                }}
             />
 
             <SimpleButton

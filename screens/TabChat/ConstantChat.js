@@ -12,9 +12,18 @@ export const headerArr = [
         'name': 'Апта',
         'day': 7
     },
+
+    {
+        'name': '1 ай',
+        'day': 30
+    },
     {
         'name': '40 күн',
         'day': 40
+    },
+    {
+        'name': '3 ай',
+        'day': 90
     },
     {
         'name': '6 ай',

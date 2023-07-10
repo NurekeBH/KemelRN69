@@ -16,12 +16,16 @@ import { ButtonClass, showToast, width } from '../../Component/Component';
 import Header from '../../Component/Header2';
 import { no_avatar } from '../../Component/MyIcons';
 import { strings } from '../../Localization/Localization';
+import { colorApp } from '../../theme/Colors';
+import { TextInputMask } from 'react-native-masked-text';
+
 
 export default class EditProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
       name: this.props.route.params.data.fio,
+      phone: this.props.route.params.data.phone,
       pwd: '',
       pwd2: '',
       avatar: this.props.route.params.data.avatar,
@@ -48,7 +52,7 @@ export default class EditProfile extends Component {
   };
 
   SaveProfile = () => {
-    const { name, pwd, pwd2, path, mime } = this.state;
+    const { phone, name, pwd, pwd2, path, mime } = this.state;
 
     const formData = new FormData();
 
@@ -60,11 +64,18 @@ export default class EditProfile extends Component {
         name: 'filename.jpg',
       });
     name && formData.append('fio', name);
+
+    let PHONE = phone.replace('+', '')
+    PHONE = PHONE.replaceAll(' ', '')
+    phone && formData.append('phone', PHONE);
+
+
+
     pwd && formData.append('old_password', pwd);
     pwd2 && formData.append('new_password', pwd2);
 
     axios
-      .post('accounts/profile/change/', formData, {
+      .post('https://test.kemeladam.kz/api/accounts/profile/change/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -88,7 +99,7 @@ export default class EditProfile extends Component {
   };
 
   render() {
-    const { name, pwd, pwd2, avatar } = this.state;
+    const { name, phone, pwd, pwd2, avatar } = this.state;
     return (
       <View style={{ flex: 1, backgroundColor: '#fff' }}>
         <StatusBar backgroundColor={'#fff'} barStyle="dark-content" />
@@ -132,17 +143,36 @@ export default class EditProfile extends Component {
                   </Text>
                 </TouchableOpacity>
               </View>
-              <View style={styles.inpStl}>
-                <TextInput
-                  value={name}
-                  placeholder={strings.fio}
-                  onChangeText={name => this.setState({ name })}
-                  style={{ fontSize: 17, width: width / 1.8 }}
-                  returnKeyType={'done'}
-                  textContentType="name"
-                />
+              <View>
+                <View style={styles.inpStl}>
+                  <TextInput
+                    value={name}
+                    placeholder={strings.fio}
+                    onChangeText={name => this.setState({ name })}
+                    style={{ fontSize: 17, width: width / 1.8 }}
+                    returnKeyType={'done'}
+                  />
+                </View>
+                <View style={styles.inpStl}>
+                  <TextInputMask
+                    type={'custom'}
+                    options={{
+                      mask: '+7 999 999 99 99'
+                    }}
+                    style={{ fontSize: 17, width: width / 1.8 }}
+                    placeholder={strings.phone}
+                    placeholderTextColor={'rgba(0,0,0,0.4)'}
+                    keyboardType={'phone-pad'}
+                    returnKeyType={'done'}
+                    textContentType="nameSuffix"
+                    value={phone}
+                    autoCapitalize='none'
+                    onChangeText={phone => this.setState({ phone })}
+                  />
+                </View>
               </View>
             </View>
+
             <Text style={{ color: 'black', marginTop: 30, fontSize: 22, fontWeight: '700' }}>
               {strings.edPwd}
             </Text>
@@ -154,10 +184,11 @@ export default class EditProfile extends Component {
                 onChangeText={pwd => this.setState({ pwd })}
                 style={{ fontSize: 17 }}
                 returnKeyType={'done'}
-                textContentType="name"
                 secureTextEntry
               />
             </View>
+
+
             <View style={[styles.pwdStl, { marginTop: 8 }]}>
               <TextInput
                 placeholder={strings.newpwd2}
@@ -177,7 +208,7 @@ export default class EditProfile extends Component {
             style={{ bottom: 16, marginHorizontal: 16 }}
           />
         </SafeAreaView>
-      </View>
+      </View >
     );
   }
 }
@@ -189,7 +220,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2F2F7',
     padding: 12,
     borderRadius: 8,
-    marginBottom: 22,
+    marginBottom: 10,
   },
   pwdStl: {
     width: width - 32,

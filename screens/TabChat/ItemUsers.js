@@ -28,9 +28,10 @@ const ItemUsers = ({
                 style={{
                     width: 40,
                     height: 40,
-                    borderRadius: 20
+                    borderRadius: 20,
+                    backgroundColor: '#999999'
                 }}
-                source={require('../../assets/logo.png')}
+                source={{ uri: item?.avatar }}
             >
                 {selected ? userSelected : null}
 
@@ -38,7 +39,7 @@ const ItemUsers = ({
             </FastImage>
             <View style={{ marginLeft: 10 }}>
                 <Text style={{ color: '#000', fontSize: 14, fontWeight: '700' }}>{item?.fio}</Text>
-                <Text style={{ color: '#8A8A8D', fontSize: 14, fontWeight: '400' }}>{item?.email}</Text>
+                <Text style={{ color: '#8A8A8D', fontSize: 14, fontWeight: '400' }}>{item?.phone ? item?.phone : item?.email}</Text>
             </View>
         </TouchableOpacity>
     )

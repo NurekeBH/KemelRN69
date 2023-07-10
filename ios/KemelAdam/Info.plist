@@ -45,6 +45,8 @@
 	<string>Доступ к фотографиям требуеться для  изменение аватара</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Доступ к фотографиям требуеться для  изменение аватара</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Доступ к контакты требуеться для  добавить чат</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

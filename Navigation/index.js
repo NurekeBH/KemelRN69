@@ -70,6 +70,7 @@ import ChatMessage from '../screens/TabChat/ChatMessage';
 import GroupProfile from '../screens/TabChat/GroupProfile';
 import ChangeGroupProfile from '../screens/TabChat/ChangeGroupProfile';
 import GroupHabits from '../screens/TabChat/GroupHabits';
+import GroupMedia from '../screens/TabChat/GroupMedia';
 /////////STACKS/////////
 
 const _Tab1 = createNativeStackNavigator();
@@ -687,6 +688,11 @@ function App() {
           options={{ headerShown: false }}
         />
 
+        <Stack.Screen
+          name="GroupMedia"
+          component={GroupMedia}
+          options={{ headerShown: false }}
+        />
 
 
       </Stack.Navigator>

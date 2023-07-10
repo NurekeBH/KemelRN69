@@ -37,6 +37,7 @@
     "react-native-code-push": "^7.0.5",
     "react-native-collapsible": "^1.6.0",
     "react-native-collapsible-header-views": "^1.1.2",
+    "react-native-contacts": "^7.0.5",
     "react-native-currency-input": "^1.0.1",
     "react-native-date-picker": "^4.1.1",
     "react-native-document-picker": "^8.1.1",
@@ -50,6 +51,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-localization": "^2.1.7",
+    "react-native-masked-text": "^1.13.0",
     "react-native-modalbox": "^2.0.2",
     "react-native-pell-rich-editor": "^1.8.8",
     "react-native-pie-chart": "^2.0.2",
@@ -66,8 +68,10 @@
     "react-native-svg-charts": "^5.4.0",
     "react-native-toast-message": "^2.1.1",
     "react-native-track-player": "^3.2.0",
+    "react-native-use-websocket": "^0.2.6",
     "react-native-webview": "^11.17.1",
-    "react-tween-state": "^0.1.5"
+    "react-tween-state": "^0.1.5",
+    "socket.io-client": "^4.6.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

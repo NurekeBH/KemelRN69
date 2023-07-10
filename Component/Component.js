@@ -35,6 +35,10 @@ export const GetTime = (date, format) => {
   return Moment(date).format(format);
 }
 
+export const GetTimeAgo = (date) => {
+  return Moment(date).calendar();
+}
+
 export const GetDuration = sec => {
   var hours = Math.floor(sec / 3600);
   var minutes =

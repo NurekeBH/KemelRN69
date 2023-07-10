@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { Alert, TouchableOpacity } from 'react-native';
 import { Text, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { billIcon, muteIcon, swipeDelete, userSelected } from '../../Component/MyIcons';
 import Swipeout from '../../Swipeout';
 import { strings } from '../../Localization/Localization';
+import axios from 'axios';
 
 const ItemGroups = ({
     item,
     index,
     onPress,
+    deleteGroup,
     ...params
 }) => {
 
@@ -35,7 +37,6 @@ const ItemGroups = ({
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 flex: 1,
-                                maxHeight: 200,
                             }}>
                             {muteIcon('white')}
                             <Text style={{ marginTop: 4, fontSize: 12, color: 'white' }}>
@@ -55,7 +56,6 @@ const ItemGroups = ({
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 flex: 1,
-                                maxHeight: 200,
                             }}>
                             {swipeDelete}
                             <Text style={{ marginTop: 4, fontSize: 12, color: '#FF3B30' }}>
@@ -64,7 +64,17 @@ const ItemGroups = ({
                         </View>
                     ),
                     onPress: () => {
-
+                        Alert.alert(strings.vnim, strings.deletegroup, [
+                            {
+                                text: strings.otm,
+                                onPress: () => console.log('Cancel Pressed'),
+                                style: 'cancel',
+                            },
+                            {
+                                text: 'OK',
+                                onPress: deleteGroup,
+                            },
+                        ]);
                     },
                 },
             ]}>
@@ -72,16 +82,19 @@ const ItemGroups = ({
                 onPress={onPress}
                 activeOpacity={0.5}
                 style={{
-                    paddingVertical: 8,
+                    flex: 1,
+                    paddingVertical: 12,
                     paddingHorizontal: 16,
                     flexDirection: 'row',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    justifyContent: 'center',
                 }}>
                 <FastImage
                     style={{
                         width: 50,
                         height: 50,
-                        borderRadius: 25
+                        borderRadius: 25,
+                        backgroundColor: '#909090'
                     }}
                     source={{ uri: item?.cover }}
                 />
@@ -100,7 +113,7 @@ const ItemGroups = ({
                                 }
                             </View>
 
-                            <Text numberOfLines={2} style={{ color: '#8A8A8D', fontSize: 13, fontWeight: '400', }}>Максат: добавила в группу Максат: добавила в группу Максат: добавила в группу</Text>
+                            <Text numberOfLines={2} style={{ color: '#8A8A8D', fontSize: 13, fontWeight: '400', }}>{item?.last_msg}</Text>
                         </View>
                         <View style={{ alignItems: 'flex-end' }}>
                             <Text style={{ color: '#8A8A8D', fontSize: 13, fontWeight: '400', marginBottom: 4 }}>14:19</Text>
@@ -108,7 +121,7 @@ const ItemGroups = ({
                                 {
                                     item.unread_msg > 0 ?
                                         <View style={{ marginHorizontal: 2, backgroundColor: '#3F49DC', width: 20, height: 20, borderRadius: 10, alignItems: 'center', justifyContent: 'center' }}>
-                                            <Text style={{ fontSize: 13, color: 'white' }}>2</Text>
+                                            <Text style={{ fontSize: 13, color: 'white' }}>{item.unread_msg}</Text>
                                         </View>
                                         :
                                         null
@@ -129,7 +142,7 @@ const ItemGroups = ({
                 </View>
 
             </TouchableOpacity>
-            <View style={{ width: '80%', alignSelf: 'flex-end', height: 0.5, backgroundColor: 'rgba(0,0,0,0.2)', marginTop: 16 }} />
+            <View style={{ width: '80%', alignSelf: 'flex-end', height: 0.5, backgroundColor: 'rgba(0,0,0,0.2)', }} />
 
         </Swipeout>
 

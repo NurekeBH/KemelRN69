@@ -52,6 +52,7 @@ export let strings = new LocalizedStrings({
     zab: 'Құпия сөзді ұмыттыңыз ба?',
     neme: 'немесе',
     imya: 'Аты жөніңіз',
+    phone: 'Телефон нөмірі',
     nazad: 'Артқа',
     umytt: 'Құпия сөзді ұмыттым',
     umyttt: 'Құпия сөзді қалпына келтіру үшін тіркелген поштаңызды жазыңыз',
@@ -136,6 +137,7 @@ export let strings = new LocalizedStrings({
     mybooks: 'Кітаптарым',
     mygoals: 'Мақсаттарым',
     filed: 'Файлды өшіргіңіз келеді ме?',
+    deletegroup: 'Группаны өшіргіңіз келеді ме?',
     delete: 'Өшіру',
     process: 'Орындалуда',
     done: 'Орындалды',
@@ -151,6 +153,7 @@ export let strings = new LocalizedStrings({
     howgoal: 'Мақсатты қалай қоямыз?',
     nameFolder: 'Папаканың атын енгізіңіз',
     admin: 'админ',
+    members: 'мүше',
 
 
     /////  CHAT 
@@ -162,6 +165,9 @@ export let strings = new LocalizedStrings({
     infogroup: 'Топ ақпараты',
     mute: 'Дауыссыз',
     unmute: 'Дауысты',
+    addPhone: 'Телефон нөміріңізді енгізіңіз!',
+    connecting: 'қосылуда',
+    notconnecting: 'қосылмады'
 
 
 
@@ -181,6 +187,7 @@ export let strings = new LocalizedStrings({
     zab: 'Забыл пароль',
     neme: 'или войти через',
     imya: 'Имя Фамилия',
+    phone: 'Номер телефона',
     nazad: 'Нaзaд',
     umytt: 'Забыл пароль',
     umyttt:
@@ -267,6 +274,7 @@ export let strings = new LocalizedStrings({
     mybooks: 'Мои книги',
     mygoals: 'Мои цели',
     filed: 'Вы хотите удалить файл?',
+    deletegroup: 'Вы хотите удалить группу?',
     unt: 'Атаусыз',
     delete: 'Удалить',
     process: 'В процессе',
@@ -283,6 +291,11 @@ export let strings = new LocalizedStrings({
     howgoal: 'Как мы ставим цель?',
     nameFolder: 'Введите имя папки',
     admin: 'админ',
+    members: 'участник',
+    addPhone: 'Введите свой номер телефона!',
+    connecting: 'подключение',
+    notconnecting: 'не подключается'
+
   },
   en: {
     tab1: 'Calendar',
@@ -299,6 +312,7 @@ export let strings = new LocalizedStrings({
     zab: 'Forgot password',
     neme: 'or login with',
     imya: 'Name Surname',
+    phone: 'Phone number',
     nazad: 'Back',
     umytt: 'Forgot password',
     umyttt: 'Enter your registered email address to reset your password',
@@ -385,6 +399,7 @@ export let strings = new LocalizedStrings({
     mybooks: 'My books',
     mygoals: 'My goals',
     filed: 'Do you want to delete the file?',
+    deletegroup: 'Do you want to delete a group?',
     unt: 'Untitled',
     delete: 'Delete',
     process: 'In process',
@@ -401,5 +416,10 @@ export let strings = new LocalizedStrings({
     howgoal: 'How do we set a goal?',
     nameFolder: 'Enter a folder name',
     admin: 'admin',
+    members: 'members',
+    addPhone: 'Enter your phone number!',
+    connecting: 'connecting',
+    notconnecting: 'not connecting'
+
   },
 });

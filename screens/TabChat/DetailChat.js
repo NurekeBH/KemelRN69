@@ -20,9 +20,11 @@ const DetailChat = ({ navigation, route }) => {
 
     const [dataArray, setDataArray] = useState([])
     const [response, setResponse] = useState(null)
+    const [myInfo, setMyInfo] = useState(null)
     const [isLoading, setLoading] = useState(true)
     const [selected, setSelected] = useState(0)
     const [modelHabits, setModalHabits] = useState(null)
+
 
     const [isDone, setISDone] = useState(true)
     const today = moment().format('YYYY-MM-DD')
@@ -73,6 +75,13 @@ const DetailChat = ({ navigation, route }) => {
                     }
                     let DoneHabits = arrHabits.filter(item => item.done === true).length;
                     user.doneHabitsCount = DoneHabits
+                    if (user.owner) {
+                        let info = {}
+                        info.id = user.id
+                        info.email = user.email
+                        info.fio = user.fio
+                        setMyInfo(info)
+                    }
                 }
 
 
@@ -275,9 +284,17 @@ const DetailChat = ({ navigation, route }) => {
             <TouchableOpacity
                 activeOpacity={0.5}
                 onPress={() => {
-                    navigation.navigate('ChatMessage', { item: item })
+                    navigation.navigate('ChatMessage', { item: item, myInfo: myInfo })
                 }}
                 style={{ position: 'absolute', right: 24, bottom: 40, alignItems: 'center', justifyContent: 'center', width: 64, height: 64, backgroundColor: '#3F49DC', borderRadius: 32 }}>
+                {
+                    item.unread_msg > 0 ?
+                        <View style={{ position: 'absolute', top: 0, right: 0, marginHorizontal: 2, backgroundColor: '#FF6C6C', width: 20, height: 20, borderRadius: 10, alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ fontSize: 13, color: 'white' }}>{item.unread_msg}</Text>
+                        </View>
+                        :
+                        null
+                }
                 {chatFatIcon}
             </TouchableOpacity>
 

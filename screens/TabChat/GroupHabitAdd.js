@@ -41,7 +41,6 @@ const GroupHabitAdd = ({
             let habit = {
                 "label": label,
                 "desc": label,
-                "time": "08:00:00",
                 "weeks": week_day_ids,
                 "purpose": is_purpose,
                 "target": target,

@@ -188,7 +188,7 @@ const ItemHabitUser = ({
                             height: 40,
                             borderRadius: 20
                         }}
-                        source={require('../../assets/logo.png')}
+                        source={{ uri: item?.avatar }}
                     />
                     <Text numberOfLines={2} style={{ flex: 1, marginLeft: 8, fontSize: 16, fontWeight: '600' }}>{item?.fio}</Text>
                 </View>

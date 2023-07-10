@@ -10,13 +10,18 @@ import {
   Alert,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { HeaderStyle, showToast, width } from '../../Component/Component';
+import { ButtonClass, HeaderStyle, showToast, width } from '../../Component/Component';
 import { Left_icon, no_avatar, Right } from '../../Component/MyIcons';
 import { strings } from '../../Localization/Localization';
 import Header from '../../Component/Header2';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { StateContext } from '../../ProviderApp';
+import Modal from 'react-native-modalbox';
+import { TextInputMask } from 'react-native-masked-text';
+import { colorApp } from '../../theme/Colors';
+
+
 
 export const ButtonProfile = ({ onPress, title, push, language, exit }) => (
   <TouchableOpacity
@@ -68,6 +73,7 @@ export default class Profile extends Component {
     super(props);
     this.state = {
       data: '',
+      phone: null
     };
   }
   static contextType = StateContext;
@@ -90,14 +96,17 @@ export default class Profile extends Component {
   };
 
   getProfile() {
-    axios
-      .get('accounts/profile/')
+
+    axios.get('https://test.kemeladam.kz/api/accounts/profile/')
       .then(response => {
         console.log('RESPONSE profile:', response);
         this.setState({
           data: response.data,
         });
         this.storeData(response.data);
+        if (!response.data?.phone) {
+          this.mdlRef.open()
+        }
       })
       .catch(error => {
         console.log('RESPONSE error:', error.response);
@@ -154,6 +163,7 @@ export default class Profile extends Component {
                 console.log('RESPONSE destroy:', response);
 
                 delete axios.defaults.headers.common["Authorization"];
+                axios.defaults.headers.common['Authorization'] = null;
                 AsyncStorage.removeItem('token');
                 AsyncStorage.clear();
                 this.props.navigation.replace('AuthStack');
@@ -173,11 +183,36 @@ export default class Profile extends Component {
     );
   };
 
+  savePhone = () => {
+    const { phone, data } = this.state;
+
+    const formData = new FormData();
+    let PHONE = phone.replace('+', '')
+    PHONE = PHONE.replaceAll(' ', '')
+    phone && formData.append('phone', PHONE);
+    data?.fio && formData.append('fio', data.fio);
+
+    axios
+      .post('https://test.kemeladam.kz/accounts/profile/change/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then(response => {
+        console.log('RESPONSE change:', response);
+        this.getProfile();
+      })
+      .catch(error => {
+        console.log('RESPONSE error:', error.response);
+
+      });
+  }
+
 
 
   render() {
     this.globalState = this.context;
-    const { data } = this.state;
+    const { data, phone } = this.state;
     return (
       <View style={{ flex: 1, backgroundColor: '#fff' }}>
         <StatusBar backgroundColor={'#fff'} barStyle="dark-content" />
@@ -223,6 +258,16 @@ export default class Profile extends Component {
                   }}>
                   {data.fio ? data.fio : strings.fio}
                 </Text>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontWeight: '500',
+                    width: width / 1.6,
+                    color: data.fio ? '#000000' : '#cccccc',
+                  }}>
+                  {data.phone ? '+' + data.phone : strings.phone}
+                </Text>
+
                 <TouchableOpacity
                   onPress={() =>
                     this.props.navigation.navigate('EditProfile', { data })
@@ -300,6 +345,87 @@ export default class Profile extends Component {
 
             </TouchableOpacity>
           </View>
+
+          <Modal
+            ref={e => (this.mdlRef = e)}
+            backdropColor={'rgba(0,0,0,0.7)'}
+            coverScreen
+            style={{ height: 'auto', backgroundColor: 'transparent' }}>
+            <View
+              style={{
+                backgroundColor: '#fff',
+                width: width - 20,
+                marginHorizontal: 10,
+                borderRadius: 14,
+                padding: 16
+              }}>
+
+              <Text>{strings.addPhone}</Text>
+
+
+              <View style={{
+                backgroundColor: colorApp.fone,
+                padding: 12,
+                borderRadius: 8,
+                marginTop: 15,
+              }}>
+                <TextInputMask
+                  type={'custom'}
+                  options={{
+                    mask: '+7 999 999 99 99'
+                  }}
+                  style={{ fontSize: 17, width: width - 60 }}
+                  placeholder={strings.phone}
+                  placeholderTextColor={'rgba(0,0,0,0.4)'}
+                  keyboardType={'phone-pad'}
+                  returnKeyType={'done'}
+                  textContentType="nameSuffix"
+                  value={phone}
+                  autoCapitalize='none'
+                  onChangeText={phone => this.setState({ phone })}
+                />
+              </View>
+
+            </View>
+
+
+            <ButtonClass
+              onPress={() => this.savePhone()}
+              title={strings.save}
+              style={{
+                backgroundColor: '#fff',
+                width: width - 20,
+                marginHorizontal: 10,
+                marginTop: 4,
+                borderBoRadius: 14,
+              }}
+              titleStyle={{
+                fontSize: 20,
+                fontWeight: '700',
+                color: '#232857',
+              }}
+            />
+
+            <ButtonClass
+              onPress={() => this.mdlRef.close()}
+              title={strings.bastar}
+              style={{
+                backgroundColor: '#fff',
+                width: width - 20,
+                marginHorizontal: 10,
+                borderRadius: 14,
+              }}
+              titleStyle={{
+                fontSize: 20,
+                fontWeight: '700',
+                color: '#E64646',
+              }}
+            />
+          </Modal>
+
+
+
+
         </SafeAreaView>
       </View>
     );

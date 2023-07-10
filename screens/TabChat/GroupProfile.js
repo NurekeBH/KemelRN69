@@ -117,11 +117,15 @@ const GroupProfile = ({ navigation, route }) => {
                 }}
                 style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12 }}>
                 {habitsIcon}
-                <Text style={{ flex: 1, marginLeft: 12, fontSize: 17, color: '#000000' }}>Әдеттер</Text>
+                <Text style={{ flex: 1, marginLeft: 12, fontSize: 17, color: '#000000' }}>{strings.adets}</Text>
                 {RightGray}
             </TouchableOpacity>
 
-            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12 }}>
+            <TouchableOpacity
+                onPress={() => {
+                    navigation.navigate('GroupMedia', { group_id: groupInfo?.id })
+                }}
+                style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12 }}>
                 {mediaIcon}
                 <Text style={{ flex: 1, marginLeft: 12, fontSize: 17, color: '#000000' }}>Медиа</Text>
                 {RightGray}
@@ -131,7 +135,7 @@ const GroupProfile = ({ navigation, route }) => {
 
             <View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12 }}>
-                    <Text style={{ flex: 1, fontSize: 17, color: '#000000' }}>{groupInfo?.accounts.length} участник</Text>
+                    <Text style={{ flex: 1, fontSize: 17, color: '#000000' }}>{groupInfo?.accounts.length} {strings.members}</Text>
                     <TouchableOpacity
                         onPress={() => {
                             navigation.navigate('AddUsers', { group_id: groupInfo?.id })
@@ -144,6 +148,7 @@ const GroupProfile = ({ navigation, route }) => {
                 {
                     groupInfo?.accounts.map((item, index) => (
                         <Swipeout
+                            key={index}
                             autoClose={true}
                             style={{
                                 maxHeight: 200,
@@ -215,7 +220,7 @@ const GroupProfile = ({ navigation, route }) => {
                             <View style={{ backgroundColor: 'white', paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center' }}>
                                 <FastImage
                                     style={{ width: 50, height: 50, borderRadius: 25 }}
-                                    source={require('../../assets/logo.png')}
+                                    source={{ uri: item?.avatar }}
                                 />
                                 <View style={{ flex: 1, marginLeft: 16 }}>
                                     <Text style={{ fontSize: 16, fontWeight: '600', color: '#000000', }}>{item?.fio}</Text>
