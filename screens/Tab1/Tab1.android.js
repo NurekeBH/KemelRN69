@@ -1107,7 +1107,7 @@ export default class Tab1 extends Component {
             lang={getLang()}
             showWeekNumber
             startingDate={this.state.now}
-            selectedDate={this.state.now}
+            selectedDate={new Date(this.state.now)}
             onPressDate={day => {
               this.setState(
                 {

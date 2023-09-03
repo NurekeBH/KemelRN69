@@ -6,7 +6,7 @@ import SimpleButton from '../../Component/SimpleButton';
 import ItemGroups from './ItemGroups';
 import { strings } from '../../Localization/Localization';
 import axios from 'axios';
-// import useWebSocket, { ReadyState } from 'react-native-use-websocket';
+import useWebSocket, { ReadyState } from 'react-native-use-websocket';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { ButtonClass, HeaderStyle, showToast, width } from '../../Component/Component';
@@ -20,7 +20,7 @@ import { colorApp } from '../../theme/Colors';
 
 const TabChat = ({ navigation }) => {
 
-    const [groups, setGroups] = useState(null)
+    const [groups, setGroups] = useState([])
     const [isLoading, setLoading] = useState(true)
     const [userId, setUserId] = useState(null)
 
@@ -30,71 +30,71 @@ const TabChat = ({ navigation }) => {
     const mdlRef = useRef()
 
 
-    const [readyState, setReadyState] = useState(0)
-    const [connectionStatus, setConnectionStatus] = useState(strings.connecting)
+
+
+    const getSocketUrl = useCallback(() => {
+        return new Promise(resolve => {
+            AsyncStorage.getItem('user_id').then(value => {
+                setUserId(value)
+                console.log('user_id', value)
+                resolve(`wss://test.kemeladam.kz/ws/chat/user/${value}/groups/`);
+            });
+        });
+    }, []);
+
+
+
+
+    const {
+        sendJsonMessage,
+        lastJsonMessage,
+        lastMessage,
+        sendMessage,
+        readyState,
+        getWebSocket
+    } = useWebSocket(getSocketUrl, {
+        onOpen: () => console.log('opened'),
+        //Will attempt to reconnect on all close events, such as server shutting down
+        shouldReconnect: (closeEvent) => true,
+    });
+
+
+
+    const connectionStatus = {
+        [ReadyState.CONNECTING]: strings.connecting,
+        [ReadyState.OPEN]: "",
+        [ReadyState.CLOSING]: strings.notconnecting,
+        [ReadyState.CLOSED]: strings.connecting,
+        [ReadyState.UNINSTANTIATED]: strings.notconnecting,
+    }[readyState];
+
+
 
 
 
     useEffect(() => {
+
+
+
+        console.log('lastJsonMessage', lastJsonMessage)
+        if (lastJsonMessage.channel === 'group.list') {
+            setGroups(lastJsonMessage?.groups)
+            setLoading(false)
+        }
+
+    }, [lastJsonMessage, lastMessage]);
+
+    useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             getData()
-
-            AsyncStorage.getItem('user_id').then(value => {
-                console.log('valuevaluevalue', value)
-                if (value !== null) {
-                    setUserId(value)
-                    onConnect(value)
-
-                }
-            });
-
         });
 
         return () => {
             unsubscribe;
         }
+
+
     }, []);
-
-
-    const onConnect = (value) => {
-        let socket = new WebSocket(`wss://test.kemeladam.kz/ws/chat/user/${value}/groups/`)
-
-        socket.onopen = function (e) {
-
-            setReadyState(1)
-            setConnectionStatus('')
-            console.log('TabChatSocket onopen', e)
-
-        }
-        socket.onmessage = function (event) {
-            let data = JSON.parse(event.data)
-            console.log('TabChatSocket onmessage', data)
-            if (data.channel === 'group.list') {
-                setGroups(data?.groups)
-                setLoading(false)
-            }
-
-
-        }
-        socket.onclose = function (event) {
-            setReadyState(2)
-            setConnectionStatus(strings.notconnecting)
-            setTimeout(function () {
-                onConnect(value);
-            }, 1000);
-            console.log('TabChatSocket onclose', event)
-
-        }
-        socket.onerror = function (event) {
-            setReadyState(2)
-            setConnectionStatus(strings.notconnecting)
-            console.log('TabChatSocket onerror', event)
-
-        }
-    }
-
-
-
 
 
     const getData = () => {
@@ -103,7 +103,6 @@ const TabChat = ({ navigation }) => {
                 console.log('RESPONSE profile:', response);
                 setLoading(false)
                 setData(response.data)
-                AsyncStorage.setItem('user_id', response.data.id + '')
                 if (!response.data?.phone) {
                     mdlRef?.current?.open()
                 }
@@ -209,7 +208,7 @@ const TabChat = ({ navigation }) => {
                 showsVerticalScrollIndicator={false}
                 renderItem={renderItem}
                 ListEmptyComponent={() => (
-                    groups && !isLoading && readyState == 1 ?
+                    groups.length == 0 && !isLoading ?
                         < View
                             style={{
                                 alignItems: 'center',
@@ -229,6 +228,10 @@ const TabChat = ({ navigation }) => {
                 )}
                 onRefresh={() => {
 
+                    sendMessage('close'); // Close the existing connection if any
+                    getSocketUrl()
+
+                    setLoading(true)
                     getData()
                 }}
                 refreshing={isLoading}

@@ -46,7 +46,7 @@ export default class Registr extends Component {
 
       console.log('aaaaa', Phone)
       this.setState({ loader: true });
-      axios.post('register/', {
+      axios.post('https://test.kemeladam.kz/api/register/', {
         email: email,
         password: pwd,
         password2: pwd,
@@ -58,15 +58,19 @@ export default class Registr extends Component {
 
           if (response.status == 201) {
             axios
-              .post('login/', {
+              .post('https://test.kemeladam.kz/api/login/', {
                 email: email,
                 password: pwd,
 
               })
               .then(response => {
+
+                const AuthStr = 'Bearer '.concat(response.data.access);
+                axios.defaults.headers.common['Authorization'] = AuthStr;
+                this.getProfile(response.data)
+
                 console.log('RESPONSE LOGIN:', response);
-                this.storeData(response.data);
-                this.setState({ is_send: false });
+
               })
               .catch(error => {
                 this.setState({ is_send: false });
@@ -95,15 +99,35 @@ export default class Registr extends Component {
     }
   }
 
-  storeData = async data => {
+  getProfile(data) {
+
+    axios.get('https://test.kemeladam.kz/api/accounts/profile/')
+      .then(response => {
+        console.log('RESPONSE profile:', response);
+        this.setState({ is_send: false });
+        this.storeData(response.data, data);
+
+      })
+      .catch(error => {
+        console.log('RESPONSE error:', error.response);
+        if (error.response && error.response.status == 401) {
+          showToast('error', error.response.data.detail);
+        }
+      });
+  }
+
+
+
+  storeData = async (user, data) => {
     const { email, pwd } = this.state;
 
 
     try {
+      await AsyncStorage.setItem('token', data.access);
       await AsyncStorage.setItem('email', email);
       await AsyncStorage.setItem('pwd', pwd);
-      const AuthStr = 'Bearer '.concat(data.access);
-      axios.defaults.headers.common['Authorization'] = AuthStr;
+      await AsyncStorage.setItem('user_id', user.id + '');
+
       let fcmToken = await firebase.messaging().getToken();
       this.setState({ loader: false });
       if (fcmToken) {

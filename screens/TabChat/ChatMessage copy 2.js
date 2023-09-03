@@ -5,14 +5,13 @@ import Header from '../../Component/Header2';
 import { strings } from '../../Localization/Localization';
 import ChatHeader from '../../Component/ChatHeader';
 import FastImage from 'react-native-fast-image';
-import { PluseBtn, chatBg1, chatBg2, chatCamera, chatFatIcon, chatSend, closeIcon, moreMenu, no_avatar, userSelected } from '../../Component/MyIcons';
+import { PluseBtn, chatBg1, chatBg2, chatCamera, chatFatIcon, chatSend, closeIcon, moreMenu, userSelected } from '../../Component/MyIcons';
 import axios from 'axios';
-import useWebSocket, { ReadyState } from 'react-native-use-websocket';
+
 import { width } from '../../Component/Component';
 import TimeAgo from '../../Component/TimeAgo';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import { ImageDetail } from 'react-native-image-modal';
-import TimeAgoDay from '../../Component/TimeAgoDay';
 
 
 const ChatMessage = ({ navigation, route }) => {
@@ -24,34 +23,13 @@ const ChatMessage = ({ navigation, route }) => {
     const group_id = item.id
 
 
-    const getSocketUrl = useCallback(() => {
-        return new Promise(resolve => {
-            resolve(`wss://test.kemeladam.kz/ws/chat/group/${group_id}/?account_id=${myInfo.id}`);
-        });
-    }, []);
+    // const getSocketUrl = useCallback(() => {
+    //     return new Promise(resolve => {
+    //         resolve(`wss://test.kemeladam.kz/ws/chat/group/${group_id}/?account_id=${myInfo.id}`);
+    //     });
+    // }, []);
 
 
-
-    const {
-        sendJsonMessage,
-        lastJsonMessage,
-        readyState,
-        getWebSocket
-    } = useWebSocket(getSocketUrl, {
-        onOpen: () => getData(),
-        //Will attempt to reconnect on all close events, such as server shutting down
-        shouldReconnect: (closeEvent) => true,
-    });
-
-
-
-    const connectionStatus = {
-        [ReadyState.CONNECTING]: strings.connecting,
-        [ReadyState.OPEN]: "",
-        [ReadyState.CLOSING]: strings.notconnecting,
-        [ReadyState.CLOSED]: strings.notconnecting,
-        [ReadyState.UNINSTANTIATED]: strings.notconnecting,
-    }[readyState];
 
 
 
@@ -70,34 +48,64 @@ const ChatMessage = ({ navigation, route }) => {
     const [mime, setMime] = useState(null)
 
 
+    const [readyState, setReadyState] = useState(0)
+    const [connectionStatus, setConnectionStatus] = useState(strings.connecting)
 
-    useEffect(() => {
+    let socket = new WebSocket(`wss://test.kemeladam.kz/ws/chat/group/${group_id}/?account_id=${myInfo.id}`)
 
-        readyState == 1 && getData()
+    socket.onopen = function (e) {
 
-        console.log('lastJsonMessage', lastJsonMessage)
+        setReadyState(1)
+        setConnectionStatus('')
+        console.log('CHatMess onopen', e)
 
-        let LastId = lastJsonMessage?.message?.sender.id
-
-        if (LastId !== myInfo?.id) {
-
-
-            const MMM = {
-
+    }
+    socket.onmessage = function (event) {
+        const data = JSON.parse(event.data)
+        console.log('------------------data', data)
+        setMessage("")
+        getData()
+        if (data.response.sender.id !== myInfo.id) {
+            socket.send(JSON.stringify({
                 channel: 'group.message.read',
                 request: {
-                    message_id: lastJsonMessage?.message?.id,
-                    account_id: myInfo?.id,
-                }
-            }
-
-
-            console.log('MMM', MMM)
-            sendJsonMessage(MMM)
+                    message_id: data.response.id,
+                    account_id: myInfo.id,
+                },
+            },
+            ))
         }
 
 
-    }, [lastJsonMessage]);
+
+    }
+    socket.onclose = function (event) {
+        setReadyState(2)
+        setConnectionStatus(strings.notconnecting)
+        console.log('CHatMess onclose', event)
+
+    }
+    socket.onerror = function (event) {
+        setReadyState(2)
+        setConnectionStatus(strings.notconnecting)
+        console.log('CHatMess onerror', event)
+
+    }
+
+
+    useEffect(() => {
+
+        getData()
+        return () => {
+            console.log('tabchat close')
+
+        }
+    }, [])
+
+
+
+
+
 
 
 
@@ -107,8 +115,6 @@ const ChatMessage = ({ navigation, route }) => {
         axios.get(`https://test.kemeladam.kz/api/chat/group/${group_id}/messages/`)
             .then(response => {
                 console.log("RESPONSE chat:", response);
-
-
 
                 setDataArray(response?.data?.results)
                 setLoading(false)
@@ -126,10 +132,9 @@ const ChatMessage = ({ navigation, route }) => {
         let is_bot = item?.is_bot
         return (
             is_bot ?
-                <View style={{ alignItems: 'center', marginTop: 8 }}>
-                    <TimeAgoDay style={{ fontWeight: '400', color: 'grey', fontSize: 10 }} language='kz' time={item?.created_at} />
-                    <View style={{ alignItems: 'center', backgroundColor: item?.contexts?.background ? item?.contexts?.background : '#ECEEFF', marginVertical: 4, marginHorizontal: 16, paddingHorizontal: 12, paddingVertical: 4, borderRadius: 30 }}>
-                        <Text style={{ fontWeight: '400', color: 'rgba(0,0,0,0.8)', fontSize: 12 }}>{item?.message}</Text>
+                <View style={{ alignItems: 'center' }}>
+                    <View style={{ backgroundColor: '#ECEEFF', marginVertical: 6, marginHorizontal: 16, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 30 }}>
+                        <Text style={{ fontWeight: '400', color: 'black', fontSize: 12 }}>{item?.message}</Text>
                     </View>
                 </View>
 
@@ -140,28 +145,16 @@ const ChatMessage = ({ navigation, route }) => {
                         {
                             mine ?
                                 null :
-                                item?.sender?.avatar ? (
-                                    <FastImage
-                                        style={{ marginRight: 4, width: 36, aspectRatio: 1, borderRadius: 20 }}
-                                        source={{
-                                            uri: item?.sender?.avatar,
-                                        }}
-                                    />
-                                ) : (
-                                    <View
-                                        style={{
-                                            width: 36,
-                                            aspectRatio: 1,
-                                            borderRadius: 44,
-                                            borderColor: '#999999',
-                                            borderWidth: 1,
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                        }}>
-                                        {no_avatar(25)}
-                                    </View>
-                                )
-
+                                <FastImage
+                                    style={{
+                                        width: 38,
+                                        height: 38,
+                                        backgroundColor: 'grey',
+                                        borderRadius: 19,
+                                        marginRight: 10
+                                    }}
+                                    source={{ uri: item?.sender?.avatar }}
+                                />
                         }
 
                         <View style={{
@@ -284,7 +277,12 @@ const ChatMessage = ({ navigation, route }) => {
     }
 
     const SendMessageToSocket = (Msg) => {
-        sendJsonMessage(Msg)
+        console.log('MMMMSSSGGG', Msg)
+
+        socket.send(JSON.stringify(Msg
+        ))
+
+
         setMessage(null)
         setPath(null)
         setMime(null)

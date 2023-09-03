@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
-import { RightGray, addAdmin, addUser, backRound, closeIcon, exitGroup, habitsIcon, mediaIcon, moreMenu, penEdit, swipeDelete, threeDotWhite } from '../../Component/MyIcons';
+import { RightGray, addAdmin, addUser, backRound, closeIcon, exitGroup, habitsIcon, mediaIcon, moreMenu, no_avatar, penEdit, swipeDelete, threeDotWhite } from '../../Component/MyIcons';
 import { StatusBarHeightPlatform } from '../../Component/GeneralStatusBarColor';
 import FastImage from 'react-native-fast-image';
 import Swipeout from '../../Swipeout';
@@ -218,10 +218,29 @@ const GroupProfile = ({ navigation, route }) => {
                                 }
                             ]}>
                             <View style={{ backgroundColor: 'white', paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center' }}>
-                                <FastImage
-                                    style={{ width: 50, height: 50, borderRadius: 25 }}
-                                    source={{ uri: item?.avatar }}
-                                />
+
+                                {item?.avatar ? (
+                                    <FastImage
+                                        style={{ width: 50, aspectRatio: 1, borderRadius: 25 }}
+                                        source={{
+                                            uri: item.avatar,
+                                        }}
+                                    />
+                                ) : (
+                                    <View
+                                        style={{
+                                            width: 50,
+                                            aspectRatio: 1,
+                                            borderRadius: 44,
+                                            borderColor: '#999999',
+                                            borderWidth: 1,
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                        }}>
+                                        {no_avatar(30)}
+                                    </View>
+                                )}
+
                                 <View style={{ flex: 1, marginLeft: 16 }}>
                                     <Text style={{ fontSize: 16, fontWeight: '600', color: '#000000', }}>{item?.fio}</Text>
                                     <Text style={{ fontSize: 14, fontWeight: '400', color: '#000000', }}>{item?.email}</Text>

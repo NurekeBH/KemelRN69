@@ -243,7 +243,7 @@ export default class AddFolder extends Component {
   renderItemNote = ({ item, index }) => {
     const regex = /<[^>]*>/gim;
     let description = item.dessc && item.dessc.replace(regex, '');
-    description = description.replaceAll('&nbsp;', '');
+    description = description?.replaceAll('&nbsp;', '');
 
 
     return (

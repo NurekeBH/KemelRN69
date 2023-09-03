@@ -133,8 +133,12 @@ export default class NotesList extends Component {
 
   renderItem = ({ item, index }) => {
     const regex = /<[^>]*>/gim;
+    console.log('aaaa0', item.desc)
+
     let description = item.desc && item.desc.replace(regex, '');
+    console.log('aaaa1', description)
     description = description.replaceAll('&nbsp;', '');
+    console.log('aaaa2', description)
 
     return (
       <Swipeout

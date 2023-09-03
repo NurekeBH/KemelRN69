@@ -4,7 +4,7 @@ import Collapsible from 'react-native-collapsible';
 import { strings } from '../../Localization/Localization';
 import FastImage from 'react-native-fast-image';
 import { getTemplateLabel, height, width } from '../../Component/Component';
-import { addHabitsIcon, addPhoto, Done, Bottom, swipeDelete, threeDot } from '../../Component/MyIcons';
+import { addHabitsIcon, addPhoto, Done, Bottom, swipeDelete, threeDot, no_avatar, number1, number2, number3 } from '../../Component/MyIcons';
 import Swipeout from '../../Swipeout';
 import axios from 'axios';
 import moment from 'moment';
@@ -14,6 +14,7 @@ const today = moment().format('YYYY-MM-DD')
 const ItemHabitUser = ({
     group_id,
     item,
+    index,
     isSelected,
     donePress,
     menuPress,
@@ -21,12 +22,10 @@ const ItemHabitUser = ({
 }) => {
 
     let itemUser = item
-    const [selected, setSelected] = useState(isSelected)
+    const [selected, setSelected] = useState(true)
 
 
     const [done, setDone] = useState(false)
-    const procentDone = itemUser.doneHabitsCount == 0 ? 0 : parseInt(itemUser.doneHabitsCount * 100 / itemUser.habits.length);
-
 
     const DonePress = (item) => {
         console.log('item done', item)
@@ -100,8 +99,8 @@ const ItemHabitUser = ({
                         activeOpacity={0.8}
                         disabled={!isOwner}
                         onPress={() => {
-                            DonePress(item)
-                            // donePress(item)
+                            // DonePress(item)
+                            donePress(item)
                         }}>
                         {item?.priority ? (
                             Priority
@@ -179,17 +178,41 @@ const ItemHabitUser = ({
 
                         paddingVertical: 13,
                         marginBottom: 0,
+                        backgroundColor: item?.contexts?.background,
                     },
                 ]}>
                 <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                    <FastImage
-                        style={{
-                            width: 40,
-                            height: 40,
-                            borderRadius: 20
-                        }}
-                        source={{ uri: item?.avatar }}
-                    />
+                    <View style={{ marginRight: 8 }}>
+
+                        {index == 0 ? number1 : index == 1 ? number2 : index == 2 ? number3 :
+                            <View style={{ backgroundColor: 'rgba(0,0,0,0.11)', borderRadius: 50, width: 24, height: 24, alignItems: 'center', justifyContent: 'center' }}>
+                                <Text style={{ fontSize: 12, fontWeight: '400' }}>{index + 1}</Text>
+                            </View>
+                        }
+                    </View>
+
+                    {item?.avatar ? (
+                        <FastImage
+                            style={{ width: 40, aspectRatio: 1, borderRadius: 20 }}
+                            source={{
+                                uri: item.avatar,
+                            }}
+                        />
+                    ) : (
+                        <View
+                            style={{
+                                width: 40,
+                                aspectRatio: 1,
+                                borderRadius: 44,
+                                borderColor: '#999999',
+                                borderWidth: 1,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}>
+                            {no_avatar(30)}
+                        </View>
+                    )}
+
                     <Text numberOfLines={2} style={{ flex: 1, marginLeft: 8, fontSize: 16, fontWeight: '600' }}>{item?.fio}</Text>
                 </View>
 
@@ -198,14 +221,14 @@ const ItemHabitUser = ({
 
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                             <Text style={{ fontSize: 12, color: '#3F49DC' }}>
-                                {procentDone}%
+                                {item?.contexts?.progress}%
                             </Text>
                             <Text
                                 style={{
                                     fontSize: 12,
                                     color: '#3F49DC',
                                 }}>
-                                {item.doneHabitsCount}/{item.habits.length}
+                                {item.done_habits}/{item?.contexts?.total}
                             </Text>
 
 
@@ -214,13 +237,13 @@ const ItemHabitUser = ({
                             style={{
                                 backgroundColor: '#BDBDBD',
                                 height: 8,
-                                width: 120,
+                                width: 80,
                                 borderRadius: 8,
                                 marginTop: 5,
                             }}>
                             <View
                                 style={{
-                                    width: procentDone + '%',
+                                    width: item?.contexts?.progress + '%',
                                     height: 8,
                                     backgroundColor: '#6577F3',
                                     borderRadius: 8,
@@ -235,7 +258,7 @@ const ItemHabitUser = ({
             </TouchableOpacity>
             <Collapsible
                 collapsed={selected}
-                style={{ padding: 16, backgroundColor: 'white' }}>
+                style={{ padding: 16, backgroundColor: item?.contexts?.background, }}>
                 <FlatList
                     listKey={(item, index) => 'B' + index.toString()}
                     data={item?.habits}
@@ -255,7 +278,6 @@ const styles = StyleSheet.create({
     vwStl: {
         paddingHorizontal: 14,
         paddingVertical: 6,
-        backgroundColor: '#FFFFFF',
         borderRadius: 6,
         flexDirection: 'row',
         alignItems: 'center',

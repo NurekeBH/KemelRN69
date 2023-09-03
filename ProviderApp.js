@@ -1,6 +1,45 @@
 import React, { Component, createContext } from 'react';
+import useWebSocket, { ReadyState } from 'react-native-use-websocket';
+import notifee from '@notifee/react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const StateContext = createContext();
+
+
+// AsyncStorage.getItem('user_id').then(value => {
+//   if (value !== null) {
+//     const socket = new WebSocket(`wss://test.kemeladam.kz/ws/chat/user/${value}/`)
+
+//     socket.onopen = function (e) {
+//       socket.send(JSON.stringify({
+//         'type': 'online',
+//       }))
+
+//       console.log('nnnnnnn onopen', e)
+
+//     }
+//     socket.onmessage = function (event) {
+//       let data = JSON.parse(event.data)
+//       console.log('nnnnnnn onmessage', data)
+//       onDisplayNotification(data)
+
+
+
+//     }
+//     socket.onclose = function (event) {
+//       console.log('nnnnnnn onclose', event)
+
+//     }
+//     socket.onerror = function (event) {
+//       console.log('nnnnnnn onerror', event)
+
+//     }
+
+//   }
+// });
+
+
+
 
 class ProviderApp extends Component {
   constructor(props) {
@@ -13,6 +52,8 @@ class ProviderApp extends Component {
   setAvatar = avatar => {
     this.setState({ avatar });
   };
+
+
 
   render() {
     return (

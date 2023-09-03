@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, SafeAreaView, StatusBar, TouchableOpacity } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, Animated, FlatList, SafeAreaView, StatusBar, TouchableOpacity } from 'react-native';
 import { Text, View } from 'react-native';
 import Header from '../../Component/Header2';
 import { strings } from '../../Localization/Localization';
@@ -33,6 +33,8 @@ const DetailChat = ({ navigation, route }) => {
 
     const group_id = item.id
 
+
+
     useEffect(() => {
 
 
@@ -52,14 +54,13 @@ const DetailChat = ({ navigation, route }) => {
     }, []);
 
     const getData = (date) => {
+
         setLoading(true)
 
-        axios.get(`https://test.kemeladam.kz/api/chat/group/${group_id}/user-habits/?=`, {
-            date: date
-        })
+        axios.get(`https://test.kemeladam.kz/api/chat/group/${group_id}/user-habits/?date=${date}`)
             .then(response => {
                 console.log("RESPONSE habits:", response);
-
+                setResponse([])
                 for (let i = 0; i < response.data.length; i++) {
                     let user = response.data[i]
                     let arrHabits = user.habits;
@@ -68,13 +69,12 @@ const DetailChat = ({ navigation, route }) => {
 
                         HAB.done = false;
                         if (HAB.history && HAB.history.date === date) {
-                            HAB.done = HAB.history.done;
+                            HAB.done = HAB.history.done
                         } else {
                             HAB.done = false;
                         }
                     }
-                    let DoneHabits = arrHabits.filter(item => item.done === true).length;
-                    user.doneHabitsCount = DoneHabits
+
                     if (user.owner) {
                         let info = {}
                         info.id = user.id
@@ -87,6 +87,7 @@ const DetailChat = ({ navigation, route }) => {
 
 
                 setLoading(false)
+
                 setResponse(response.data)
 
 
@@ -140,34 +141,39 @@ const DetailChat = ({ navigation, route }) => {
 
 
     const donePress = (item) => {
-        console.log('item done', item)
-        let params = {
-            // "date": "2023-05-13",
-            "date": today,
-            "done": true
+        let DONE = item.done
+        if (selected == 0) {
+            console.log('item done', item)
+            let params = {
+                // "date": "2023-05-13",
+                "date": today,
+                "done": !DONE
+            }
+            axios.post(`https://test.kemeladam.kz/api/chat/group/${group_id}/habit/${item.id}/history/`,
+                params)
+                .then(response => {
+                    console.log("RESPONSE done:", response);
+                    if (response.status == 200 || response.status == 201) {
+                        item.done = !DONE
+                        console.log("RESPONSE done: ", !DONE);
+                        getData(today)
+                    }
+                })
+                .catch(error => {
+                    console.log("error done:", error.response);
+                })
         }
-        axios.post(`https://test.kemeladam.kz/api/chat/group/${group_id}/habit/${item.id}/history/`,
-            params)
-            .then(response => {
-                console.log("RESPONSE done:", response);
-                if (response.status == 200 || response.status == 201) {
-                    item.done = true
-                    console.log("RESPONSE done: TRUE");
 
-                }
-            })
-            .catch(error => {
-                console.log("error done:", error.response);
-            })
     }
 
     const renderItemHabits = ({ item, index }) => {
         return (
-            <View>
+            <View >
                 <ItemHabitUser
+                    index={index}
                     group_id={group_id}
                     item={item}
-                    isSelected={true}
+                    isSelected={false}
                     dataArray={dataArray}
                     donePress={donePress}
                     menuPress={menuPress}
@@ -250,23 +256,26 @@ const DetailChat = ({ navigation, route }) => {
                     </View>
                 </View>
 
+
                 {
                     isLoading ?
-                        <View style={{ margin: 24 }}>
+
+                        <View style={{ marginTop: 16, backgroundColor: 'white', position: 'absolute', width: '100%', top: 45, zIndex: 100 }}>
 
                             <ActivityIndicator color={'#3F49DC'} />
                         </View>
                         :
-                        <View style={{ flex: 1, backgroundColor: '#F5F5F5' }}>
-                            <FlatList
-                                showsVerticalScrollIndicator={false}
-                                data={response}
-                                keyExtractor={(item, index) => index.toString()}
-                                renderItem={renderItemHabits}
-                            />
-                        </View>
 
+                        null
                 }
+                <View style={{ flex: 1, backgroundColor: '#F5F5F5' }}>
+                    <FlatList
+                        showsVerticalScrollIndicator={false}
+                        data={response}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={renderItemHabits}
+                    />
+                </View>
 
 
             </View>

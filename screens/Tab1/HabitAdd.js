@@ -126,7 +126,7 @@ export default class HabitAdd extends Component {
     if (label && week_day_ids.length > 0) {
       this.setState({ isSend: true }, () => {
         axios
-          .post('todos/habit/', {
+          .post('https://test.kemeladam.kz/api/todos/habit/', {
             label: label,
             time: dateTime,
             weeks: week_day_ids,

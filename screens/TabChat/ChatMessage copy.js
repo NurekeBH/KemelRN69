@@ -5,14 +5,13 @@ import Header from '../../Component/Header2';
 import { strings } from '../../Localization/Localization';
 import ChatHeader from '../../Component/ChatHeader';
 import FastImage from 'react-native-fast-image';
-import { PluseBtn, chatBg1, chatBg2, chatCamera, chatFatIcon, chatSend, closeIcon, moreMenu, no_avatar, userSelected } from '../../Component/MyIcons';
+import { PluseBtn, chatBg1, chatBg2, chatCamera, chatFatIcon, chatSend, closeIcon, moreMenu, userSelected } from '../../Component/MyIcons';
 import axios from 'axios';
 import useWebSocket, { ReadyState } from 'react-native-use-websocket';
 import { width } from '../../Component/Component';
 import TimeAgo from '../../Component/TimeAgo';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import { ImageDetail } from 'react-native-image-modal';
-import TimeAgoDay from '../../Component/TimeAgoDay';
 
 
 const ChatMessage = ({ navigation, route }) => {
@@ -38,7 +37,7 @@ const ChatMessage = ({ navigation, route }) => {
         readyState,
         getWebSocket
     } = useWebSocket(getSocketUrl, {
-        onOpen: () => getData(),
+        onOpen: () => console.log('opened'),
         //Will attempt to reconnect on all close events, such as server shutting down
         shouldReconnect: (closeEvent) => true,
     });
@@ -72,21 +71,17 @@ const ChatMessage = ({ navigation, route }) => {
 
 
     useEffect(() => {
-
-        readyState == 1 && getData()
+        getData()
 
         console.log('lastJsonMessage', lastJsonMessage)
-
-        let LastId = lastJsonMessage?.message?.sender.id
-
-        if (LastId !== myInfo?.id) {
+        if (readyState == 1 && lastJsonMessage?.response?.sender.id !== myInfo?.id) {
 
 
             const MMM = {
 
                 channel: 'group.message.read',
                 request: {
-                    message_id: lastJsonMessage?.message?.id,
+                    message_id: lastJsonMessage?.response?.id,
                     account_id: myInfo?.id,
                 }
             }
@@ -95,7 +90,6 @@ const ChatMessage = ({ navigation, route }) => {
             console.log('MMM', MMM)
             sendJsonMessage(MMM)
         }
-
 
     }, [lastJsonMessage]);
 
@@ -107,8 +101,6 @@ const ChatMessage = ({ navigation, route }) => {
         axios.get(`https://test.kemeladam.kz/api/chat/group/${group_id}/messages/`)
             .then(response => {
                 console.log("RESPONSE chat:", response);
-
-
 
                 setDataArray(response?.data?.results)
                 setLoading(false)
@@ -126,10 +118,9 @@ const ChatMessage = ({ navigation, route }) => {
         let is_bot = item?.is_bot
         return (
             is_bot ?
-                <View style={{ alignItems: 'center', marginTop: 8 }}>
-                    <TimeAgoDay style={{ fontWeight: '400', color: 'grey', fontSize: 10 }} language='kz' time={item?.created_at} />
-                    <View style={{ alignItems: 'center', backgroundColor: item?.contexts?.background ? item?.contexts?.background : '#ECEEFF', marginVertical: 4, marginHorizontal: 16, paddingHorizontal: 12, paddingVertical: 4, borderRadius: 30 }}>
-                        <Text style={{ fontWeight: '400', color: 'rgba(0,0,0,0.8)', fontSize: 12 }}>{item?.message}</Text>
+                <View style={{ alignItems: 'center' }}>
+                    <View style={{ backgroundColor: '#ECEEFF', marginVertical: 6, marginHorizontal: 16, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 30 }}>
+                        <Text style={{ fontWeight: '400', color: 'black', fontSize: 12 }}>{item?.message}</Text>
                     </View>
                 </View>
 
@@ -140,28 +131,16 @@ const ChatMessage = ({ navigation, route }) => {
                         {
                             mine ?
                                 null :
-                                item?.sender?.avatar ? (
-                                    <FastImage
-                                        style={{ marginRight: 4, width: 36, aspectRatio: 1, borderRadius: 20 }}
-                                        source={{
-                                            uri: item?.sender?.avatar,
-                                        }}
-                                    />
-                                ) : (
-                                    <View
-                                        style={{
-                                            width: 36,
-                                            aspectRatio: 1,
-                                            borderRadius: 44,
-                                            borderColor: '#999999',
-                                            borderWidth: 1,
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                        }}>
-                                        {no_avatar(25)}
-                                    </View>
-                                )
-
+                                <FastImage
+                                    style={{
+                                        width: 38,
+                                        height: 38,
+                                        backgroundColor: 'grey',
+                                        borderRadius: 19,
+                                        marginRight: 10
+                                    }}
+                                    source={{ uri: item?.sender?.avatar }}
+                                />
                         }
 
                         <View style={{

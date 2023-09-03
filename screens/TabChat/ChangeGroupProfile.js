@@ -5,7 +5,7 @@ import GeneralStatusBarColor from '../../Component/GeneralStatusBarColor';
 import FastImage from 'react-native-fast-image';
 import { penEdit } from '../../Component/MyIcons';
 import { colorApp } from '../../theme/Colors';
-import { width } from '../../Component/Component';
+import { showToast, width } from '../../Component/Component';
 import { strings } from '../../Localization/Localization';
 import axios from 'axios';
 import ImageCropPicker from 'react-native-image-crop-picker';
@@ -60,9 +60,8 @@ const ChangeGroupProfile = ({ navigation, route }) => {
             })
             .catch(error => {
                 console.log('RESPONSE error:', error.response);
-                if (error.response && error.response.status == 401) {
-                    showToast('error', error.response.data.detail);
-                }
+                showToast('error', error?.response?.data?.detail);
+
             });
     }
 

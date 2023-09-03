@@ -190,7 +190,7 @@ const GroupHabits = ({ navigation, route }) => {
                             :
                             null}
                     </TouchableOpacity>
-
+                    {/* 
                     <TouchableOpacity
                         onPress={() => {
 
@@ -199,7 +199,7 @@ const GroupHabits = ({ navigation, route }) => {
                         style={{ height: 40, justifyContent: 'center', alignItems: 'flex-end', width: 40, }}
                     >
                         {threeDot}
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
                 </View>
             </Swipeout>

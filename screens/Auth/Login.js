@@ -26,8 +26,8 @@ export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: 'nurbaqyt@gmail.com',
-      pwd: 'NURIK&)$',
+      email: '',
+      pwd: '',
       loader: false,
       eye: true
     };
@@ -38,7 +38,7 @@ export default class Login extends Component {
     if (email && pwd) {
       this.setState({ loader: true });
       axios
-        .post('login/', {
+        .post('https://test.kemeladam.kz/api/login/', {
           email: email,
           password: pwd,
         })

@@ -38,7 +38,7 @@ const ItemUsers = ({
 
             </FastImage>
             <View style={{ marginLeft: 10 }}>
-                <Text style={{ color: '#000', fontSize: 14, fontWeight: '700' }}>{item?.fio}</Text>
+                <Text style={{ color: '#000', fontSize: 14, fontWeight: '700' }}>{item?.contact}</Text>
                 <Text style={{ color: '#8A8A8D', fontSize: 14, fontWeight: '400' }}>{item?.phone ? item?.phone : item?.email}</Text>
             </View>
         </TouchableOpacity>

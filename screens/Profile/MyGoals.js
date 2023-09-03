@@ -99,7 +99,7 @@ export default class MyGoals extends Component {
 
   GetCategory() {
     axios
-      .get('goals/category/?sorting=sort')
+      .get('https://test.kemeladam.kz/api/goals/category/?sorting=sort')
       .then(response => {
         console.log('RESPONSE category:', response);
         let category = response.data.sort((a, b) => (a.sort > b.sort) ? 1 : -1)
@@ -153,6 +153,7 @@ export default class MyGoals extends Component {
           padding: 16,
           borderBottomColor: '#8E8E93',
           borderBottomWidth: 0.5,
+          backgroundColor: item?.color
         }}
         onPress={() => {
           this.props.navigation.navigate('Goals', {

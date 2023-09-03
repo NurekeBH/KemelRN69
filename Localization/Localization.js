@@ -167,7 +167,10 @@ export let strings = new LocalizedStrings({
     unmute: 'Дауысты',
     addPhone: 'Телефон нөміріңізді енгізіңіз!',
     connecting: 'қосылуда',
-    notconnecting: 'қосылмады'
+    notconnecting: 'қосылмады',
+    noGroup: 'Сізде топ жоқ!',
+    emptyLabelDesc: 'Топ атауын немесе смпаттамасын толтыпыңыз'
+
 
 
 
@@ -294,7 +297,10 @@ export let strings = new LocalizedStrings({
     members: 'участник',
     addPhone: 'Введите свой номер телефона!',
     connecting: 'подключение',
-    notconnecting: 'не подключается'
+    notconnecting: 'не подключается',
+    noGroup: 'У вас нет группа!',
+    emptyLabelDesc: 'Введите название или описание группы'
+
 
   },
   en: {
@@ -419,7 +425,9 @@ export let strings = new LocalizedStrings({
     members: 'members',
     addPhone: 'Enter your phone number!',
     connecting: 'connecting',
-    notconnecting: 'not connecting'
+    notconnecting: 'not connecting',
+    noGroup: 'You are not group!',
+    emptyLabelDesc: 'Fill in a group name or description'
 
   },
 });

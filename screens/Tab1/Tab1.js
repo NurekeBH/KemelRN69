@@ -40,6 +40,9 @@ import {
   addHabitsIcon,
   reminderIcon,
   dayBack,
+  exitGroup,
+  userSelected,
+  users,
 } from '../../Component/MyIcons';
 import { strings } from '../../Localization/Localization';
 import Collapsible from 'react-native-collapsible';
@@ -260,6 +263,7 @@ export default class Tab1 extends Component {
   componentDidMount() {
 
 
+    console.log('selectedDate1', this.state.now)
 
     LocaleConfig.defaultLocale = getLang();
 
@@ -321,7 +325,9 @@ export default class Tab1 extends Component {
 
     let RarrHabits = await GetHabitsDB(now)
     let RarrTasks = await GetTasksDB(now)
+    let arrGHabits = [];
     let arrHabits = RarrHabits._array
+
     let arrTasks = RarrTasks._array
 
     console.log('resultresult arrHabits', arrHabits)
@@ -329,6 +335,7 @@ export default class Tab1 extends Component {
 
     let DoneTasks = arrTasks.filter(item => item.done).length;
     let DoneHabits = arrHabits.filter(item => item.done).length;
+    let DoneHabitsG = 0
 
 
     let result = [
@@ -336,9 +343,12 @@ export default class Tab1 extends Component {
         date: now,
         habits: arrHabits,
         tasks: arrTasks,
+        group_habits: arrGHabits,
         isCollapsed: false,
         doneTasksCount: DoneTasks,
         doneHabitsCount: DoneHabits,
+        DoneHabitsGCount: 0
+
       },
     ]
 
@@ -349,6 +359,7 @@ export default class Tab1 extends Component {
       todos: result,
       tasks: arrTasks,
       habbits: arrHabits,
+      group_habits: arrGHabits,
       isLoading: false,
     });
 
@@ -410,7 +421,7 @@ export default class Tab1 extends Component {
   GetHistory() {
 
     axios
-      .get('todos/future/')
+      .get('https://test.kemeladam.kz/api/todos/future/')
       .then(response => {
         const x = response.data;
         var _marketData = {};
@@ -463,7 +474,7 @@ export default class Tab1 extends Component {
       var startOfWeek = moment().startOf('week').toDate();
       var endOfWeek = moment().endOf('week').toDate();
     }
-    let URL = open == 'day' ? `todos/day/?date=${now}` : `todos/week/?start=${moment(startOfWeek).format('YYYY-MM-DD')}&end=${moment(endOfWeek).format('YYYY-MM-DD')}`
+    let URL = open == 'day' ? `https://test.kemeladam.kz/api/todos/day/?date=${now}` : `https://test.kemeladam.kz/api/todos/week/?start=${moment(startOfWeek).format('YYYY-MM-DD')}&end=${moment(endOfWeek).format('YYYY-MM-DD')}`
 
     axios
       .get(URL)
@@ -472,6 +483,7 @@ export default class Tab1 extends Component {
         let result = [];
         let arrTasks = [];
         let arrHabits = [];
+        let arrGHabits = [];
 
         if (open == 'week') {
           const x = response.data;
@@ -480,9 +492,11 @@ export default class Tab1 extends Component {
             ['date']: new Date(key),
             ['habits']: val['habits'] ? val['habits'] : [],
             ['tasks']: val['tasks'] ? val['tasks'] : [],
+            ['group_habits']: val['group_habits'] ? val['group_habits'] : [],
             ['isCollapsed']: 'false',
             ['doneTasksCount']: val['tasks'].filter(item => item.done === true).length,
             ['doneHabitsCount']: val['habits'].filter(item => item.done === true).length,
+            ['DoneHabitsGCount']: 0
           }));
 
 
@@ -504,8 +518,9 @@ export default class Tab1 extends Component {
           }
           result = result.sort((a, b) => a.date - b.date);
         } else {
-          arrTasks = response.data.tasks;
-          arrHabits = response.data.habits;
+          arrTasks = response.data?.tasks;
+          arrHabits = response.data?.habits;
+          arrGHabits = response.data?.group_habits;
 
           for (let j = 0; j < arrTasks.length; j++) {
             let TAS = arrTasks[j]
@@ -533,6 +548,20 @@ export default class Tab1 extends Component {
             console.log('HAB', HAB)
           }
 
+          for (let g = 0; g < arrGHabits.length; g++) {
+            let HABG = arrGHabits[g]
+            HABG.done = false;
+            HABG.done = false;
+            if (HABG.history) {
+              HABG.done = HABG.history.done
+            } else {
+              HABG.done = false;
+            }
+
+          }
+
+          let DoneHabitsG = arrGHabits.filter(item => item.done === true).length;
+
           let DoneTasks = arrTasks.filter(item => item.done === true).length;
           let DoneHabits = arrHabits.filter(item => item.done === true).length;
 
@@ -543,10 +572,12 @@ export default class Tab1 extends Component {
             {
               date: now,
               habits: arrHabits,
+              group_habits: arrGHabits,
               tasks: arrTasks,
               isCollapsed: false,
               doneTasksCount: DoneTasks,
               doneHabitsCount: DoneHabits,
+              DoneHabitsGCount: DoneHabitsG
             },
           ];
         }
@@ -702,7 +733,7 @@ export default class Tab1 extends Component {
                   color: '#8A8FA0',
                   marginRight: 9,
                 }}>
-                {item.doneHabitsCount}/{item.habits.length}
+                {item.doneHabitsCount + item.DoneHabitsGCount}/{item.habits.length + item.group_habits.length}
               </Text>
               {Bottom}
             </View>
@@ -719,6 +750,13 @@ export default class Tab1 extends Component {
               data={item.habits}
               keyExtractor={(item, index) => index}
               renderItem={this.renderItemHabits}
+              showsVerticalScrollIndicator={false}
+            />
+            <FlatList
+              listKey={(item, index) => 'C' + index.toString()}
+              data={item.group_habits}
+              keyExtractor={(item, index) => index}
+              renderItem={this.renderItemHabitsGroup}
               showsVerticalScrollIndicator={false}
             />
           </Collapsible>
@@ -890,7 +928,7 @@ export default class Tab1 extends Component {
     console.log('DateTime', DateTime);
 
     axios
-      .put(`todos/task/${item.id}/`, {
+      .put(`https://test.kemeladam.kz/api/todos/task/${item.id}/`, {
         label: item.label,
         desc: item.desc,
         address: item.address,
@@ -1051,13 +1089,127 @@ export default class Tab1 extends Component {
     );
   };
 
+
+  renderItemHabitsGroup = ({ item, index }) => {
+
+    return (
+      <Swipeout
+        autoClose={true}
+        style={{
+          borderRadius: 10,
+          maxHeight: 200,
+          marginTop: 4,
+        }}
+        right={[
+          {
+            component: (
+              <View
+                style={{
+                  backgroundColor: '#bcc0f8',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flex: 1,
+                  maxHeight: 200,
+                }}>
+                {ShareNote}
+                <Text style={{ marginTop: 4, fontSize: 8, color: '#3F49DC' }}>
+                  поделиться
+                </Text>
+              </View>
+            ),
+            onPress: () => {
+              this.share(item.label);
+            },
+          }
+        ]}>
+        <View
+          style={[
+            styles.vwStl,
+            {
+              minHeight: 55,
+              paddingVertical: 8,
+              backgroundColor: '#fff',
+            },
+          ]}>
+          <TouchableOpacity
+            style={{ height: 40, justifyContent: 'center', width: 40, }}
+            activeOpacity={0.8}
+            onPress={() => {
+              (item.done = !item.done), this.donePress(item);
+            }}>
+            {item?.priority ? (
+              Priority
+            ) : item.done ? (
+              <View style={styles.doneStl}>{Done}</View>
+            ) : (
+              <View
+                style={[
+                  styles.doneStl2,
+                  {
+                    borderColor: '#DADADA',
+                  },
+                ]}
+              />
+            )}
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onLongPress={() => {
+              this.state.open == 'day'
+                ? this.setState({
+                  indDrax: 2,
+                  visible: true,
+                })
+                : null;
+            }}
+            style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'row' }}
+            activeOpacity={0.8}
+            key={index}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              {users}
+              <Text
+                style={{
+                  fontSize: 15,
+                  textDecorationLine: item.done ? 'line-through' : 'none',
+                  color: item.done ? '#8E8E93' : '#000',
+                  marginLeft: 2
+                }}>
+                {item.label}
+              </Text>
+
+            </View>
+
+            {item.purpose ? <Text style={{ color: '#2BA149', fontSize: 16 }}>{item.target_value ? item.target_value.value : 0} {item.target_template ? getTemplateLabel(item.target_template.template) : null}</Text>
+              :
+              null}
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => {
+              // (item.done = !item.done), this.DoneHabits(item);
+              this.setState({
+                modelHabits: item,
+              });
+            }}
+
+            style={{ height: 40, justifyContent: 'center', alignItems: 'flex-end', width: 40, }}
+          >
+            {threeDot}
+          </TouchableOpacity>
+
+        </View>
+      </Swipeout>
+    );
+  };
+
+
   DoneHabits(item) {
     console.log(' DoneHabits item', item);
     if (!item.done) {
       console.log('weeks:', item.weeks);
 
       axios
-        .put(`todos/habit/${item.id}/update/`, {
+        .put(`https://test.kemeladam.kz/api/todos/habit/${item.id}/update/`, {
           label: item.label,
           time: item.time,
           weeks: item.weeks,
@@ -1080,7 +1232,7 @@ export default class Tab1 extends Component {
       this.PlaySound();
     }
     axios
-      .post(`todos/habit/${item.id}/history/`, {
+      .post(`https://test.kemeladam.kz/api/todos/habit/${item.id}/history/`, {
         done: item.done,
         date: item.click_date,
       })
@@ -1096,6 +1248,32 @@ export default class Tab1 extends Component {
       });
 
   }
+
+
+  donePress = (item) => {
+    console.log('item done', item)
+    let params = {
+      // "date": "2023-05-13",
+      "date": this.state.today,
+      "done": item.done
+    }
+
+    if (item.done) {
+      this.PlaySound();
+    }
+    axios.post(`https://test.kemeladam.kz/api/chat/group/${item.group.id}/habit/${item.id}/history/`,
+      params)
+      .then(response => {
+        console.log("RESPONSE done:", response);
+
+        this.getTodoList();
+      })
+      .catch(error => {
+        console.log("error done:", error.response);
+      })
+  }
+
+
 
   topModalButtonPress = ind => {
     this.setState(
@@ -1146,9 +1324,11 @@ export default class Tab1 extends Component {
     if (isLoading) {
       return null;
     } else {
-      const arrLen = todos[0].tasks.length + todos[0].habits.length
+      console.log('group_habits--------', todos[0])
+      let AllDoneCount = todos[0].doneTasksCount + todos[0].doneHabitsCount + todos[0].DoneHabitsGCount
+      const arrLen = todos[0].tasks.length + todos[0].habits.length + todos[0].group_habits.length
 
-      let procentDone = parseInt((todos[0].doneTasksCount + todos[0].doneHabitsCount) * 100 / arrLen);
+      let procentDone = parseInt((AllDoneCount) * 100 / arrLen);
       if (arrLen == 0) { procentDone = 0 }
       return (
         <View>
@@ -1164,7 +1344,7 @@ export default class Tab1 extends Component {
                   fontWeight: '500',
                   color: '#272727',
                 }}>
-                {todos[0].doneTasksCount}
+                {AllDoneCount}
               </Text>
               <Text style={{ fontSize: 13, color: '#232857', marginLeft: 8 }}>
                 {strings.bugjet2}
@@ -1185,8 +1365,8 @@ export default class Tab1 extends Component {
                   {procentDone}%
                 </Text>
                 <Text style={{ fontSize: 12, color: '#8A8FA0' }}>
-                  {todos[0].doneTasksCount + todos[0].doneHabitsCount}/
-                  {todos[0].tasks.length + todos[0].habits.length}
+                  {AllDoneCount}/
+                  {arrLen}
                 </Text>
               </View>
               <View
@@ -1213,7 +1393,7 @@ export default class Tab1 extends Component {
             lang={getLang()}
             showWeekNumber
             startingDate={this.state.now}
-            selectedDate={this.state.now}
+            selectedDate={new Date(this.state.now)}
             onPressDate={day => {
               this.setState(
                 {
@@ -1526,6 +1706,7 @@ export default class Tab1 extends Component {
 
         {modelHabits ? (
           <ModalHabits
+            navigation={this.props.navigation}
             isOpen={modelHabits}
             modelItemData={modelHabits}
             RefreshModal={this.RefreshHabits}

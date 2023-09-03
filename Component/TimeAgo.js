@@ -3,7 +3,7 @@ import {
     View,
     Text
 } from 'react-native'
-import { GetTimeAgo } from './Component'
+import { GetTime, GetTimeAgo } from './Component'
 
 const format = {
     'kz': {
@@ -41,6 +41,8 @@ export default class TimeAgo extends React.Component {
         const seconds = Math.floor((new Date() - Date.parse(time)) / 1000)
         let interval = Math.floor(seconds / 31536000)
 
+
+
         if (interval >= 1) return GetTimeAgo(time)
 
         interval = Math.floor(seconds / 2592000)
@@ -49,8 +51,12 @@ export default class TimeAgo extends React.Component {
         interval = Math.floor(seconds / 604800)
         if (interval >= 1) return GetTimeAgo(time)
 
+        interval = Math.floor(seconds / 100000)
+        if (interval >= 1) return GetTime(time, 'dd, DD MMMM')
+
+
         interval = Math.floor(seconds / 86400)
-        if (interval >= 1) return GetTimeAgo(time)
+        if (interval >= 1) return formatLanguage.days(interval)
 
         interval = Math.floor(seconds / 3600)
         if (interval >= 1) return formatLanguage.hours(interval)

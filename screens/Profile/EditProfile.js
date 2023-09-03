@@ -53,8 +53,8 @@ export default class EditProfile extends Component {
 
   SaveProfile = () => {
     const { phone, name, pwd, pwd2, path, mime } = this.state;
-
     const formData = new FormData();
+
 
     path &&
       mime &&
@@ -73,6 +73,23 @@ export default class EditProfile extends Component {
 
     pwd && formData.append('old_password', pwd);
     pwd2 && formData.append('new_password', pwd2);
+
+
+
+    axios
+      .post('https://test.kemeladam.kz/api/accounts/profile/change/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then(response => {
+        console.log('RESPONSE change:', response);
+
+      })
+      .catch(error => {
+        console.log('RESPONSE error:', error.response);
+
+      });
 
     axios
       .post('https://test.kemeladam.kz/api/accounts/profile/change/', formData, {

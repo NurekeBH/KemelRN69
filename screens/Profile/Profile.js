@@ -193,7 +193,7 @@ export default class Profile extends Component {
     data?.fio && formData.append('fio', data.fio);
 
     axios
-      .post('https://test.kemeladam.kz/accounts/profile/change/', formData, {
+      .post('https://test.kemeladam.kz/api/accounts/profile/change/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

@@ -116,7 +116,7 @@ const ItemGroups = ({
                             <Text numberOfLines={2} style={{ color: '#8A8A8D', fontSize: 13, fontWeight: '400', }}>{item?.last_msg}</Text>
                         </View>
                         <View style={{ alignItems: 'flex-end' }}>
-                            <Text style={{ color: '#8A8A8D', fontSize: 13, fontWeight: '400', marginBottom: 4 }}>14:19</Text>
+                            {/* <Text style={{ color: '#8A8A8D', fontSize: 13, fontWeight: '400', marginBottom: 4 }}>14:19</Text> */}
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 {
                                     item.unread_msg > 0 ?

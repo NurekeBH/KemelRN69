@@ -17,15 +17,17 @@ const AddUsers = ({ navigation, route }) => {
 
 
     const [users, setUsers] = useState([])
+    const [usersG, setUsersG] = useState([])
     const [nexturl, setNextUrl] = useState(null)
 
     const group_id = route.params.group_id
 
 
+    console.log('route.params.group_id', route.params.group_id)
 
 
     useEffect(() => {
-        getData('')
+        // getData('')
 
         if (Platform.OS === "android") {
             PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS, {
@@ -43,51 +45,58 @@ const AddUsers = ({ navigation, route }) => {
 
     const loadContacts = () => {
 
-        console.log('aaaaaa', 'ssss')
         getAll()
             .then(contacts => {
-                this.setState({ contacts, loading: false });
+                let newArr = []
+                for (let i = 0; i < contacts.length; i++) {
+                    let object = {}
+                    const element = contacts[i];
+                    let phones = element.phoneNumbers
+                    for (let p = 0; p < phones.length; p++) {
+                        const element1 = phones[p];
+                        let po = element1.number
+                        po = po.replace(/\D+/g, '').replace(/(\d{1})(\d{3})(\d{3})(\d{4})/, '7$2$3$4');
+                        element1.number = po
+                    }
+
+
+                    object.recordID = element.recordID
+                    object.phoneNumbers = phones
+                    object.familyName = element.familyName
+                    object.givenName = element.givenName
+                    object.middleName = element.middleName
+                    newArr.push(object)
+                }
+                let params = {}
+                params.cards = newArr
+                axios.post(`https://test.kemeladam.kz/api/chat/phones/`, params,)
+                    .then(response => {
+                        console.log('aaaaaa', response)
+
+                        setUsers(response?.data)
+                        setUsersG(response?.data)
+                    })
+                    .catch(error => {
+                        console.log("error phones:", error.response);
+
+                    })
+
+
             })
             .catch(e => {
-                this.setState({ loading: false });
+                console.log('EEEEE', e)
             });
 
-        getCount().then(count => {
-            this.setState({ searchPlaceholder: `Search ${count} contacts` });
-        });
+
+
         checkPermission();
     }
 
 
 
-    const getData = (search) => {
-        axios.get(`https://test.kemeladam.kz/api/chat/group/${group_id}/account/autocomplete/?limit=20&offset=0&search=${search}`)
-            .then(response => {
-                console.log("RESPONSE chat:", response);
-                setUsers(response?.data?.results)
-                setNextUrl(response?.data?.next)
-            })
-            .catch(error => {
-                console.log("error chat:", error.response);
-
-            })
-    }
 
 
 
-
-    const handleLoadMore = (info) => {
-        axios.get(nexturl)
-            .then(response => {
-                console.log("RESPONSE chat:", response);
-                setUsers([...users, ...response?.data?.results])
-                setNextUrl(response?.data?.next)
-            })
-            .catch(error => {
-                console.log("error chat:", error.response);
-
-            })
-    }
 
     const renderItemUser = ({ item, index }) => {
         return (
@@ -121,6 +130,16 @@ const AddUsers = ({ navigation, route }) => {
 
 
     }
+
+    const SearchFunction = (value) => {
+        let searchData = usersG.filter(item => {
+            return item.contact.toLowerCase().match(value.toLowerCase());
+        });
+
+        setUsers(searchData)
+    }
+
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
 
@@ -139,12 +158,11 @@ const AddUsers = ({ navigation, route }) => {
                     placeholderTextColor={'grey'}
                     onChangeText={(text) => {
                         if (text.length > 2) {
-                            getData(text)
+                            SearchFunction(text)
                         } else if (text.length == 0) {
-                            getData('')
+                            setUsers(usersG)
                         }
                     }}
-
                 />
             </View>
 
@@ -153,10 +171,10 @@ const AddUsers = ({ navigation, route }) => {
                 keyExtractor={(item, index) => index.toString()}
                 showsVerticalScrollIndicator={false}
                 renderItem={renderItemUser}
-                onEndReachedThreshold={0.01}
-                onEndReached={(info) => {
-                    handleLoadMore(info);
-                }}
+            // onEndReachedThreshold={0.01}
+            // onEndReached={(info) => {
+            //     handleLoadMore(info);
+            // }}
             />
 
             <SimpleButton

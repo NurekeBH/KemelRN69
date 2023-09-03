@@ -35,6 +35,8 @@ const NewGroup = ({ navigation }) => {
     const [path, setPath] = useState(null)
     const [mime, setMime] = useState(null)
 
+    const [isSend, setIsSend] = useState(false)
+
 
     useEffect(() => {
 
@@ -118,93 +120,72 @@ const NewGroup = ({ navigation }) => {
 
     const onNextPress = () => {
 
+        if (label && desc) {
 
-        // let params = {
-        //     "label": label,
-        //     "desc": desc,
-        //     "habits": habitArr,
-        //     "mute": false,
-
-
-        // }
-        // if (fine) {
-        //     params.fine = finesArray[selected]?.id
-        // }
-
-        const formData = new FormData();
-
-
-        label && formData.append('label', label);
-        desc && formData.append('desc', desc);
-        fine && formData.append('fine', finesArray[selected]?.id);
-
-        for (let i = 0; i < habitArr.length; i++) {
-            const element = habitArr[i];
-            for (const [key, value] of Object.entries(element)) {
-                console.log(`${key}: ${value}`);
-                if (Array.isArray(value)) {
-                    for (let j = 0; j < value.length; j++) {
-                        const element = value[j];
-                        formData.append(`habits[${i}][${key}][${j}]`, element)
-                    }
-                } else if (typeof value === 'object') {
-                    for (const [key2, value2] of Object.entries(value)) {
-                        formData.append(`habits[${i}][${key}][${key2}]`, value2)
-                    }
-                }
-                else {
-                    formData.append(`habits[${i}][${key}]`, value)
-                }
-
+            setIsSend(true)
+            let params = {
+                "label": label,
+                "desc": desc,
+                "habits": habitArr,
+                "mute": false,
 
 
             }
-        }
-        console.log('params', formData)
-        axios.post('https://test.kemeladam.kz/api/chat/groups/', formData)
-            .then(response => {
-                console.log("RESPONSE groups:", response);
-                if (response?.data?.id) {
-                    if (path && mime) {
-                        const formData1 = new FormData();
+            if (fine) {
+                params.fine = finesArray[selected]?.id
+            }
 
-                        path &&
-                            mime &&
-                            formData1.append('cover', {
-                                uri: path,
-                                type: mime,
-                                name: 'filename.jpg',
-                            });
-                        label && formData1.append('label', label);
-                        desc && formData1.append('desc', desc);
+            console.log('params', params)
+            axios.post('https://test.kemeladam.kz/api/chat/groups/', params)
+                .then(response => {
+                    setIsSend(false)
+                    console.log("RESPONSE groups:", response);
+                    if (response?.data?.id) {
+                        if (path && mime) {
+                            const formData1 = new FormData();
+
+                            path &&
+                                mime &&
+                                formData1.append('cover', {
+                                    uri: path,
+                                    type: mime,
+                                    name: 'filename.jpg',
+                                });
+                            label && formData1.append('label', label);
+                            desc && formData1.append('desc', desc);
 
 
-                        axios.put(`https://test.kemeladam.kz/api/chat/group/${response?.data?.id}/`,
-                            formData1, {
-                            headers: {
-                                'Content-Type': 'multipart/form-data',
-                            },
-                        })
-                            .then(response => {
-                                console.log('RESPONSE LOGIN:', response);
-                                navigation.navigate('AddUsers', { group_id: response?.data?.id })
-
+                            axios.put(`https://test.kemeladam.kz/api/chat/group/${response?.data?.id}/`,
+                                formData1, {
+                                headers: {
+                                    'Content-Type': 'multipart/form-data',
+                                },
                             })
-                            .catch(error => {
-                                console.log('RESPONSE error:', error.response);
-                                if (error.response && error.response.status == 401) {
-                                    showToast('error', error.response.data.detail);
-                                }
-                            });
-                    } else {
-                        navigation.navigate('AddUsers', { group_id: response?.data?.id })
-                    }
-                }
-            })
-            .catch(error => {
-                console.log("error groups:", error.response);
+                                .then(response2 => {
+                                    console.log('RESPONSE ava:', response2);
+                                    navigation.navigate('AddUsers', { group_id: response?.data?.id })
 
-            })
+                                })
+                                .catch(error => {
+                                    console.log('RESPONSE error:', error.response);
+                                    showToast('error', error?.response?.data?.detail);
+
+                                });
+                        } else {
+                            navigation.navigate('AddUsers', { group_id: response?.data?.id })
+                        }
+                    }
+                })
+                .catch(error => {
+                    setIsSend(false)
+                    showToast('error', error?.response?.data?.detail);
+                    console.log("error groups:", error.response);
+
+                })
+        } else {
+            showToast('error', strings.emptyLabelDesc, 'top')
+        }
+
 
     }
 
@@ -290,7 +271,7 @@ const NewGroup = ({ navigation }) => {
                             }}>
                             <TextInput
                                 ref={input1}
-                                style={{ fontSize: 17, width: width - 60 }}
+                                style={{ flex: 1, fontSize: 17, width: width - 60 }}
                                 placeholder={strings.groupname}
                                 placeholderTextColor={'rgba(0,0,0,0.4)'}
                                 returnKeyType={'next'}
@@ -314,7 +295,7 @@ const NewGroup = ({ navigation }) => {
                             }}>
                             <TextInput
                                 ref={input2}
-                                style={{ fontSize: 17, width: width - 60, }}
+                                style={{ flex: 1, fontSize: 17, width: width - 60, }}
                                 placeholder={strings.groupdesc}
                                 placeholderTextColor={'rgba(0,0,0,0.4)'}
                                 returnKeyType={'next'}
@@ -478,6 +459,7 @@ const NewGroup = ({ navigation }) => {
 
                         </View>
                         <SimpleButton
+                            loading={isSend}
                             style={{ marginTop: 24 }}
                             text={strings.save}
                             onPress={onNextPress}
