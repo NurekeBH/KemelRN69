@@ -71,6 +71,7 @@ import GroupProfile from '../screens/TabChat/GroupProfile';
 import ChangeGroupProfile from '../screens/TabChat/ChangeGroupProfile';
 import GroupHabits from '../screens/TabChat/GroupHabits';
 import GroupMedia from '../screens/TabChat/GroupMedia';
+import MattersGoals from '../screens/Profile/MattersGoals';
 /////////STACKS/////////
 
 const _Tab1 = createNativeStackNavigator();
@@ -627,6 +628,12 @@ function App() {
           component={Goals}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="MattersGoals"
+          component={MattersGoals}
+          options={{ headerShown: false }}
+        />
+
 
         <Stack.Screen
           name="AddGoal"

@@ -82,7 +82,7 @@ export default class Goals extends Component {
   GetGoal() {
     axios
       .get(
-        `goals/goal/?section_id=${this.section_id}&category_id=${this.category_id}`,
+        `https://test.kemeladam.kz/api/goals/goal/?section_id=${this.section_id}&category_id=${this.category_id}`,
       )
       .then(response => {
         console.log('RESPONSE goals/goal:', response);
@@ -147,7 +147,7 @@ export default class Goals extends Component {
             ),
             onPress: () => {
               axios
-                .delete(`goals/goal/${item.id}/`)
+                .delete(`https://test.kemeladam.kz/api/goals/goal/${item.id}/`)
                 .then(response => {
                   console.log('RESPONSE goal:', response);
 
@@ -219,7 +219,7 @@ export default class Goals extends Component {
     console.log(' MODAL item', item);
 
     axios
-      .put(`goals/goal/${item.id}/`, {
+      .put(`https://test.kemeladam.kz/api/goals/goal/${item.id}/`, {
         label: this.state.label,
         category: this.category_id,
         section: this.section_id,
