@@ -9,11 +9,12 @@ import {
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ButtonClass, width } from '../../Component/Component';
+import { ButtonClass, showToast, width } from '../../Component/Component';
 import Header from '../../Component/Header2';
 import { strings } from '../../Localization/Localization';
 import { colorApp } from '../../theme/Colors';
 import Toast from 'react-native-simple-toast';
+import axios from 'axios';
 
 export default class RestorePassword extends Component {
   constructor(props) {
@@ -21,15 +22,39 @@ export default class RestorePassword extends Component {
     this.state = {
       email: '',
       visible: false,
+      isSend: false,
     };
   }
 
   postEmail = () => {
-    if (this.validate()) {
-      this.setState({ visible: true });
-    } else {
-      Toast.show(strings.neperr);
-    }
+    this.setState({ isSend: true }, () => {
+      if (this.validate()) {
+        // this.setState({ visible: true });
+
+
+        axios
+          .post('reset/', {
+            email: this.state.email
+          })
+          .then(response => {
+            console.log('RESPONSE reset:', response);
+            this.setState({ visible: true });
+          })
+          .catch(error => {
+            console.log('RESPONSE  reset error:', error.response);
+            if (error.response && error.response.status == 401) {
+              showToast('error', error.response.data.detail);
+            }
+          }).finally(() => {
+            this.setState({ isSend: false })
+          })
+
+      } else {
+        this.setState({ isSend: false })
+        Toast.show(strings.neperr);
+      }
+    })
+
   };
 
   validate = () => {
@@ -73,10 +98,12 @@ export default class RestorePassword extends Component {
                   returnKeyType={'done'}
                   textContentType="emailAddress"
                   value={email}
+                  autoCapitalize='none'
                   onChangeText={email => this.setState({ email })}
                 />
               </View>
               <ButtonClass
+                loader={this.state.isSend}
                 title={strings.voss}
                 onPress={() => this.postEmail()}
               />

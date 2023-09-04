@@ -91,7 +91,13 @@ export default class EditProfile extends Component {
         })
         .then(response => {
           console.log('RESPONSE change:', response);
-          this.storeData(pwd)
+          if (oldpwd && pwd) {
+            this.storeData(pwd)
+          } else {
+            this.setState({ isSend: false })
+            this.props.navigation.goBack();
+          }
+
         })
         .catch(error => {
           this.setState({ isSend: false })
