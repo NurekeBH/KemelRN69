@@ -57,7 +57,7 @@ const TabChat = ({ navigation }) => {
 
 
     const onConnect = (value) => {
-        let socket = new WebSocket(`wss://test.kemeladam.kz/ws/chat/user/${value}/groups/`)
+        let socket = new WebSocket(`wss://app.kemeladam.kz/ws/chat/user/${value}/groups/`)
 
         socket.onopen = function (e) {
 
@@ -98,7 +98,7 @@ const TabChat = ({ navigation }) => {
 
 
     const getData = () => {
-        axios.get('https://test.kemeladam.kz/api/accounts/profile/')
+        axios.get('accounts/profile/')
             .then(response => {
                 console.log('RESPONSE profile:', response);
                 setLoading(false)
@@ -131,7 +131,7 @@ const TabChat = ({ navigation }) => {
 
     const deleteGroup = (item) => {
         console.log('delete', item)
-        axios.delete(`https://test.kemeladam.kz/api/chat/group/${item.id}/`)
+        axios.delete(`chat/group/${item.id}/`)
             .then((response) => {
                 console.log('delete', response)
                 getData()
@@ -176,7 +176,7 @@ const TabChat = ({ navigation }) => {
         data?.fio && formData.append('fio', data.fio);
 
         axios
-            .post('https://test.kemeladam.kz/api/accounts/profile/change/', formData, {
+            .post('accounts/profile/change/', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

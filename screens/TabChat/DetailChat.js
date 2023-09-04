@@ -57,7 +57,7 @@ const DetailChat = ({ navigation, route }) => {
 
         setLoading(true)
 
-        axios.get(`https://test.kemeladam.kz/api/chat/group/${group_id}/user-habits/?date=${date}`)
+        axios.get(`chat/group/${group_id}/user-habits/?date=${date}`)
             .then(response => {
                 console.log("RESPONSE habits:", response);
                 setResponse([])
@@ -149,7 +149,7 @@ const DetailChat = ({ navigation, route }) => {
                 "date": today,
                 "done": !DONE
             }
-            axios.post(`https://test.kemeladam.kz/api/chat/group/${group_id}/habit/${item.id}/history/`,
+            axios.post(`chat/group/${group_id}/habit/${item.id}/history/`,
                 params)
                 .then(response => {
                     console.log("RESPONSE done:", response);

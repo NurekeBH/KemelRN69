@@ -8,7 +8,7 @@ const StateContext = createContext();
 
 // AsyncStorage.getItem('user_id').then(value => {
 //   if (value !== null) {
-//     const socket = new WebSocket(`wss://test.kemeladam.kz/ws/chat/user/${value}/`)
+//     const socket = new WebSocket(`wss://app.kemeladam.kz/ws/chat/user/${value}/`)
 
 //     socket.onopen = function (e) {
 //       socket.send(JSON.stringify({

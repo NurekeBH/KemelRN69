@@ -26,7 +26,7 @@ const ChatMessage = ({ navigation, route }) => {
 
     const getSocketUrl = useCallback(() => {
         return new Promise(resolve => {
-            resolve(`wss://test.kemeladam.kz/ws/chat/group/${group_id}/?account_id=${myInfo.id}`);
+            resolve(`wss://app.kemeladam.kz/ws/chat/group/${group_id}/?account_id=${myInfo.id}`);
         });
     }, []);
 
@@ -104,7 +104,7 @@ const ChatMessage = ({ navigation, route }) => {
 
     const getData = () => {
         setLoading(true)
-        axios.get(`https://test.kemeladam.kz/api/chat/group/${group_id}/messages/`)
+        axios.get(`chat/group/${group_id}/messages/`)
             .then(response => {
                 console.log("RESPONSE chat:", response);
 
@@ -238,7 +238,7 @@ const ChatMessage = ({ navigation, route }) => {
             });
 
             axios
-                .post(`https://test.kemeladam.kz/api/chat/group/${group_id}/media/`, formData, {
+                .post(`chat/group/${group_id}/media/`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
@@ -314,7 +314,7 @@ const ChatMessage = ({ navigation, route }) => {
             // });
 
             // axios
-            //     .post(`https://test.kemeladam.kz/api/chat/group/${group_id}/media/`, formData, {
+            //     .post(`chat/group/${group_id}/media/`, formData, {
             //         headers: {
             //             'Content-Type': 'multipart/form-data',
             //         },

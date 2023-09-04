@@ -71,7 +71,7 @@ const NewGroup = ({ navigation }) => {
 
 
 
-        axios.get(`https://test.kemeladam.kz/api/chat/fines/`)
+        axios.get(`chat/fines/`)
             .then((response) => {
                 console.log('fines response', response)
                 setFinesArray(response?.data)
@@ -96,7 +96,7 @@ const NewGroup = ({ navigation }) => {
 
 
     const GetFines = () => {
-        axios.get(`https://test.kemeladam.kz/api/chat/fines/`)
+        axios.get(`chat/fines/`)
             .then((response) => {
                 console.log('fines response', response)
                 setFinesArray(response?.data)
@@ -136,7 +136,7 @@ const NewGroup = ({ navigation }) => {
             }
 
             console.log('params', params)
-            axios.post('https://test.kemeladam.kz/api/chat/groups/', params)
+            axios.post('chat/groups/', params)
                 .then(response => {
                     setIsSend(false)
                     console.log("RESPONSE groups:", response);
@@ -155,7 +155,7 @@ const NewGroup = ({ navigation }) => {
                             desc && formData1.append('desc', desc);
 
 
-                            axios.put(`https://test.kemeladam.kz/api/chat/group/${response?.data?.id}/`,
+                            axios.put(`chat/group/${response?.data?.id}/`,
                                 formData1, {
                                 headers: {
                                     'Content-Type': 'multipart/form-data',

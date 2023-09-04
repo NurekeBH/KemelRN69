@@ -29,7 +29,7 @@ const GroupMedia = ({ navigation, route }) => {
     }, []);
 
     const getData = () => {
-        axios.get(`https://test.kemeladam.kz/api/chat/group/${group_id}/medias/`)
+        axios.get(`chat/group/${group_id}/medias/`)
             .then(response => {
                 console.log("RESPONSE setMedias:", response);
                 setMedias(response?.data.results)

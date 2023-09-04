@@ -38,7 +38,7 @@ export default class Login extends Component {
     if (email && pwd) {
       this.setState({ loader: true });
       axios
-        .post('https://test.kemeladam.kz/api/login/', {
+        .post('login/', {
           email: email,
           password: pwd,
         })
@@ -67,7 +67,7 @@ export default class Login extends Component {
 
   getProfile(data) {
 
-    axios.get('https://test.kemeladam.kz/api/accounts/profile/')
+    axios.get('accounts/profile/')
       .then(response => {
         console.log('RESPONSE profile:', response);
 

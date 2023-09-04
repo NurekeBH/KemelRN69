@@ -173,7 +173,7 @@ export default class Splash extends Component {
 
     onLoginClick(email, pwd, fcmToken) {
         axios
-            .post('https://test.kemeladam.kz/api/login/', {
+            .post('login/', {
                 email: email,
                 password: pwd,
             })
@@ -186,7 +186,7 @@ export default class Splash extends Component {
 
 
                 axios
-                    .post('https://test.kemeladam.kz/api/accounts/firebase/', {
+                    .post('accounts/firebase/', {
                         type: Platform.OS,
                         token: fcmToken,
                     })

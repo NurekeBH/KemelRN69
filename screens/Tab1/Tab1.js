@@ -421,7 +421,7 @@ export default class Tab1 extends Component {
   GetHistory() {
 
     axios
-      .get('https://test.kemeladam.kz/api/todos/future/')
+      .get('todos/future/')
       .then(response => {
         const x = response.data;
         var _marketData = {};
@@ -474,7 +474,7 @@ export default class Tab1 extends Component {
       var startOfWeek = moment().startOf('week').toDate();
       var endOfWeek = moment().endOf('week').toDate();
     }
-    let URL = open == 'day' ? `https://test.kemeladam.kz/api/todos/day/?date=${now}` : `https://test.kemeladam.kz/api/todos/week/?start=${moment(startOfWeek).format('YYYY-MM-DD')}&end=${moment(endOfWeek).format('YYYY-MM-DD')}`
+    let URL = open == 'day' ? `todos/day/?date=${now}` : `todos/week/?start=${moment(startOfWeek).format('YYYY-MM-DD')}&end=${moment(endOfWeek).format('YYYY-MM-DD')}`
 
     axios
       .get(URL)
@@ -928,7 +928,7 @@ export default class Tab1 extends Component {
     console.log('DateTime', DateTime);
 
     axios
-      .put(`https://test.kemeladam.kz/api/todos/task/${item.id}/`, {
+      .put(`todos/task/${item.id}/`, {
         label: item.label,
         desc: item.desc,
         address: item.address,
@@ -1209,7 +1209,7 @@ export default class Tab1 extends Component {
       console.log('weeks:', item.weeks);
 
       axios
-        .put(`https://test.kemeladam.kz/api/todos/habit/${item.id}/update/`, {
+        .put(`todos/habit/${item.id}/update/`, {
           label: item.label,
           time: item.time,
           weeks: item.weeks,
@@ -1232,7 +1232,7 @@ export default class Tab1 extends Component {
       this.PlaySound();
     }
     axios
-      .post(`https://test.kemeladam.kz/api/todos/habit/${item.id}/history/`, {
+      .post(`todos/habit/${item.id}/history/`, {
         done: item.done,
         date: item.click_date,
       })
@@ -1261,7 +1261,7 @@ export default class Tab1 extends Component {
     if (item.done) {
       this.PlaySound();
     }
-    axios.post(`https://test.kemeladam.kz/api/chat/group/${item.group.id}/habit/${item.id}/history/`,
+    axios.post(`chat/group/${item.group.id}/habit/${item.id}/history/`,
       params)
       .then(response => {
         console.log("RESPONSE done:", response);

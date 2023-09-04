@@ -40,7 +40,7 @@ const GroupHabits = ({ navigation, route }) => {
         console.log('habithabit', habit);
 
 
-        axios.post(`https://test.kemeladam.kz/api/chat/group/${group_id}/habits/`, habit)
+        axios.post(`chat/group/${group_id}/habits/`, habit)
             .then((response) => {
                 console.log('habithabit response', response)
                 getData()
@@ -76,7 +76,7 @@ const GroupHabits = ({ navigation, route }) => {
 
 
 
-        axios.get(`https://test.kemeladam.kz/api/chat/fines/`)
+        axios.get(`chat/fines/`)
             .then((response) => {
                 console.log('fines response', response)
                 setFinesArray(response?.data)
@@ -92,7 +92,7 @@ const GroupHabits = ({ navigation, route }) => {
     const getData = (date) => {
         setLoading(true)
 
-        axios.get(`https://test.kemeladam.kz/api/chat/group/${group_id}/habits/`)
+        axios.get(`chat/group/${group_id}/habits/`)
             .then(response => {
                 console.log("RESPONSE habits:", response);
                 setResponse(response.data.results)

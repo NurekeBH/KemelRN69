@@ -30,7 +30,7 @@ const GroupProfile = ({ navigation, route }) => {
     }, []);
 
     const getData = () => {
-        axios.get(`https://test.kemeladam.kz/api/chat/group/${group_id}/`)
+        axios.get(`chat/group/${group_id}/`)
             .then(response => {
                 console.log("RESPONSE group:", response);
                 setGroupInfo(response?.data)
@@ -43,7 +43,7 @@ const GroupProfile = ({ navigation, route }) => {
 
 
     const makeAdmin = (id, admin) => {
-        axios.post(`https://test.kemeladam.kz/api/chat/group/${group_id}/account/${id}/admin/`,
+        axios.post(`chat/group/${group_id}/account/${id}/admin/`,
             {
                 admin: admin
             })
@@ -58,7 +58,7 @@ const GroupProfile = ({ navigation, route }) => {
     }
 
     const deleteUser = (id) => {
-        axios.post(`https://test.kemeladam.kz/api/chat/group/${group_id}/account/${id}/leave/`)
+        axios.post(`chat/group/${group_id}/account/${id}/leave/`)
             .then(response => {
                 console.log("RESPONSE admin:", response);
                 getData()

@@ -4,7 +4,7 @@ import { Button, Text, FlatList, View, SafeAreaView } from "react-native";
 
 export default function App() {
 
-    const [socketUrl] = React.useState("wss://test.kemeladam.kz/ws/chat/26/");
+    const [socketUrl] = React.useState("wss://app.kemeladam.kz/ws/chat/26/");
 
     const messageHistory = React.useRef([])
 

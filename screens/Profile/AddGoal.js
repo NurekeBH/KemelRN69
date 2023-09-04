@@ -50,7 +50,7 @@ export default function AddGoal({ route, navigation }) {
   const onSaveClick = () => {
     if (label) {
       axios
-        .post('https://test.kemeladam.kz/api/goals/goal/create/', {
+        .post('goals/goal/create/', {
           label: label,
           category: category_id,
           section: section_id,

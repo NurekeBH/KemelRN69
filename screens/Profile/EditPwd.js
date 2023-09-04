@@ -26,7 +26,7 @@ export default class EditPwd extends Component {
   SavePass = () => {
     const { pwd, pwd2, oldpwd } = this.state;
     if (oldpwd && pwd && pwd2 && (pwd === pwd2)) {
-      Axios.put('https://test.kemeladam.kz/api/accounts/change-password/', {
+      Axios.put('accounts/change-password/', {
         old_password: oldpwd,
         new_password: pwd2,
       })

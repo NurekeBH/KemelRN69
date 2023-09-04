@@ -34,7 +34,7 @@ const ItemHabitUser = ({
             "date": today,
             "done": !item.done
         }
-        axios.post(`https://test.kemeladam.kz/api/chat/group/${group_id}/habit/${item.id}/history/`,
+        axios.post(`chat/group/${group_id}/habit/${item.id}/history/`,
             params)
             .then(response => {
                 console.log("RESPONSE done:", response);

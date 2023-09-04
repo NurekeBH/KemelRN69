@@ -69,7 +69,7 @@ const AddUsers = ({ navigation, route }) => {
                 }
                 let params = {}
                 params.cards = newArr
-                axios.post(`https://test.kemeladam.kz/api/chat/phones/`, params,)
+                axios.post(`chat/phones/`, params,)
                     .then(response => {
                         console.log('aaaaaa', response)
 
@@ -118,7 +118,7 @@ const AddUsers = ({ navigation, route }) => {
         }
 
 
-        axios.post(`https://test.kemeladam.kz/api/chat/group/${group_id}/accounts/`, params)
+        axios.post(`chat/group/${group_id}/accounts/`, params)
             .then(response => {
                 console.log("RESPONSE groups:", response);
                 navigation.pop(2)

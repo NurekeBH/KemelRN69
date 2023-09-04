@@ -84,7 +84,7 @@ export default class EditProfile extends Component {
 
 
       axios
-        .post('https://test.kemeladam.kz/api/accounts/profile/change/', formData, {
+        .post('accounts/profile/change/', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

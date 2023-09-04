@@ -56,7 +56,7 @@ const App: () => React$Node = () => {
     AsyncStorage.getItem('user_id').then(value => {
       if (value !== null) {
         user_id = value
-        socket = new WebSocket(`wss://test.kemeladam.kz/ws/chat/user/${value}/`)
+        socket = new WebSocket(`wss://app.kemeladam.kz/ws/chat/user/${value}/`)
 
         socket.onopen = function (e) {
           socket.send(JSON.stringify({

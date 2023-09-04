@@ -85,7 +85,7 @@ export default function TaskAdd({ route, navigation }) {
     if (theme && Datetime) {
       setisSend(true);
       axios
-        .post('https://test.kemeladam.kz/api/todos/task/', {
+        .post('todos/task/', {
           label: theme,
           datetime: Datetime,
           priority: priority,

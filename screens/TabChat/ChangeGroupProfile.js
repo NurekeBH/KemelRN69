@@ -47,7 +47,7 @@ const ChangeGroupProfile = ({ navigation, route }) => {
         desc && formData.append('desc', desc);
 
 
-        axios.put(`https://test.kemeladam.kz/api/chat/group/${groupInfo.id}/`,
+        axios.put(`chat/group/${groupInfo.id}/`,
             formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
