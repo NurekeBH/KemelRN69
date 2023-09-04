@@ -169,7 +169,8 @@ export let strings = new LocalizedStrings({
     connecting: 'қосылуда',
     notconnecting: 'қосылмады',
     noGroup: 'Сізде топ жоқ!',
-    emptyLabelDesc: 'Топ атауын немесе смпаттамасын толтыпыңыз'
+    emptyLabelDesc: 'Топ атауын немесе смпаттамасын толтыпыңыз',
+    pwdSuccess: 'Құпия сөзіңіз өзгертілді!',
 
 
 
@@ -299,8 +300,8 @@ export let strings = new LocalizedStrings({
     connecting: 'подключение',
     notconnecting: 'не подключается',
     noGroup: 'У вас нет группа!',
-    emptyLabelDesc: 'Введите название или описание группы'
-
+    emptyLabelDesc: 'Введите название или описание группы',
+    pwdSuccess: 'Ваш пароль был изменен!',
 
   },
   en: {
@@ -427,7 +428,8 @@ export let strings = new LocalizedStrings({
     connecting: 'connecting',
     notconnecting: 'not connecting',
     noGroup: 'You are not group!',
-    emptyLabelDesc: 'Fill in a group name or description'
+    emptyLabelDesc: 'Fill in a group name or description',
+    pwdSuccess: 'Your password has been changed!',
 
   },
 });

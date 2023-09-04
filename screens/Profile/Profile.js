@@ -307,10 +307,10 @@ export default class Profile extends Component {
                 title={strings.lang}
                 language={this.getLang()}
               />
-              <ButtonProfile
+              {/* <ButtonProfile
                 onPress={() => this.props.navigation.navigate('EditPwd')}
                 title={strings.edPwd}
-              />
+              /> */}
               <ButtonProfile
                 onPress={() => this.props.navigation.navigate('AboutUs')}
                 title={strings.onas}

@@ -124,14 +124,18 @@ export default class Splash extends Component {
             const email = await AsyncStorage.getItem('email');
             const pwd = await AsyncStorage.getItem('pwd');
             const avatar = await AsyncStorage.getItem('avatar');
-            if (avatar) this.globalState.setAvatar(avatar);
+
             if (token !== null) {
                 console.log('YES')
 
                 NetInfo.fetch().then(state => {
                     if (state.isConnected) {
+                        console.log('YES1')
+
                         this.onLoginClick(email, pwd, fcmToken);
                     } else {
+                        console.log('YES2')
+
                         const AuthStr = 'Bearer '.concat(token);
                         axios.defaults.headers.common['Authorization'] = AuthStr;
 
@@ -161,6 +165,7 @@ export default class Splash extends Component {
                 this.globalState.setAvatar(null);
                 this.props.navigation.replace('AuthStack');
             }
+            if (avatar) this.globalState.setAvatar(avatar);
         } catch (e) {
             console.error(e);
         }
@@ -168,7 +173,7 @@ export default class Splash extends Component {
 
     onLoginClick(email, pwd, fcmToken) {
         axios
-            .post('login/', {
+            .post('https://test.kemeladam.kz/api/login/', {
                 email: email,
                 password: pwd,
             })
@@ -181,7 +186,7 @@ export default class Splash extends Component {
 
 
                 axios
-                    .post('accounts/firebase/', {
+                    .post('https://test.kemeladam.kz/api/accounts/firebase/', {
                         type: Platform.OS,
                         token: fcmToken,
                     })
@@ -211,6 +216,8 @@ export default class Splash extends Component {
                     });
             })
             .catch(error => {
+                console.log('error', error)
+
                 this.props.navigation.replace('AuthStack');
 
             });

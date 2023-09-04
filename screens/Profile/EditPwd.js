@@ -26,7 +26,7 @@ export default class EditPwd extends Component {
   SavePass = () => {
     const { pwd, pwd2, oldpwd } = this.state;
     if (oldpwd && pwd && pwd2 && (pwd === pwd2)) {
-      Axios.put('accounts/change-password/', {
+      Axios.put('https://test.kemeladam.kz/api/accounts/change-password/', {
         old_password: oldpwd,
         new_password: pwd2,
       })
@@ -55,7 +55,7 @@ export default class EditPwd extends Component {
           <ScrollView
             showsVerticalScrollIndicator={false}
             style={{ padding: 16 }}>
-            <Text style={{ color: 'black', fontSize: 17, fontWeight: '600', marginTop: 16, marginBottom: 8 }}>{strings.newpwd}</Text>
+            <Text style={{ color: 'black', fontSize: 17, fontWeight: '600', marginTop: 16, marginBottom: 8 }}>{strings.oldpwd}</Text>
             <View style={styles.pwdStl}>
               <TextInput
                 placeholder={strings.oldpwd}

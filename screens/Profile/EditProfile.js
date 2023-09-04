@@ -18,6 +18,7 @@ import { no_avatar } from '../../Component/MyIcons';
 import { strings } from '../../Localization/Localization';
 import { colorApp } from '../../theme/Colors';
 import { TextInputMask } from 'react-native-masked-text';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default class EditProfile extends Component {
@@ -27,10 +28,12 @@ export default class EditProfile extends Component {
       name: this.props.route.params.data.fio,
       phone: this.props.route.params.data.phone,
       pwd: '',
-      pwd2: '',
+
+      oldpwd: '',
       avatar: this.props.route.params.data.avatar,
       path: null,
       mime: null,
+      isSend: false
     };
   }
 
@@ -51,72 +54,81 @@ export default class EditProfile extends Component {
     });
   };
 
+
   SaveProfile = () => {
-    const { phone, name, pwd, pwd2, path, mime } = this.state;
+    const { phone, name, oldpwd, pwd, path, mime, isSend } = this.state;
     const formData = new FormData();
 
-
-    path &&
-      mime &&
-      formData.append('avatar', {
-        uri: path,
-        type: mime,
-        name: 'filename.jpg',
-      });
-    name && formData.append('fio', name);
-
-    let PHONE = phone.replace('+', '')
-    PHONE = PHONE.replaceAll(' ', '')
-    phone && formData.append('phone', PHONE);
+    this.setState({ isSend: true }, () => {
 
 
+      path &&
+        mime &&
+        formData.append('avatar', {
+          uri: path,
+          type: mime,
+          name: 'filename.jpg',
+        });
+      name && formData.append('fio', name);
 
-    pwd && formData.append('old_password', pwd);
-    pwd2 && formData.append('new_password', pwd2);
+      let PHONE = phone.replace('+', '')
+      PHONE = PHONE.replaceAll(' ', '')
+      phone && formData.append('phone', PHONE);
 
 
 
-    axios
-      .post('https://test.kemeladam.kz/api/accounts/profile/change/', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then(response => {
-        console.log('RESPONSE change:', response);
+      oldpwd && formData.append('old_password', oldpwd);
+      pwd && formData.append('new_password', pwd);
 
-      })
-      .catch(error => {
-        console.log('RESPONSE error:', error.response);
 
-      });
 
-    axios
-      .post('https://test.kemeladam.kz/api/accounts/profile/change/', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then(response => {
-        console.log('RESPONSE change:', response);
-        this.props.navigation.goBack();
-      })
-      .catch(error => {
-        console.log('RESPONSE error:', error.response);
-        if (error.response && error.response.status == 401) {
-          showToast('error', error.response.data.detail);
-        }
-        if (error.response && error.response.status == 400) {
-          error.response.data.avatar &&
-            showToast('error', error.response.data.avatar);
-          error.response.data.old_password &&
-            showToast('error', error.response.data.old_password);
-        }
-      });
+
+      axios
+        .post('https://test.kemeladam.kz/api/accounts/profile/change/', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(response => {
+          console.log('RESPONSE change:', response);
+          this.storeData(pwd)
+        })
+        .catch(error => {
+          this.setState({ isSend: false })
+          console.log('RESPONSE error:', error.response);
+          if (error.response && error.response.status == 401) {
+            showToast('error', error.response.data.detail);
+          }
+          if (error.response && error.response.status == 400) {
+            error.response.data.avatar &&
+              showToast('error', error.response.data.avatar);
+            error.response.data.old_password &&
+              showToast('error', error.response.data.old_password);
+          }
+        });
+    })
   };
 
+
+  storeData = async (password) => {
+    try {
+
+      await AsyncStorage.setItem('pwd', password);
+      showToast('success', strings.pwdSuccess);
+      this.setState({ isSend: false })
+      this.props.navigation.goBack();
+
+    } catch (e) {
+      console.error(e);
+      this.setState({ isSend: false })
+      this.props.navigation.goBack();
+
+    }
+
+  }
+
   render() {
-    const { name, phone, pwd, pwd2, avatar } = this.state;
+    const { name, phone, pwd, oldpwd, avatar } = this.state;
     return (
       <View style={{ flex: 1, backgroundColor: '#fff' }}>
         <StatusBar backgroundColor={'#fff'} barStyle="dark-content" />
@@ -190,9 +202,25 @@ export default class EditProfile extends Component {
               </View>
             </View>
 
+
             <Text style={{ color: 'black', marginTop: 30, fontSize: 22, fontWeight: '700' }}>
               {strings.edPwd}
             </Text>
+
+            <View style={[styles.pwdStl, { marginTop: 20 }]}>
+              <TextInput
+                placeholder={strings.oldpwd}
+                placeholderTextColor={'rgba(0,0,0,0.4)'}
+                value={oldpwd}
+                onChangeText={oldpwd => this.setState({ oldpwd })}
+                style={{ fontSize: 17 }}
+                returnKeyType={'done'}
+                textContentType="name"
+                secureTextEntry
+              />
+            </View>
+
+
             <View style={[styles.pwdStl, { marginTop: 20 }]}>
               <TextInput
                 placeholder={strings.newpwd}
@@ -206,20 +234,9 @@ export default class EditProfile extends Component {
             </View>
 
 
-            <View style={[styles.pwdStl, { marginTop: 8 }]}>
-              <TextInput
-                placeholder={strings.newpwd2}
-                placeholderTextColor={'rgba(0,0,0,0.4)'}
-                value={pwd2}
-                onChangeText={pwd2 => this.setState({ pwd2 })}
-                style={{ fontSize: 17 }}
-                returnKeyType={'done'}
-                textContentType="name"
-                secureTextEntry
-              />
-            </View>
           </ScrollView>
           <ButtonClass
+            loader={this.state.isSend}
             onPress={this.SaveProfile}
             title={strings.save}
             style={{ bottom: 16, marginHorizontal: 16 }}
