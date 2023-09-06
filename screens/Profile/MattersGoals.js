@@ -82,7 +82,7 @@ export default class MattersGoals extends Component {
     GetGoal() {
         axios
             .get(
-                `https://test.kemeladam.kz/api/goals/goal/?section_id=${this.section_id}&category_id=${this.category_id}`,
+                `goals/goal/?section_id=${this.section_id}&category_id=${this.category_id}`,
             )
             .then(response => {
                 console.log('RESPONSE goals/goal:', response);
@@ -147,7 +147,7 @@ export default class MattersGoals extends Component {
                         ),
                         onPress: () => {
                             axios
-                                .delete(`https://test.kemeladam.kz/api/goals/goal/${item.id}/`)
+                                .delete(`goals/goal/${item.id}/`)
                                 .then(response => {
                                     console.log('RESPONSE goal:', response);
 
@@ -199,12 +199,12 @@ export default class MattersGoals extends Component {
                                 }}>
                                 {item.label}
                             </Text>
-                            <Text
+                            {/* <Text
                                 style={{
                                     fontSize: 13,
                                     marginTop: 2,
                                     color: 'rgba(0,0,0,0.7)',
-                                }}>{item.date_from ? (item.date_from + ' - ' + item.date_to) : null}</Text>
+                                }}>{item.date_from ? (item.date_from + ' - ' + item.date_to) : null}</Text> */}
 
 
                         </View>
@@ -219,7 +219,7 @@ export default class MattersGoals extends Component {
         console.log(' MODAL item', item);
 
         axios
-            .put(`https://test.kemeladam.kz/api/goals/goal/${item.id}/`, {
+            .put(`goals/goal/${item.id}/`, {
                 label: this.state.label,
                 category: this.category_id,
                 section: this.section_id,
@@ -441,6 +441,7 @@ export default class MattersGoals extends Component {
                                 section_id: this.section_id,
                                 label: this.Title,
                                 updateData: this.updateData,
+                                isMatter: true
                             })
                         }
                         activeOpacity={0.7}
@@ -526,56 +527,6 @@ export default class MattersGoals extends Component {
                                 returnKeyType="next"
                             />
 
-                            <Text style={{ color: 'rgba(0,0,0,0.6)', marginHorizontal: 4, marginTop: 16 }}>{strings.goalDate}</Text>
-
-                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 4 }}>
-                                <TouchableOpacity
-                                    onPress={() => {
-                                        this.setState({
-                                            open: true
-                                        })
-                                    }}
-                                    style={{ backgroundColor: '#F2F2F7', borderRadius: 8, width: Dimensions.get('window').width / 2 - 20, paddingVertical: 8 }} >
-
-                                    {/* <TextInput
-                    style={{ fontSize: 16, color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 2 - 20, paddingVertical: 4 }}
-                    numberOfLines={1}
-                    onChangeText={fromDate => {
-                      this.setState({
-                        fromDate
-                      })
-                    }}
-                    value={this.state.fromDate}
-                  /> */}
-                                    <Text style={{ fontSize: 16, color: 'black', textAlign: 'center', }}>
-                                        {fromDate}
-                                    </Text>
-                                </TouchableOpacity>
-                                <Text style={{ color: 'black', margin: 8 }}>-</Text>
-
-                                <TouchableOpacity
-                                    onPress={() => {
-                                        this.setState({
-                                            open2: true
-                                        })
-                                    }}
-                                    style={{ backgroundColor: '#F2F2F7', borderRadius: 8, width: Dimensions.get('window').width / 2 - 20, paddingVertical: 8 }} >
-
-                                    {/* <TextInput
-                    style={{ fontSize: 16, color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 2 - 20, paddingVertical: 4 }}
-                    numberOfLines={1}
-                    onChangeText={fromDate => {
-                      this.setState({
-                        fromDate
-                      })
-                    }}
-                    value={this.state.fromDate}
-                  /> */}
-                                    <Text style={{ fontSize: 16, color: 'black', textAlign: 'center', }}>
-                                        {toDate}
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
 
                             <Text style={{ marginTop: 16, fontSize: 14, color: '#8E8E93' }}>
                                 {strings.changeStatus}
