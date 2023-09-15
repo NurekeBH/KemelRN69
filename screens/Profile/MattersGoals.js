@@ -171,9 +171,16 @@ export default class MattersGoals extends Component {
                                 desc: item.desc,
                                 fromDate: item.date_from,
                                 toDate: item.date_to,
-                                modalStatus: item.status,
-                                openModal: true,
                             });
+
+                            let doneiItem = item
+                            if (item.status === 2) {
+                                doneiItem.status = 1
+                            } else {
+                                doneiItem.status = 2
+                            }
+                            this.onDoneTasks(doneiItem)
+
                         }}
                         activeOpacity={0.8}
                         key={index}
@@ -220,14 +227,14 @@ export default class MattersGoals extends Component {
 
         axios
             .put(`goals/goal/${item.id}/`, {
-                label: this.state.label,
-                category: this.category_id,
-                section: this.section_id,
+                label: item.label,
+                category: item.category,
+                section: item.section,
                 author: item.author,
-                status: this.state.modalStatus,
-                date_from: this.state.fromDate,
-                date_to: this.state.toDate,
-                desc: this.state.desc
+                status: item.status,
+                date_from: item.date_from,
+                date_to: item.date_to,
+                desc: item.desc,
             })
             .then(response => {
                 console.log('RESPONSE put:', response);
@@ -288,7 +295,7 @@ export default class MattersGoals extends Component {
                     {isLoading ? <ActivityIndicator color={'white'} /> : null}
 
                     <ScrollView style={{ backgroundColor: 'white', flex: 1 }}>
-                        <View
+                        {/* <View
                             style={{
                                 paddingHorizontal: 16,
                                 paddingVertical: 10,
@@ -351,7 +358,7 @@ export default class MattersGoals extends Component {
                                     />
                                 </View>
                             </View>
-                        </View>
+                        </View> */}
 
                         {/* <View
                             style={{
@@ -436,7 +443,7 @@ export default class MattersGoals extends Component {
 
                     <TouchableOpacity
                         onPress={() =>
-                            this.props.navigation.navigate('AddGoal', {
+                            this.props.navigation.navigate('AddMatterGoal', {
                                 category_id: this.category_id,
                                 section_id: this.section_id,
                                 label: this.Title,
@@ -459,6 +466,10 @@ export default class MattersGoals extends Component {
                         {PluseBtn}
                     </TouchableOpacity>
                 </SafeAreaView>
+
+
+
+
                 <Modal
                     position="bottom"
                     backButtonClose
@@ -755,8 +766,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         backgroundColor: 'white',
-        borderWidth: 0.5,
-        borderColor: 'rgba(0,0,0,0.3)'
+        borderBottomWidth: 0.5,
+        borderBottomColor: 'rgba(0,0,0,0.2)',
+
     },
     doneStl: {
         width: 24,

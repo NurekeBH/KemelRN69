@@ -137,7 +137,7 @@ export default class NotesList extends Component {
 
     let description = item.desc && item.desc.replace(regex, '');
     console.log('aaaa1', description)
-    description = description.replaceAll('&nbsp;', '');
+    description = description?.replaceAll('&nbsp;', '');
     console.log('aaaa2', description)
 
     return (

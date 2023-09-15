@@ -23,33 +23,11 @@ const ItemHabitUser = ({
 
     let itemUser = item
     const [selected, setSelected] = useState(true)
+    const procentDone = itemUser.done_habits == 0 ? 0 : parseInt(itemUser.done_habits * 100 / itemUser.habits.length);
 
 
     const [done, setDone] = useState(false)
 
-    const DonePress = (item) => {
-        console.log('item done', item)
-        let params = {
-            // "date": "2023-05-13",
-            "date": today,
-            "done": !item.done
-        }
-        axios.post(`chat/group/${group_id}/habit/${item.id}/history/`,
-            params)
-            .then(response => {
-                console.log("RESPONSE done:", response);
-                if (response.status == 200 || response.status == 201) {
-                    item.done = !item.done
-                    itemUser.doneHabitsCount = !item.done ? itemUser.doneHabitsCount - 1 : itemUser.doneHabitsCount + 1
-                    setDone(!done)
-                    console.log("RESPONSE done: TRUE");
-
-                }
-            })
-            .catch(error => {
-                console.log("error done:", error.response);
-            })
-    }
 
 
     const renderItemHabits = ({ item, index }) => {
@@ -99,7 +77,6 @@ const ItemHabitUser = ({
                         activeOpacity={0.8}
                         disabled={!isOwner}
                         onPress={() => {
-                            // DonePress(item)
                             donePress(item)
                         }}>
                         {item?.priority ? (
@@ -159,11 +136,14 @@ const ItemHabitUser = ({
         )
     }
 
+
+
+
     return (
         <View
             style={{
                 borderRadius: 8,
-                marginTop: 16,
+                marginTop: 8,
                 marginHorizontal: 16,
                 backgroundColor: '#ffffff',
             }}>
@@ -221,7 +201,7 @@ const ItemHabitUser = ({
 
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                             <Text style={{ fontSize: 12, color: '#3F49DC' }}>
-                                {item?.contexts?.progress}%
+                                {parseInt(procentDone)}%
                             </Text>
                             <Text
                                 style={{
@@ -243,7 +223,7 @@ const ItemHabitUser = ({
                             }}>
                             <View
                                 style={{
-                                    width: item?.contexts?.progress + '%',
+                                    width: procentDone + '%',
                                     height: 8,
                                     backgroundColor: '#6577F3',
                                     borderRadius: 8,

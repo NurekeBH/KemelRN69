@@ -74,7 +74,8 @@ const DetailChat = ({ navigation, route }) => {
                             HAB.done = false;
                         }
                     }
-
+                    let DoneHabits = arrHabits.filter(item => item.done === true).length;
+                    user.done_habits = DoneHabits
                     if (user.owner) {
                         let info = {}
                         info.id = user.id
@@ -110,6 +111,7 @@ const DetailChat = ({ navigation, route }) => {
                     console.log('dddd', item.day)
                     console.log(moment().subtract(item.day, 'd').format('YYYY-MM-DD'))
                     setSelected(index)
+
                     getData(moment().subtract(item.day, 'd').format('YYYY-MM-DD'))
                 }}
                 style={[{

@@ -8,7 +8,9 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "nureke": "npx react-native run-ios --simulator \"iPhone 14 Pro\""
+    "nureke": "npx react-native run-ios --simulator \"iPhone 14 Pro\"",
+    "cpios": "appcenter codepush release-react -a KemelAdam/Kemel-ios -d Staging",
+    "cpand": "appcenter codepush release-react -a KemelAdam/Kemel-and -d Staging"
   },
   "dependencies": {
     "@notifee/react-native": "^7.8.0",
