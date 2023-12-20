@@ -28,6 +28,7 @@ import 'moment/locale/en-au';
 import axios from 'axios';
 import Modal from 'react-native-modalbox';
 import { actions, RichEditor, RichToolbar } from '../../HtmlEditor';
+import { dataFormat } from '../../Component/TimeAgo';
 
 const bordercolor = 'rgba(0, 0, 0, 0.2)';
 const arrAction = [
@@ -65,6 +66,24 @@ export default function TaskAdd({ route, navigation }) {
 
   }, []);
 
+
+  const getParsedDate = (strDate) => {
+    var strSplitDate = String(strDate).split(' ');
+    var date = new Date(strSplitDate[0]);
+    // alert(date);
+    var dd = date.getDate();
+    var mm = date.getMonth() + 1; //January is 0!
+
+    var yyyy = date.getFullYear();
+    if (dd < 10) {
+      dd = '0' + dd;
+    }
+    if (mm < 10) {
+      mm = '0' + mm;
+    }
+    date = dd + "-" + mm + "-" + yyyy;
+    return date.toString();
+  }
 
 
 
@@ -176,7 +195,7 @@ export default function TaskAdd({ route, navigation }) {
                   setOpen(true);
                 }}>
                 <Text style={{ fontSize: 17, color: '#3F49DC' }}>
-                  {Moment(datetime).format('lll')}
+                  {dataFormat(datetime)}
                 </Text>
               </TouchableOpacity>
             </View>

@@ -401,7 +401,7 @@ function TabStack() {
           tabBarLabel: ({ color }) => (
             <Text
               style={{
-                fontSize: 12,
+                fontSize: 11,
                 color: color,
               }}>
               {strings.tab1}
@@ -418,7 +418,7 @@ function TabStack() {
           tabBarLabel: ({ color }) => (
             <Text
               style={{
-                fontSize: 12,
+                fontSize: 11,
                 color: color,
               }}>
               {strings.tab2}
@@ -436,7 +436,7 @@ function TabStack() {
           tabBarLabel: ({ color }) => (
             <Text
               style={{
-                fontSize: 12,
+                fontSize: 11,
                 color: color,
               }}>
               {strings.tabchat}
@@ -453,14 +453,14 @@ function TabStack() {
           tabBarIcon: ({ color }) =>
             <FastImage
               source={require('../assets/dua.png')}
-              style={{ width: 32, height: 32, tintColor: { color } }}
+              style={{ width: 28, height: 28, tintColor: { color } }}
               tintColor={color}
             />
           ,
           tabBarLabel: ({ color }) => (
             <Text
               style={{
-                fontSize: 12,
+                fontSize: 11,
                 color: color,
               }}>
               {strings.dua}
@@ -477,7 +477,7 @@ function TabStack() {
           tabBarLabel: ({ color }) => (
             <Text
               style={{
-                fontSize: 12,
+                fontSize: 11,
                 color: color,
               }}>
               {strings.tab4}

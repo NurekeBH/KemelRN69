@@ -64,7 +64,7 @@ export let strings = new LocalizedStrings({
     neperr: 'Электрондық пошта қате',
     search: 'Іздеу',
     zam: 'Жазбалар',
-    papka: 'Папкалар',
+    papka: 'Қалталар',
     zametnet: 'Сізде Жазбалар жоқ',
     otm: 'Артқа',
     redPr: 'Профильді өңдеу',
@@ -152,7 +152,7 @@ export let strings = new LocalizedStrings({
     changeStatus: 'Мәртебесін өзгерту',
     no: 'Жоқ',
     howgoal: 'Мақсатты қалай қоямыз?',
-    nameFolder: 'Папаканың атын енгізіңіз',
+    nameFolder: 'Қалтаның атын енгізіңіз',
     admin: 'админ',
     members: 'мүше',
 

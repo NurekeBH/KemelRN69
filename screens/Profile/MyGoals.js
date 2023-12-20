@@ -20,6 +20,8 @@ import { descHowGoal, omirTepe, strings } from '../../Localization/Localization'
 import Modal from 'react-native-modalbox';
 import FastImage from 'react-native-fast-image';
 
+import { GetMaqsats, InsertQueryMaqsat } from '../../database/KemelSQLite';
+import NetInfo from "@react-native-community/netinfo";
 
 
 
@@ -72,8 +74,28 @@ export default class MyGoals extends Component {
     }
     console.log('InputArr', InputArr)
 
-    // this.GetSection();
-    this.GetCategory();
+
+
+    this.unsubscribeNet = NetInfo.addEventListener(async state => {
+      console.log('state state state', state)
+
+      if (state.isConnected) {
+        this.GetCategory();
+      } else {
+        let goalCate = await GetMaqsats()
+
+        console.log('goalCate', goalCate)
+
+        this.setState({
+          goalCate: goalCate._array,
+          isLoading: false,
+        });
+
+
+      }
+    })
+
+
 
 
   }
@@ -103,8 +125,10 @@ export default class MyGoals extends Component {
       .then(response => {
         console.log('RESPONSE category:', response);
         let category = response.data.sort((a, b) => (a.sort > b.sort) ? 1 : -1)
+        console.log('RESPONSE category1:', category);
 
 
+        InsertQueryMaqsat(category)
         this.setState({
           goalCate: category,
           isLoading: false,

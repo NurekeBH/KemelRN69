@@ -16,7 +16,7 @@ export const CreateBD = () => {
       CreateTable()
     },
     error => {
-      console.log(" kemelDB ERROR: " + error);
+      console.log(" kemelDB ERROR2: " + error);
     }
   );
 }
@@ -33,7 +33,7 @@ const ExecuteQuery = (sql, params = []) => new Promise((resolve, reject) => {
     },
       (error) => {
         reject(error);
-        console.log('error', error)
+        console.log('kemelDB ERROR12', error)
       });
   });
 });
@@ -53,12 +53,19 @@ const ExecuteQuery = (sql, params = []) => new Promise((resolve, reject) => {
 //ka_habits  id,  label , created_at , updated_at , time, click_date , dessc , done , purpose , target , target_id , target_date, target_value, weeks 
 //ka_tasks  id,  label , created_at , updated_at , address, author, datetime,  dessc, done, priority, reminder,
 //  ka_notes   id ,label, created_at, updated_at, author folder, dessc, parent, 
+//  ka_maksat   id,  label, created_at,updated_at, sort, color, 
+//  ka_goal  id,  label, created_at, updated_at, author,    category_id,   date_from, date_to,statuss, dessc, 
+
+
 export const CreateTable = async () => {
   let ka_folder = await ExecuteQuery("CREATE TABLE IF NOT EXISTS ka_folder (id INTEGER PRIMARY KEY NOT NULL, label TEXT, created_at  VARCHAR(16), updated_at  VARCHAR(16), author INTEGER, root INTEGER, parent INTEGER )", []);
   let ka_reminder = await ExecuteQuery("CREATE TABLE IF NOT EXISTS ka_reminder (id INTEGER PRIMARY KEY NOT NULL, label TEXT, created_at  VARCHAR(16), updated_at  VARCHAR(16), time INTEGER )", []);
   let ka_habits = await ExecuteQuery("CREATE TABLE IF NOT EXISTS ka_habits (id INTEGER PRIMARY KEY NOT NULL, label TEXT, created_at  VARCHAR(16), updated_at  VARCHAR(16), time INTEGER, click_date VARCHAR(16), dessc TEXT, done INTEGER, purpose INTEGER, target INTEGER, target_id INTEGER, target_date VARCHAR(16), target_value VARCHAR(16), weeks VARCHAR(16))", []);
   let ka_tasks = await ExecuteQuery("CREATE TABLE IF NOT EXISTS ka_tasks (id INTEGER PRIMARY KEY NOT NULL,  label TEXT, created_at VARCHAR(16), updated_at VARCHAR(16), address, author, datetime TEXT,  dessc TEXT, done INTEGER, priority INTEGER, reminder TEXT )", []);
   let ka_notes = await ExecuteQuery("CREATE TABLE IF NOT EXISTS ka_notes (id INTEGER PRIMARY KEY NOT NULL, label TEXT, created_at  VARCHAR(16), updated_at  VARCHAR(16), author INTEGER, folder INTEGER, parent INTEGER, dessc TEXT)", []);
+  let ka_maksat = await ExecuteQuery("CREATE TABLE IF NOT EXISTS ka_maksat (id INTEGER PRIMARY KEY NOT NULL, label TEXT, created_at  VARCHAR(16), updated_at  VARCHAR(16), sort INTEGER,  color TEXT)", []);
+  let ka_goal = await ExecuteQuery("CREATE TABLE IF NOT EXISTS ka_goal (id INTEGER PRIMARY KEY NOT NULL, label TEXT, created_at  VARCHAR(16), updated_at  VARCHAR(16), author INTEGER, category_id INTEGER, date_from  VARCHAR(16),date_to  VARCHAR(16), statuss INTEGER, dessc TEXT)", []);
+
 }
 
 
@@ -212,15 +219,13 @@ export const InsertQueryReminder = async (array) => {
     insertQuery = insertQuery + ";";
 
     let multipleInsert = await ExecuteQuery(insertQuery, []);
-    console.log(multipleInsert);
+
   }
 }
 
 
 
 export const InsertQueryHabits = async (array) => {
-
-  console.log('array', array)
 
   //ka_habits  id,  label , created_at , updated_at , time, click_date , dessc , done , purpose , target , target_id , target_date, target_value, 
 
@@ -272,7 +277,7 @@ export const InsertQueryHabits = async (array) => {
         + element?.week
         + "')";
 
-      console.log('ka_habits rowsrows', insertQuery)
+
 
       if (i != array.length - 1) {
         insertQuery = insertQuery + ",";
@@ -284,7 +289,7 @@ export const InsertQueryHabits = async (array) => {
     insertQuery = insertQuery + ";";
 
     let multipleInsert = await ExecuteQuery(insertQuery, []);
-    console.log(multipleInsert);
+
   }
 
 
@@ -293,7 +298,6 @@ export const InsertQueryHabits = async (array) => {
 
 export const InsertQueryTasks = async (array) => {
 
-  console.log('array Tasks', array)
 
   //ka_tasks  id,  label , created_at , updated_at , address, author, datetime,  dessc, done, priority, reminder,
 
@@ -341,7 +345,7 @@ export const InsertQueryTasks = async (array) => {
         + reminder
         + "')";
 
-      console.log('tasksss rowsrows', insertQuery)
+
 
       if (i != array.length - 1) {
         insertQuery = insertQuery + ",";
@@ -353,7 +357,7 @@ export const InsertQueryTasks = async (array) => {
     insertQuery = insertQuery + ";";
 
     let multipleInsert = await ExecuteQuery(insertQuery, []);
-    console.log(multipleInsert);
+
   }
 
 
@@ -361,8 +365,112 @@ export const InsertQueryTasks = async (array) => {
 
 
 
+export const InsertQueryMaqsat = async (array, single) => {
+  //  ka_maksat   id,  label, created_at,updated_at, sort, color, 
+
+  if (single) {
+
+  } else {
+    let folderQuery = "INSERT INTO ka_maksat ( id, label, created_at, updated_at, sort, color) VALUES";
+    let hasElement = false
+    for (let i = 0; i < array.length; ++i) {
+      let element = array[i]
+      let hasItem = await ExecuteQuery("SELECT * FROM ka_maksat WHERE id = ?", [element.id]);
+      var rows = hasItem.rows;
+      if (rows.length > 0) {
+
+        UpdateQueryMaqsat(element)
+      } else {
+        hasElement = true
 
 
+        folderQuery = folderQuery + "('"
+          + element.id //id
+          + "','"
+          + element.label //label
+          + "','"
+          + element.created_at //created_at
+          + "','"
+          + element.updated_at //updated_at
+          + "','"
+          + element.sort //sort
+          + "','"
+          + element.color  //color
+          + "')";
+
+        if (i != array.length - 1) {
+          folderQuery = folderQuery + ",";
+        }
+      }
+    }
+
+    if (hasElement) {
+      folderQuery = folderQuery + ";";
+
+      let folderMultipleInsert = await ExecuteQuery(folderQuery, []);
+
+    }
+
+  }
+}
+
+
+
+export const InsertQueryGoals = async (array, single) => {
+  //  ka_goal  id,  label, created_at, updated_at, author,    category_id ,   date_from, date_to,statuss, dessc, 
+
+  if (single) {
+
+  } else {
+    let folderQuery = "INSERT INTO ka_goal ( id, label, created_at, updated_at, author,category_id, date_from, date_to, statuss, dessc ) VALUES";
+    let hasElement = false
+    for (let i = 0; i < array.length; ++i) {
+      let element = array[i]
+      let hasItem = await ExecuteQuery("SELECT * FROM ka_goal WHERE id = ?", [element.id]);
+      var rows = hasItem.rows;
+      if (rows.length > 0) {
+
+        UpdateQueryGoals(element)
+      } else {
+        hasElement = true
+
+        folderQuery = folderQuery + "('"
+          + element.id //id
+          + "','"
+          + element.label //label
+          + "','"
+          + element.created_at //created_at
+          + "','"
+          + element.updated_at //updated_at
+          + "','"
+          + element.author //author
+          + "','"
+          + element.category_id //category_id
+          + "','"
+          + element.date_from  //date_from
+          + "','"
+          + element.date_to  //date_to
+          + "','"
+          + element.statuss  //statuss
+          + "','"
+          + element.dessc  //dessc
+          + "')";
+
+        if (i != array.length - 1) {
+          folderQuery = folderQuery + ",";
+        }
+      }
+    }
+
+    if (hasElement) {
+      folderQuery = folderQuery + ";";
+
+      let folderMultipleInsert = await ExecuteQuery(folderQuery, []);
+
+    }
+
+  }
+}
 
 
 
@@ -419,6 +527,22 @@ export const UpdateQueryNotes = async (row) => {
 
 
 
+export const UpdateQueryMaqsat = async (row) => {
+  //  ka_maksat   id,  label, created_at,updated_at, sort, color, 
+
+  let updateQuery = await ExecuteQuery('UPDATE ka_maksat SET label=? , created_at=? , updated_at=? ,sort=? ,color=?  WHERE id=?',
+    [row.label, row.created_at, row.updated_at, row.sort, row.color, row.id]);
+}
+
+
+
+export const UpdateQueryGoals = async (row) => {
+  //  ka_goal  id,  label, created_at, updated_at, author,category_id  date_from, date_to,statuss, dessc, 
+
+  let updateQuery = await ExecuteQuery('UPDATE ka_goal SET label=? , created_at=? , updated_at=? ,author=? , category_id=?, date_from=?, date_to=?, statuss=?, dessc=?  WHERE id=?',
+    [row.label, row.created_at, row.updated_at, row.author, row.category_id, row.date_from, row.date_to, row.statuss, row.dessc, row.id]);
+}
+
 
 
 
@@ -436,7 +560,7 @@ export const GetRootNotes = async () => {
   let selectQuery = await ExecuteQuery("SELECT * FROM ka_notes where parent = 0", []);
   let rows = selectQuery.rows
 
-  console.log('rows', rows)
+
   return rows
 }
 
@@ -456,7 +580,7 @@ export const GetFolderByID = async (id) => {
 export const GetReminderDB = async () => {
   let selectQuery = await ExecuteQuery("SELECT * FROM ka_reminder", []);
   let rows = selectQuery.rows
-  console.log('selectQuery', selectQuery)
+
   return rows
 }
 
@@ -468,7 +592,6 @@ export const GetHabitsDB = async (now) => {
   let selectQuery = await ExecuteQuery("SELECT * FROM ka_habits where weeks like ?", ['%' + weeknumber + '%']);
   let rows = selectQuery.rows
 
-  console.log('selectQuery', selectQuery)
   return rows
 }
 
@@ -477,8 +600,23 @@ export const GetTasksDB = async (now) => {
   let selectQuery = await ExecuteQuery("SELECT * FROM ka_tasks where datetime like ?", ['%' + now + '%']);
   let rows = selectQuery.rows
 
-  console.log('selectQuery', selectQuery)
   return rows
 }
+
+
+export const GetMaqsats = async () => {
+  let selectQuery = await ExecuteQuery("SELECT * FROM ka_maksat", []);
+  let rows = selectQuery.rows
+
+  return rows
+}
+
+
+export const GetGoalById = async (id) => {
+  let selectQuery = await ExecuteQuery("SELECT * FROM ka_goal where category_id =?", [id]);
+  let rows = selectQuery.rows
+  return rows
+}
+
 
 

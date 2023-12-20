@@ -7,8 +7,9 @@ import { Done, addHabitsIcon, swipeDelete, threeDot } from '../../Component/MyIc
 import axios from 'axios';
 import ItemHabitUser from './ItemHabitUser';
 import Swipeout from '../../Swipeout';
-import { getTemplateLabel } from '../../Component/Component';
+import { getTemplateLabel, showToast } from '../../Component/Component';
 import GroupHabitAdd from './GroupHabitAdd';
+import ModalHabitsChat from './ModalHabitsChat';
 
 const GroupHabits = ({ navigation, route }) => {
 
@@ -20,14 +21,7 @@ const GroupHabits = ({ navigation, route }) => {
     const [addVisible, setAddVisible] = useState(false)
     const [targetArr, setTargetArr] = useState([])
 
-
-
-    const input1 = useRef();
-    const input2 = useRef();
-    const [label, setLabel] = useState(null)
-    const [desc, setDesc] = useState(null)
-    const [fine, setFine] = useState(false)
-    const [finesArray, setFinesArray] = useState([])
+    const [modelHabits, setModelHabits] = useState(null)
 
 
     useEffect(() => {
@@ -106,6 +100,7 @@ const GroupHabits = ({ navigation, route }) => {
     }
 
 
+
     const renderItemHabits = ({ item, index }) => {
         return (
             <Swipeout
@@ -133,7 +128,19 @@ const GroupHabits = ({ navigation, route }) => {
                             </View>
                         ),
                         onPress: () => {
+                            axios
+                                .delete(`chat/group/${group_id}/habit/${item.id}/`)
+                                .then(response => {
+                                    console.log('RESPONSE todos:', response);
 
+                                    getData()
+                                })
+                                .catch(error => {
+                                    console.log('RESPONSE error:', error.response);
+                                    if (error.response && error.response.status == 401) {
+                                        showToast('error', error.response.data.detail);
+                                    }
+                                });
                         },
                     },
                 ]}>
@@ -167,13 +174,8 @@ const GroupHabits = ({ navigation, route }) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onLongPress={() => {
-                            this.state.open == 'day'
-                                ? this.setState({
-                                    indDrax: 2,
-                                    visible: true,
-                                })
-                                : null;
+                        onPress={() => {
+                            setModelHabits(item)
                         }}
                         style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'row' }}
                         activeOpacity={0.8}
@@ -207,6 +209,40 @@ const GroupHabits = ({ navigation, route }) => {
     }
 
 
+    const RefreshHabits = (ModalHabits, isSave) => {
+        console.log('isSave', isSave);
+        console.log('ModalHabits', ModalHabits);
+
+        if (isSave) {
+            EditHabits(ModalHabits);
+        }
+        setModelHabits(null)
+
+    }
+
+    const EditHabits = (item) => {
+        axios
+            .put(`chat/group/${group_id}/habit/${item.id}/`, {
+                label: item.label,
+                weeks: item.weeks,
+                purpose: item.purpose,
+                desc: item.label,
+                target: item.target,
+                target_template: item.target_template.id,
+            })
+            .then(response => {
+                console.log('RESPONSE update:', response);
+
+            })
+            .catch(error => {
+                console.log('RESPONSE update:', error.response);
+                if (error.response && error.response.status == 401) {
+                    showToast('error', error.response.data.detail);
+                }
+            });
+
+    }
+
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -239,6 +275,15 @@ const GroupHabits = ({ navigation, route }) => {
             </View>
 
 
+            {modelHabits ? (
+                <ModalHabitsChat
+                    navigation={navigation}
+                    isOpen={modelHabits}
+                    modelItemData={modelHabits}
+                    RefreshModal={RefreshHabits}
+                />
+            ) : null}
+
 
 
             {
@@ -252,6 +297,7 @@ const GroupHabits = ({ navigation, route }) => {
                     :
                     null
             }
+
 
         </View>
     )

@@ -34,7 +34,9 @@ import Collapsible from 'react-native-collapsible';
 import Modal from 'react-native-modalbox';
 import Swipeout from '../../Swipeout/index';
 import moment from 'moment';
-
+import { GetGoalById, InsertQueryGoals } from '../../database/KemelSQLite';
+import NetInfo from "@react-native-community/netinfo";
+import { replaceNullWithSpace } from '../../Component/NullWithSpace';
 
 export default class MattersGoals extends Component {
     constructor(props) {
@@ -76,7 +78,48 @@ export default class MattersGoals extends Component {
     }
 
     componentDidMount() {
-        this.GetGoal();
+        this.unsubscribeNet = NetInfo.addEventListener(async state => {
+            console.log('state state state', state)
+
+            if (state.isConnected) {
+                this.GetGoal();
+            } else {
+                let goals = await GetGoalById(this.category_id)
+
+                console.log('goalCate', goals)
+
+
+
+                let arrTasks = replaceNullWithSpace(goals._array);
+
+                console.log('arrTasks', arrTasks)
+
+                let DoneTasks = arrTasks.filter(item => item.status == 2);
+                let processGoal = arrTasks.filter(item => item.status == 1);
+                let NotDoneTasks = arrTasks.filter(item => item.status == null);
+
+                this.setState({
+                    goalCate: NotDoneTasks,
+                    doneGoal: DoneTasks,
+                    processGoal: processGoal,
+
+                    isLoading: false,
+                    allCount: arrTasks.length,
+                    doneCount: DoneTasks.length,
+                    processCount: processGoal.length,
+                    notDoneCount: NotDoneTasks.length,
+
+                    openModal: false,
+                    modalItem: null,
+                    label: '',
+                    desc: '',
+                    fromDate: '',
+                    toDate: '',
+                });
+
+            }
+        })
+
     }
 
     GetGoal() {
@@ -88,6 +131,19 @@ export default class MattersGoals extends Component {
                 console.log('RESPONSE goals/goal:', response);
 
                 let arrTasks = response.data;
+
+
+                arrTasks.forEach(element => {
+                    element.dessc = element.desc
+                    element.category_id = element.category
+                    element.statuss = element.status
+                });
+
+
+                InsertQueryGoals(arrTasks)
+
+
+
                 let DoneTasks = arrTasks.filter(item => item.status == 2);
                 let processGoal = arrTasks.filter(item => item.status == 1);
                 let NotDoneTasks = arrTasks.filter(item => item.status == null);
@@ -122,6 +178,7 @@ export default class MattersGoals extends Component {
     renderItem(item, index) {
         return (
             <Swipeout
+                key={item + index}
                 autoClose={true}
                 style={{
                     borderRadius: 6,
@@ -168,7 +225,7 @@ export default class MattersGoals extends Component {
                             this.setState({
                                 modalItem: item,
                                 label: item.label,
-                                desc: item.desc,
+                                desc: item.dessc,
                                 fromDate: item.date_from,
                                 toDate: item.date_to,
                             });
@@ -234,7 +291,7 @@ export default class MattersGoals extends Component {
                 status: item.status,
                 date_from: item.date_from,
                 date_to: item.date_to,
-                desc: item.desc,
+                desc: item.dessc,
             })
             .then(response => {
                 console.log('RESPONSE put:', response);

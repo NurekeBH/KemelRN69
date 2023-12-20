@@ -14,8 +14,8 @@ import Svg, {
 
 export const Tab1Icon = ({ stroke }) => (
   <Svg
-    width="28"
-    height="28"
+    width="24"
+    height="24"
     viewBox="0 0 28 28"
     fill="none"
     xmlns="http://www.w3.org/2000/svg">
@@ -29,8 +29,8 @@ export const Tab1Icon = ({ stroke }) => (
 );
 export const Tab2Icon = ({ stroke }) => (
   <Svg
-    width="28"
-    height="28"
+    width="24"
+    height="24"
     viewBox="0 0 28 28"
     fill="none"
     xmlns="http://www.w3.org/2000/svg">
@@ -44,24 +44,18 @@ export const Tab2Icon = ({ stroke }) => (
 );
 
 export const TabChatIcon = ({ stroke }) => (
-  <Svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <G clip-path="url(#clip0_124_1799)">
-      <Path d="M13.5 25.5L8.16667 20.168V20.1667H4.16667C2.69333 20.1667 1.5 18.9733 1.5 17.5V4.16667C1.5 2.69333 2.69333 1.5 4.16667 1.5H22.8333C24.3067 1.5 25.5 2.69333 25.5 4.16667V17.5C25.5 18.9733 24.3067 20.1667 22.8333 20.1667H18.8333L13.5 25.4987" fill={stroke} />
-      <Path d="M14.3736 11.2929C14.7641 11.6834 14.7641 12.3166 14.3736 12.7071C13.9831 13.0976 13.3499 13.0976 12.9594 12.7071C12.5689 12.3166 12.5689 11.6834 12.9594 11.2929C13.3499 10.9024 13.9831 10.9024 14.3736 11.2929Z" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      <Path d="M19.0404 11.2929C19.4309 11.6834 19.4309 12.3166 19.0404 12.7071C18.6498 13.0976 18.0167 13.0976 17.6261 12.7071C17.2356 12.3166 17.2356 11.6834 17.6261 11.2929C18.0167 10.9024 18.6498 10.9024 19.0404 11.2929Z" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      <Path d="M9.70711 11.2929C10.0976 11.6834 10.0976 12.3166 9.70711 12.7071C9.31658 13.0976 8.68342 13.0976 8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929C8.68342 10.9024 9.31658 10.9024 9.70711 11.2929Z" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    </G>
-    <Defs>
-      <ClipPath id="clip0_124_1799">
-        <Rect width="28" height="28" fill="white" />
-      </ClipPath>
-    </Defs>
+  <Svg width="24" height="24" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <Path d="M13.5 25.5L8.16667 20.168V20.1667H4.16667C2.69333 20.1667 1.5 18.9733 1.5 17.5V4.16667C1.5 2.69333 2.69333 1.5 4.16667 1.5H22.8333C24.3067 1.5 25.5 2.69333 25.5 4.16667V17.5C25.5 18.9733 24.3067 20.1667 22.8333 20.1667H18.8333L13.5 25.4987" fill={stroke} />
+    <Path d="M14.3736 11.2929C14.7641 11.6834 14.7641 12.3166 14.3736 12.7071C13.9831 13.0976 13.3499 13.0976 12.9594 12.7071C12.5689 12.3166 12.5689 11.6834 12.9594 11.2929C13.3499 10.9024 13.9831 10.9024 14.3736 11.2929Z" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <Path d="M19.0404 11.2929C19.4309 11.6834 19.4309 12.3166 19.0404 12.7071C18.6498 13.0976 18.0167 13.0976 17.6261 12.7071C17.2356 12.3166 17.2356 11.6834 17.6261 11.2929C18.0167 10.9024 18.6498 10.9024 19.0404 11.2929Z" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <Path d="M9.70711 11.2929C10.0976 11.6834 10.0976 12.3166 9.70711 12.7071C9.31658 13.0976 8.68342 13.0976 8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929C8.68342 10.9024 9.31658 10.9024 9.70711 11.2929Z" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+
   </Svg>
 )
 export const Tab3Icon = ({ stroke }) => (
   <Svg
-    width="28"
-    height="28"
+    width="24"
+    height="24"
     viewBox="0 0 28 28"
     fill="none"
     xmlns="http://www.w3.org/2000/svg">
@@ -75,8 +69,8 @@ export const Tab3Icon = ({ stroke }) => (
 );
 export const Tab4Icon = ({ stroke }) => (
   <Svg
-    width="29"
-    height="28"
+    width="24"
+    height="24"
     viewBox="0 0 29 28"
     fill="none"
     xmlns="http://www.w3.org/2000/svg">

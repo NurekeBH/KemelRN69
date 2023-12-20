@@ -681,86 +681,92 @@ export default class Tab1 extends Component {
           renderItem={this.renderItemTodos}
           showsVerticalScrollIndicator={false}
         />
+        {
+          this.state.open == "week" ?
+            null
+            :
+            <View
+              style={{
+                borderRadius: 8,
+                marginTop: 4,
+              }}>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => {
+                  if (this.state.open == 'week')
+                    item.isCollapsed = !item.isCollapsed;
 
-        <View
-          style={{
-            borderRadius: 8,
-            marginTop: 4,
-          }}>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => {
-              if (this.state.open == 'week')
-                item.isCollapsed = !item.isCollapsed;
+                  this.setState({
+                    isOpenHabits: !this.state.isOpenHabits,
+                  });
+                  setTimeout(() => {
+                    this.setState({
+                      isOpenHabits: true,
+                    });
+                  }, 15000);
+                }}
+                style={[
+                  styles.vwStl,
+                  {
+                    backgroundColor: this.state.isOpenHabits ? '#ffffff' : null,
+                    paddingVertical: 13,
+                    marginBottom: 0,
+                  },
+                ]}>
+                <Text style={{ flex: 1, fontSize: 17, fontWeight: '600' }}>{strings.adets}</Text>
+                {
+                  !this.state.isOpenHabits ?
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.props.navigation.navigate('HabitAdd', {
+                          updateData: this.updateData,
+                        })
+                      }}
+                      style={{ marginRight: 8, width: 30, height: 30, alignItems: 'center', justifyContent: 'center', borderRadius: 15, }}>
+                      {addHabitsIcon}
+                    </TouchableOpacity>
 
-              this.setState({
-                isOpenHabits: !this.state.isOpenHabits,
-              });
-              setTimeout(() => {
-                this.setState({
-                  isOpenHabits: true,
-                });
-              }, 15000);
-            }}
-            style={[
-              styles.vwStl,
-              {
-                backgroundColor: this.state.isOpenHabits ? '#ffffff' : null,
-                paddingVertical: 13,
-                marginBottom: 0,
-              },
-            ]}>
-            <Text style={{ flex: 1, fontSize: 17, fontWeight: '600' }}>{strings.adets}</Text>
-            {
-              !this.state.isOpenHabits ?
-                <TouchableOpacity
-                  onPress={() => {
-                    this.props.navigation.navigate('HabitAdd', {
-                      updateData: this.updateData,
-                    })
-                  }}
-                  style={{ marginRight: 8, width: 30, height: 30, alignItems: 'center', justifyContent: 'center', borderRadius: 15, }}>
-                  {addHabitsIcon}
-                </TouchableOpacity>
-
-                :
-                null
-            }
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: '#8A8FA0',
-                  marginRight: 9,
-                }}>
-                {item.doneHabitsCount + item.DoneHabitsGCount}/{item.habits.length + item.group_habits.length}
-              </Text>
-              {Bottom}
+                    :
+                    null
+                }
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: '#8A8FA0',
+                      marginRight: 9,
+                    }}>
+                    {/* {item.doneHabitsCount + item.DoneHabitsGCount}/{item.habits.length + item.group_habits.length} */}
+                    {item.doneHabitsCount}/{item.habits.length}
+                  </Text>
+                  {Bottom}
+                </View>
+              </TouchableOpacity>
+              <Collapsible
+                collapsed={
+                  this.state.open == 'week'
+                    ? item.isCollapsed
+                    : this.state.isOpenHabits
+                }
+                style={{ paddingBottom: 16 }}>
+                <FlatList
+                  listKey={(item, index) => 'B' + index.toString()}
+                  data={item.habits}
+                  keyExtractor={(item, index) => index}
+                  renderItem={this.renderItemHabits}
+                  showsVerticalScrollIndicator={false}
+                />
+                {/* <FlatList
+            listKey={(item, index) => 'C' + index.toString()}
+            data={item.group_habits}
+            keyExtractor={(item, index) => index}
+            renderItem={this.renderItemHabitsGroup}
+            showsVerticalScrollIndicator={false}
+          /> */}
+              </Collapsible>
             </View>
-          </TouchableOpacity>
-          <Collapsible
-            collapsed={
-              this.state.open == 'week'
-                ? item.isCollapsed
-                : this.state.isOpenHabits
-            }
-            style={{ paddingBottom: 16 }}>
-            <FlatList
-              listKey={(item, index) => 'B' + index.toString()}
-              data={item.habits}
-              keyExtractor={(item, index) => index}
-              renderItem={this.renderItemHabits}
-              showsVerticalScrollIndicator={false}
-            />
-            <FlatList
-              listKey={(item, index) => 'C' + index.toString()}
-              data={item.group_habits}
-              keyExtractor={(item, index) => index}
-              renderItem={this.renderItemHabitsGroup}
-              showsVerticalScrollIndicator={false}
-            />
-          </Collapsible>
-        </View>
+        }
+
       </View>
     );
   };
@@ -1324,7 +1330,7 @@ export default class Tab1 extends Component {
     if (isLoading) {
       return null;
     } else {
-      console.log('group_habits--------', todos[0])
+
       let AllDoneCount = todos[0].doneTasksCount + todos[0].doneHabitsCount + todos[0].DoneHabitsGCount
       const arrLen = todos[0].tasks.length + todos[0].habits.length + todos[0].group_habits.length
 
