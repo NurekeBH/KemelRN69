@@ -68,7 +68,7 @@ export default function TaskAdd({ route, navigation }) {
     console.log('folderData', folderData)
   }, []);
 
-
+  const minDate = new Date().setMinutes(new Date().getMinutes() - 3000);
 
 
   const getLang = () => {
@@ -391,8 +391,8 @@ export default function TaskAdd({ route, navigation }) {
             <DatePicker
               locale={getLang()}
               is24hourSource="locale"
+              minimumDate={new Date(minDate)}
               date={datetime}
-
               onDateChange={date => {
                 console.log('aaaaa', date)
                 setdatetime(date);

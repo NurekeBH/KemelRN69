@@ -81,13 +81,14 @@ export default class TimeAgo extends React.Component {
 export const dataFormat = (d) => {
     // YYYY-MM-DD HH:mm'
     let yyy = d.getFullYear()
-    let mm = d.getMonth() + 1 < 10 ? "0" + d.getMonth() : d.getMonth()
+    let MM = d.getMonth() + 1
+    let mm = MM < 10 ? "0" + MM : MM
     let dd = d.getDate() < 10 ? "0" + d.getDate() : d.getDate()
     let hh = d.getHours() < 10 ? "0" + d.getHours() : d.getHours()
     let min = d.getMinutes() < 10 ? "0" + d.getMinutes() : d.getMinutes()
     return dformat = [yyy,
         mm,
-        dd].join('-') + ' ' +
+        dd].join('.') + ' ' +
         [hh,
             min].join(':');
 }

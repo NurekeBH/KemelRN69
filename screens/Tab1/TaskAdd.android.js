@@ -65,6 +65,8 @@ export default function TaskAdd({ route, navigation }) {
     Moment.locale(getLang());
 
   }, []);
+  const minDate = new Date().setMinutes(new Date().getMinutes() - 3000);
+
 
 
   const getParsedDate = (strDate) => {
@@ -216,7 +218,7 @@ export default function TaskAdd({ route, navigation }) {
                 textColor={"black"}
                 theme={"light"}
                 date={datetime}
-
+                minimumDate={new Date(minDate)}
                 onConfirm={date => {
                   setOpen(false);
                   setdatetime(date);

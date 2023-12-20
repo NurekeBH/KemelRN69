@@ -264,7 +264,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
                 mode="datetime"
                 date={new Date(datetime)}
                 is24hourSource="locale"
-                title={null}
+                title={""}
                 textColor={"black"}
                 theme={"light"}
                 confirmText={strings.save}

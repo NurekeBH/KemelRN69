@@ -43,7 +43,7 @@
     "react-native-collapsible-header-views": "^1.1.2",
     "react-native-contacts": "^7.0.5",
     "react-native-currency-input": "^1.0.1",
-    "react-native-date-picker": "^4.1.1",
+    "react-native-date-picker": "^4.3.5",
     "react-native-document-picker": "^8.1.1",
     "react-native-drax": "^0.9.1",
     "react-native-element-dropdown": "^2.9.0",
