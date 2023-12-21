@@ -43,6 +43,8 @@ import {
   exitGroup,
   userSelected,
   users,
+  Flag,
+  PurposeIconRed,
 } from '../../Component/MyIcons';
 import { strings } from '../../Localization/Localization';
 import Collapsible from 'react-native-collapsible';
@@ -198,7 +200,7 @@ export const TopModalButtonStyle = ({ icon, title, titleColor, onPress }) => (
     activeOpacity={0.7}
     style={[
       styles.mdlVwStl,
-      { borderBottomWidth: title == strings.mygoals ? 0 : 1 },
+      { borderBottomWidth: title == strings.matter ? 0 : 1 },
     ]}>
     {icon}
     <Text style={{ marginLeft: 10, fontSize: 17, color: titleColor }}>
@@ -1621,6 +1623,7 @@ export default class Tab1 extends Component {
                       />
                     }
                   />
+
                   <TopModalButtonStyle
                     onPress={() => {
                       this.props.navigation.navigate('MyGoals')
@@ -1632,6 +1635,21 @@ export default class Tab1 extends Component {
                       PurposeIconGrey
                     }
                   />
+                  <TopModalButtonStyle
+                    onPress={() => {
+                      this.props.navigation.navigate('MattersGoals', {
+                        category_id: 9,
+                        section_id: 1,
+                        label: strings.matter,
+                      });
+                    }}
+                    title={strings.matter}
+                    titleColor={'#FF3B30'}
+                    icon={
+                      PurposeIconRed
+                    }
+                  />
+
                 </View>
               </ModalBox>
 

@@ -172,7 +172,7 @@ export let strings = new LocalizedStrings({
     noGroup: 'Сізде топ жоқ!',
     emptyLabelDesc: 'Топ атауын немесе смпаттамасын толтыпыңыз',
     pwdSuccess: 'Құпия сөзіңіз өзгертілді!',
-    matter: 'Шұғыл істер',
+    matter: 'Шұғыл істер тізімі',
 
 
 
@@ -303,7 +303,7 @@ export let strings = new LocalizedStrings({
     noGroup: 'У вас нет группа!',
     emptyLabelDesc: 'Введите название или описание группы',
     pwdSuccess: 'Ваш пароль был изменен!',
-    matter: 'Срочные дела',
+    matter: 'Список срочных дел',
 
   },
   en: {
@@ -432,7 +432,7 @@ export let strings = new LocalizedStrings({
     noGroup: 'You are not group!',
     emptyLabelDesc: 'Fill in a group name or description',
     pwdSuccess: 'Your password has been changed!',
-    matter: 'Urgent matters',
+    matter: 'Urgent to-do list',
 
   },
 });

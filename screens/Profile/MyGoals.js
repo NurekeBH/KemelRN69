@@ -127,10 +127,12 @@ export default class MyGoals extends Component {
         let category = response.data.sort((a, b) => (a.sort > b.sort) ? 1 : -1)
         console.log('RESPONSE category1:', category);
 
+        let filteredCat = category.filter(item => item.id !== 9)
 
-        InsertQueryMaqsat(category)
+
+        InsertQueryMaqsat(filteredCat)
         this.setState({
-          goalCate: category,
+          goalCate: filteredCat,
           isLoading: false,
         });
       })
