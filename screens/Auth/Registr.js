@@ -21,6 +21,8 @@ import { Eye, FaceBook, AppleIcon } from '../../Component/MyIcons';
 import axios, { Axios } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firebase from '@react-native-firebase/app';
+import { TextInputMask } from 'react-native-masked-text'
+
 
 export default class Registr extends Component {
   constructor(props) {
@@ -29,6 +31,7 @@ export default class Registr extends Component {
       email: '',
       pwd: '',
       name: '',
+      phone: '',
       eye: true,
       loader: false
     };
@@ -36,14 +39,19 @@ export default class Registr extends Component {
 
   registerClick() {
 
-    const { email, pwd, name } = this.state;
-    if (email && pwd && name) {
+    const { email, pwd, name, phone } = this.state;
+    if (email && pwd && name && phone) {
+      let Phone = phone.replace('+', '')
+      Phone = Phone.replaceAll(' ', '')
+
+      console.log('aaaaa', Phone)
       this.setState({ loader: true });
       axios.post('register/', {
         email: email,
         password: pwd,
         password2: pwd,
-        fio: name
+        fio: name,
+        phone: Phone
       })
         .then(response => {
           console.log("RESPONSE register:", response);
@@ -56,9 +64,13 @@ export default class Registr extends Component {
 
               })
               .then(response => {
+
+                const AuthStr = 'Bearer '.concat(response.data.access);
+                axios.defaults.headers.common['Authorization'] = AuthStr;
+                this.getProfile(response.data)
+
                 console.log('RESPONSE LOGIN:', response);
-                this.storeData(response.data);
-                this.setState({ is_send: false });
+
               })
               .catch(error => {
                 this.setState({ is_send: false });
@@ -87,15 +99,35 @@ export default class Registr extends Component {
     }
   }
 
-  storeData = async data => {
+  getProfile(data) {
+
+    axios.get('accounts/profile/')
+      .then(response => {
+        console.log('RESPONSE profile:', response);
+        this.setState({ is_send: false });
+        this.storeData(response.data, data);
+
+      })
+      .catch(error => {
+        console.log('RESPONSE error:', error.response);
+        if (error.response && error.response.status == 401) {
+          showToast('error', error.response.data.detail);
+        }
+      });
+  }
+
+
+
+  storeData = async (user, data) => {
     const { email, pwd } = this.state;
 
 
     try {
+      await AsyncStorage.setItem('token', data.access);
       await AsyncStorage.setItem('email', email);
       await AsyncStorage.setItem('pwd', pwd);
-      const AuthStr = 'Bearer '.concat(data.access);
-      axios.defaults.headers.common['Authorization'] = AuthStr;
+      await AsyncStorage.setItem('user_id', user.id + '');
+
       let fcmToken = await firebase.messaging().getToken();
       this.setState({ loader: false });
       if (fcmToken) {
@@ -129,7 +161,7 @@ export default class Registr extends Component {
   };
 
   render() {
-    const { email, pwd, name, eye } = this.state;
+    const { email, pwd, name, eye, phone } = this.state;
     return (
       <View
         style={{
@@ -198,6 +230,23 @@ export default class Registr extends Component {
                   />
                 </View>
                 <View style={styles.inpVwStl}>
+                  <TextInputMask
+                    type={'custom'}
+                    options={{
+                      mask: '+7 999 999 99 99'
+                    }}
+                    style={{ fontSize: 17, width: width - 60 }}
+                    placeholder={strings.phone}
+                    placeholderTextColor={'rgba(0,0,0,0.4)'}
+                    keyboardType={'phone-pad'}
+                    returnKeyType={'done'}
+                    textContentType="nameSuffix"
+                    value={phone}
+                    autoCapitalize='none'
+                    onChangeText={phone => this.setState({ phone })}
+                  />
+                </View>
+                <View style={styles.inpVwStl}>
                   <TextInput
                     style={{ fontSize: 17, width: width - 60 }}
                     placeholder={'Email'}
@@ -210,6 +259,7 @@ export default class Registr extends Component {
                     onChangeText={email => this.setState({ email })}
                   />
                 </View>
+
                 <View
                   style={[
                     styles.inpVwStl,

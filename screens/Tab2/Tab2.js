@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../Component/Header';
@@ -30,13 +31,13 @@ import {
   width,
 } from '../../Component/Component';
 import { strings } from '../../Localization/Localization';
-import { CollapsibleHeaderScrollView } from 'react-native-collapsible-header-views';
-import HTML from 'react-native-render-html';
 import axios from 'axios';
 import Swipeout from '../../Swipeout/index'
-import Share from 'react-native-share';
 import Modal from 'react-native-modalbox';
 import TabHeader from '../../Component/TabHeader';
+import { GetRootFolder, InsertQueryFolder } from '../../database/KemelSQLite';
+import NetInfo from "@react-native-community/netinfo";
+
 
 export const BottomModalButtonStyle = ({ title, onPress, icon }) => (
   <TouchableOpacity
@@ -67,8 +68,25 @@ export default class Tab2 extends Component {
   }
 
   componentDidMount() {
-    this.GetFolders();
+    this.unsubscribe = NetInfo.addEventListener(async state => {
+
+      if (state.isConnected) {
+        this.GetFolders();
+      } else {
+        let rows = await GetRootFolder()
+        console.log('rows', rows._array)
+
+        this.setState({
+          folderName: '',
+          data: rows._array,
+          isLoading: false,
+        });
+
+      }
+
+    });
   }
+
 
   GetFolders() {
     axios
@@ -81,6 +99,8 @@ export default class Tab2 extends Component {
           data: response.data,
           isLoading: false,
         });
+
+        InsertQueryFolder(response.data, false)
       })
       .catch(error => {
         this.setState({
@@ -222,6 +242,9 @@ export default class Tab2 extends Component {
             renderItem={this.renderItem}
             showsVerticalScrollIndicator={false}
           />
+
+
+
         </SafeAreaView>
         <Modal
           ref={e => (this.mdlRef = e)}

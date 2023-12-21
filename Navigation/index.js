@@ -17,6 +17,7 @@ import {
   Tab2Icon,
   Tab3Icon,
   Tab4Icon,
+  TabChatIcon,
 } from '../Component/MyIcons';
 import { colorApp } from '../theme/Colors';
 import FastImage from 'react-native-fast-image';
@@ -61,6 +62,17 @@ import { navigationRef } from './RootNavigation';
 import Unfulfilled_tasks from '../screens/Unfulfilled_tasks';
 import TestApp from '../screens/TestApp';
 import Splash from '../screens/Splash';
+import TabChat from '../screens/TabChat/TabChat';
+import NewGroup from '../screens/TabChat/NewGroup';
+import AddUsers from '../screens/TabChat/AddUsers';
+import DetailChat from '../screens/TabChat/DetailChat';
+import ChatMessage from '../screens/TabChat/ChatMessage';
+import GroupProfile from '../screens/TabChat/GroupProfile';
+import ChangeGroupProfile from '../screens/TabChat/ChangeGroupProfile';
+import GroupHabits from '../screens/TabChat/GroupHabits';
+import GroupMedia from '../screens/TabChat/GroupMedia';
+import MattersGoals from '../screens/Profile/MattersGoals';
+import AddMatterGoal from '../screens/Profile/AddMatterGoal';
 /////////STACKS/////////
 
 const _Tab1 = createNativeStackNavigator();
@@ -124,6 +136,28 @@ function Tab2Stack() {
         />
       </_Tab2.Navigator>
       {/* <Player style={{bottom: heightBottom}} /> */}
+    </View>
+  );
+}
+
+
+const _TabChat = createNativeStackNavigator();
+function ChatStack() {
+
+  return (
+    <View style={{ flex: 1 }}>
+      <_TabChat.Navigator>
+        <_TabChat.Screen
+          name="TabChat"
+          component={TabChat}
+          options={{ headerShown: false }}
+        />
+
+
+
+
+      </_TabChat.Navigator>
+
     </View>
   );
 }
@@ -367,7 +401,7 @@ function TabStack() {
           tabBarLabel: ({ color }) => (
             <Text
               style={{
-                fontSize: 12,
+                fontSize: 11,
                 color: color,
               }}>
               {strings.tab1}
@@ -384,7 +418,7 @@ function TabStack() {
           tabBarLabel: ({ color }) => (
             <Text
               style={{
-                fontSize: 12,
+                fontSize: 11,
                 color: color,
               }}>
               {strings.tab2}
@@ -392,6 +426,25 @@ function TabStack() {
           ),
         }}
       />
+
+      <Tab.Screen
+        name="Chat"
+        component={ChatStack}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color }) => <TabChatIcon stroke={color} />,
+          tabBarLabel: ({ color }) => (
+            <Text
+              style={{
+                fontSize: 11,
+                color: color,
+              }}>
+              {strings.tabchat}
+            </Text>
+          ),
+        }}
+      />
+
       <Tab.Screen
         name="Tab3Stack"
         component={TabDuaStack}
@@ -400,14 +453,14 @@ function TabStack() {
           tabBarIcon: ({ color }) =>
             <FastImage
               source={require('../assets/dua.png')}
-              style={{ width: 32, height: 32, tintColor: { color } }}
+              style={{ width: 28, height: 28, tintColor: { color } }}
               tintColor={color}
             />
           ,
           tabBarLabel: ({ color }) => (
             <Text
               style={{
-                fontSize: 12,
+                fontSize: 11,
                 color: color,
               }}>
               {strings.dua}
@@ -424,7 +477,7 @@ function TabStack() {
           tabBarLabel: ({ color }) => (
             <Text
               style={{
-                fontSize: 12,
+                fontSize: 11,
                 color: color,
               }}>
               {strings.tab4}
@@ -576,10 +629,22 @@ function App() {
           component={Goals}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="MattersGoals"
+          component={MattersGoals}
+          options={{ headerShown: false }}
+        />
+
 
         <Stack.Screen
           name="AddGoal"
           component={AddGoal}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="AddMatterGoal"
+          component={AddMatterGoal}
           options={{ headerShown: false }}
         />
 
@@ -594,6 +659,55 @@ function App() {
           component={SearchNote}
           options={{ headerShown: false }}
         />
+
+        <Stack.Screen
+          name="NewGroup"
+          component={NewGroup}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="AddUsers"
+          component={AddUsers}
+          options={{ headerShown: false }}
+        />
+
+
+        <Stack.Screen
+          name="DetailChat"
+          component={DetailChat}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="ChatMessage"
+          component={ChatMessage}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="GroupProfile"
+          component={GroupProfile}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="ChangeGroupProfile"
+          component={ChangeGroupProfile}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="GroupHabits"
+          component={GroupHabits}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="GroupMedia"
+          component={GroupMedia}
+          options={{ headerShown: false }}
+        />
+
 
       </Stack.Navigator>
     </NavigationContainer>

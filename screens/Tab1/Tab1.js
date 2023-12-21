@@ -6,10 +6,6 @@ import {
   TouchableOpacity,
   FlatList,
   StyleSheet,
-  Switch,
-  TextInput,
-  NativeModules,
-  NativeEventEmitter,
   Modal,
   Alert,
   ActivityIndicator,
@@ -21,7 +17,6 @@ import {
   getTemplateLabel,
   getTemplateReminder,
   GetTime,
-  Header2,
   showToast,
   width,
 } from '../../Component/Component';
@@ -33,27 +28,24 @@ import {
   LeftIcon,
   LeftIcon2,
   MonthIcon,
-  Nodes,
   PluseBtn,
   WeekIcon,
-  PurposeIcon,
-  Minuse,
-  Plusee,
   Priority,
-  CircleDone,
   clock,
   swipeDelete,
   ShareNote,
-  iconFile,
   closeIcon,
   PurposeIconGrey,
-  FileIcon,
   threeDot,
   addHabitsIcon,
   reminderIcon,
   dayBack,
+  exitGroup,
+  userSelected,
+  users,
+  Flag,
+  PurposeIconRed,
 } from '../../Component/MyIcons';
-import { getStatusBarHeight } from '../../Component/getStatusBarHeight';
 import { strings } from '../../Localization/Localization';
 import Collapsible from 'react-native-collapsible';
 import ModalBox from 'react-native-modalbox';
@@ -71,6 +63,10 @@ import TabHeader from '../../Component/TabHeader';
 
 import SoundPlayer from 'react-native-sound-player';
 import CalendarStrip from '../../Component/CalendarStrip';
+import { GetHabitsDB, GetReminderDB, GetTasksDB, InsertQueryHabits, InsertQueryReminder, InsertQueryTasks } from '../../database/KemelSQLite';
+import NetInfo from "@react-native-community/netinfo";
+import { StatusBarHeightPlatform } from '../../Component/GeneralStatusBarColor';
+
 
 LocaleConfig.locales['kk'] = {
   monthNames: [
@@ -204,7 +200,7 @@ export const TopModalButtonStyle = ({ icon, title, titleColor, onPress }) => (
     activeOpacity={0.7}
     style={[
       styles.mdlVwStl,
-      { borderBottomWidth: title == strings.mygoals ? 0 : 1 },
+      { borderBottomWidth: title == strings.matter ? 0 : 1 },
     ]}>
     {icon}
     <Text style={{ marginLeft: 10, fontSize: 17, color: titleColor }}>
@@ -261,18 +257,37 @@ export default class Tab1 extends Component {
         : moment().format('YYYY-MM-DD'),
       isLoadingReminder: true,
       ReminderArr: [],
-      today: moment().format('YYYY-MM-DD')
+      today: moment().format('YYYY-MM-DD'),
+      isConnected: null,
     };
   }
 
   componentDidMount() {
 
+
+    console.log('selectedDate1', this.state.now)
+
     LocaleConfig.defaultLocale = getLang();
 
 
-    this.getTodoList();
-    this.getNotes();
-    this.GetReminder()
+
+    this.unsubscribeNet = NetInfo.addEventListener(async state => {
+
+      if (state.isConnected) {
+        this.setState({
+          isConnected: true,
+        }, () => {
+          this.GetReminder()
+          this.getTodoList();
+          this.getNotes();
+        })
+      } else {
+        this.GetFromSQLite()
+      }
+    });
+
+
+
 
 
 
@@ -302,6 +317,57 @@ export default class Tab1 extends Component {
     );
   }
 
+
+
+  async GetFromSQLite() {
+
+    const { open, now } = this.state;
+    console.log('resultresult now', now)
+
+
+    let RarrHabits = await GetHabitsDB(now)
+    let RarrTasks = await GetTasksDB(now)
+    let arrGHabits = [];
+    let arrHabits = RarrHabits._array
+
+    let arrTasks = RarrTasks._array
+
+    console.log('resultresult arrHabits', arrHabits)
+    console.log('resultresult arrTasks', arrTasks)
+
+    let DoneTasks = arrTasks.filter(item => item.done).length;
+    let DoneHabits = arrHabits.filter(item => item.done).length;
+    let DoneHabitsG = 0
+
+
+    let result = [
+      {
+        date: now,
+        habits: arrHabits,
+        tasks: arrTasks,
+        group_habits: arrGHabits,
+        isCollapsed: false,
+        doneTasksCount: DoneTasks,
+        doneHabitsCount: DoneHabits,
+        DoneHabitsGCount: 0
+
+      },
+    ]
+
+
+    console.log('resultresult', result)
+    this.setState({
+      isConnected: false,
+      todos: result,
+      tasks: arrTasks,
+      habbits: arrHabits,
+      group_habits: arrGHabits,
+      isLoading: false,
+    });
+
+  }
+
+
   GetReminder() {
     axios
       .get(`todos/reminders/`)
@@ -312,9 +378,11 @@ export default class Tab1 extends Component {
         Arr.forEach(element => {
           element.label = getTemplateReminder(element.label)
         });
+
+        InsertQueryReminder(Arr)
         this.setState({
           isLoadingReminder: false,
-          ReminderArr: response.data
+          ReminderArr: Arr
         })
       })
       .catch(error => {
@@ -328,7 +396,6 @@ export default class Tab1 extends Component {
   PlaySound() {
     try {
       console.log('pppppppp');
-
       SoundPlayer.playSoundFile('sound', 'mp3');
     } catch (e) {
       console.log(`cannot play the sound file`, e);
@@ -343,9 +410,9 @@ export default class Tab1 extends Component {
         this.setState({
           folderData: response.data,
         });
+
       })
       .catch(error => {
-
         console.log('RESPONSE error:', error.response);
         if (error.response && error.response.status == 401) {
           showToast('error', error.response.data.detail);
@@ -366,18 +433,10 @@ export default class Tab1 extends Component {
           (_marketData[val] = {
             marked: true,
             dotColor: '#FF3B30',
-            // customStyles: {
-            //   container: {
-            //     borderRadius: 50,
-            //     borderWidth: 2,
-            //     borderColor: '#24B445',
-            //     alignItems: 'center',
-            //     justifyContent: 'center',
-            //   },
-            // },
           }),
         );
-        console.log('RESPONSE _marketData:', _marketData);
+        console.log('RESPONSE _marketData1:', _marketData);
+        console.log('RESPONSE _marketData2:', x);
 
         this.setState({
           calendarData: _marketData,
@@ -408,23 +467,7 @@ export default class Tab1 extends Component {
       });
   }
 
-  getRandomizer() {
-    axios
-      .get(`todos/randomizer/generate/`)
-      .then(response => {
-        console.log('RESPONSE generate:', response);
-        this.setState({
-          rContent: response.data.content,
-        });
-      })
-      .catch(error => {
-        Alert.alert('error', error.response.data.substring(0, 200));
-        console.log('RESPONSE error:', error.response);
-        if (error.response && error.response.status == 401) {
-          showToast('error', error.response.data.detail);
-        }
-      });
-  }
+
 
   getTodoList() {
     this.GetHistory();
@@ -442,6 +485,7 @@ export default class Tab1 extends Component {
         let result = [];
         let arrTasks = [];
         let arrHabits = [];
+        let arrGHabits = [];
 
         if (open == 'week') {
           const x = response.data;
@@ -450,9 +494,11 @@ export default class Tab1 extends Component {
             ['date']: new Date(key),
             ['habits']: val['habits'] ? val['habits'] : [],
             ['tasks']: val['tasks'] ? val['tasks'] : [],
+            ['group_habits']: val['group_habits'] ? val['group_habits'] : [],
             ['isCollapsed']: 'false',
             ['doneTasksCount']: val['tasks'].filter(item => item.done === true).length,
             ['doneHabitsCount']: val['habits'].filter(item => item.done === true).length,
+            ['DoneHabitsGCount']: 0
           }));
 
 
@@ -461,51 +507,81 @@ export default class Tab1 extends Component {
             for (let j = 0; j < arrHabits.length; j++) {
               let HAB = arrHabits[j]
               HAB.click_date = moment(result[r].date).format('YYYY-MM-DD')
+              HAB.dessc = HAB.desc
               HAB.done = true;
               if (HAB.history && HAB.history.habit === HAB.id) {
                 HAB.done = HAB.history.done;;
               } else {
                 HAB.done = false;
               }
+
             }
             result[r].doneHabitsCount = arrHabits.filter(item => item.done === true).length
-
           }
-
-
-
           result = result.sort((a, b) => a.date - b.date);
         } else {
-          arrTasks = response.data.tasks;
-          arrHabits = response.data.habits;
+          arrTasks = response.data?.tasks;
+          arrHabits = response.data?.habits;
+          arrGHabits = response.data?.group_habits;
+
+          for (let j = 0; j < arrTasks.length; j++) {
+            let TAS = arrTasks[j]
+            TAS.dessc = TAS.desc
+          }
 
           for (let j = 0; j < arrHabits.length; j++) {
             let HAB = arrHabits[j]
+
             HAB.done = false;
             HAB.click_date = now
+            HAB.dessc = HAB.desc
             if (HAB.history && HAB.history.habit === HAB.id) {
               HAB.done = HAB.history.done;
             } else {
               HAB.done = false;
             }
+            let ids = '';
+            HAB.weeks.forEach(element => {
+              ids = ids + element.id + ' '
+
+            });
+            HAB.week = ids
+
+            console.log('HAB', HAB)
           }
+
+          for (let g = 0; g < arrGHabits.length; g++) {
+            let HABG = arrGHabits[g]
+            HABG.done = false;
+            HABG.done = false;
+            if (HABG.history) {
+              HABG.done = HABG.history.done
+            } else {
+              HABG.done = false;
+            }
+
+          }
+
+          let DoneHabitsG = arrGHabits.filter(item => item.done === true).length;
 
           let DoneTasks = arrTasks.filter(item => item.done === true).length;
           let DoneHabits = arrHabits.filter(item => item.done === true).length;
+
+
 
 
           result = [
             {
               date: now,
               habits: arrHabits,
+              group_habits: arrGHabits,
               tasks: arrTasks,
               isCollapsed: false,
               doneTasksCount: DoneTasks,
               doneHabitsCount: DoneHabits,
+              DoneHabitsGCount: DoneHabitsG
             },
           ];
-
-
         }
 
 
@@ -515,10 +591,15 @@ export default class Tab1 extends Component {
           tasks: arrTasks,
           habbits: arrHabits,
           isLoading: false,
+        }, () => {
+          console.log('result.habits', arrHabits)
+          InsertQueryHabits(arrHabits)
+          InsertQueryTasks(arrTasks)
         });
+
+
       })
       .catch(error => {
-        Alert.alert('error', error.response.data.substring(0, 200));
         console.log('RESPONSE error:', error.response);
         if (error.response && error.response.status == 401) {
           showToast('error', error.response.data.detail);
@@ -602,79 +683,92 @@ export default class Tab1 extends Component {
           renderItem={this.renderItemTodos}
           showsVerticalScrollIndicator={false}
         />
+        {
+          this.state.open == "week" ?
+            null
+            :
+            <View
+              style={{
+                borderRadius: 8,
+                marginTop: 4,
+              }}>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => {
+                  if (this.state.open == 'week')
+                    item.isCollapsed = !item.isCollapsed;
 
-        <View
-          style={{
-            borderRadius: 8,
-            marginTop: 4,
-          }}>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => {
-              if (this.state.open == 'week')
-                item.isCollapsed = !item.isCollapsed;
+                  this.setState({
+                    isOpenHabits: !this.state.isOpenHabits,
+                  });
+                  setTimeout(() => {
+                    this.setState({
+                      isOpenHabits: true,
+                    });
+                  }, 15000);
+                }}
+                style={[
+                  styles.vwStl,
+                  {
+                    backgroundColor: this.state.isOpenHabits ? '#ffffff' : null,
+                    paddingVertical: 13,
+                    marginBottom: 0,
+                  },
+                ]}>
+                <Text style={{ flex: 1, fontSize: 17, fontWeight: '600' }}>{strings.adets}</Text>
+                {
+                  !this.state.isOpenHabits ?
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.props.navigation.navigate('HabitAdd', {
+                          updateData: this.updateData,
+                        })
+                      }}
+                      style={{ marginRight: 8, width: 30, height: 30, alignItems: 'center', justifyContent: 'center', borderRadius: 15, }}>
+                      {addHabitsIcon}
+                    </TouchableOpacity>
 
-              this.setState({
-                isOpenHabits: !this.state.isOpenHabits,
-              });
-              setTimeout(() => {
-                this.setState({
-                  isOpenHabits: true,
-                });
-              }, 15000);
-            }}
-            style={[
-              styles.vwStl,
-              {
-                backgroundColor: this.state.isOpenHabits ? '#ffffff' : null,
-                paddingVertical: 13,
-                marginBottom: 0,
-              },
-            ]}>
-            <Text style={{ flex: 1, fontSize: 17, fontWeight: '600' }}>{strings.adets}</Text>
-            {
-              !this.state.isOpenHabits ?
-                <TouchableOpacity
-                  onPress={() => {
-                    this.props.navigation.navigate('HabitAdd', {
-                      updateData: this.updateData,
-                    })
-                  }}
-                  style={{ marginRight: 8, width: 30, height: 30, alignItems: 'center', justifyContent: 'center', borderRadius: 15, }}>
-                  {addHabitsIcon}
-                </TouchableOpacity>
-
-                :
-                null
-            }
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: '#8A8FA0',
-                  marginRight: 9,
-                }}>
-                {item.doneHabitsCount}/{item.habits.length}
-              </Text>
-              {Bottom}
+                    :
+                    null
+                }
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: '#8A8FA0',
+                      marginRight: 9,
+                    }}>
+                    {/* {item.doneHabitsCount + item.DoneHabitsGCount}/{item.habits.length + item.group_habits.length} */}
+                    {item.doneHabitsCount}/{item.habits.length}
+                  </Text>
+                  {Bottom}
+                </View>
+              </TouchableOpacity>
+              <Collapsible
+                collapsed={
+                  this.state.open == 'week'
+                    ? item.isCollapsed
+                    : this.state.isOpenHabits
+                }
+                style={{ paddingBottom: 16 }}>
+                <FlatList
+                  listKey={(item, index) => 'B' + index.toString()}
+                  data={item.habits}
+                  keyExtractor={(item, index) => index}
+                  renderItem={this.renderItemHabits}
+                  showsVerticalScrollIndicator={false}
+                />
+                {/* <FlatList
+            listKey={(item, index) => 'C' + index.toString()}
+            data={item.group_habits}
+            keyExtractor={(item, index) => index}
+            renderItem={this.renderItemHabitsGroup}
+            showsVerticalScrollIndicator={false}
+          /> */}
+              </Collapsible>
             </View>
-          </TouchableOpacity>
-          <Collapsible
-            collapsed={
-              this.state.open == 'week'
-                ? item.isCollapsed
-                : this.state.isOpenHabits
-            }
-            style={{ paddingBottom: 16 }}>
-            <FlatList
-              listKey={(item, index) => 'B' + index.toString()}
-              data={item.habits}
-              keyExtractor={(item, index) => item.date}
-              renderItem={this.renderItemHabits}
-              showsVerticalScrollIndicator={false}
-            />
-          </Collapsible>
-        </View>
+        }
+
       </View>
     );
   };
@@ -1003,6 +1097,120 @@ export default class Tab1 extends Component {
     );
   };
 
+
+  renderItemHabitsGroup = ({ item, index }) => {
+
+    return (
+      <Swipeout
+        autoClose={true}
+        style={{
+          borderRadius: 10,
+          maxHeight: 200,
+          marginTop: 4,
+        }}
+        right={[
+          {
+            component: (
+              <View
+                style={{
+                  backgroundColor: '#bcc0f8',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flex: 1,
+                  maxHeight: 200,
+                }}>
+                {ShareNote}
+                <Text style={{ marginTop: 4, fontSize: 8, color: '#3F49DC' }}>
+                  поделиться
+                </Text>
+              </View>
+            ),
+            onPress: () => {
+              this.share(item.label);
+            },
+          }
+        ]}>
+        <View
+          style={[
+            styles.vwStl,
+            {
+              minHeight: 55,
+              paddingVertical: 8,
+              backgroundColor: '#fff',
+            },
+          ]}>
+          <TouchableOpacity
+            style={{ height: 40, justifyContent: 'center', width: 40, }}
+            activeOpacity={0.8}
+            onPress={() => {
+              (item.done = !item.done), this.donePress(item);
+            }}>
+            {item?.priority ? (
+              Priority
+            ) : item.done ? (
+              <View style={styles.doneStl}>{Done}</View>
+            ) : (
+              <View
+                style={[
+                  styles.doneStl2,
+                  {
+                    borderColor: '#DADADA',
+                  },
+                ]}
+              />
+            )}
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onLongPress={() => {
+              this.state.open == 'day'
+                ? this.setState({
+                  indDrax: 2,
+                  visible: true,
+                })
+                : null;
+            }}
+            style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'row' }}
+            activeOpacity={0.8}
+            key={index}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              {users}
+              <Text
+                style={{
+                  fontSize: 15,
+                  textDecorationLine: item.done ? 'line-through' : 'none',
+                  color: item.done ? '#8E8E93' : '#000',
+                  marginLeft: 2
+                }}>
+                {item.label}
+              </Text>
+
+            </View>
+
+            {item.purpose ? <Text style={{ color: '#2BA149', fontSize: 16 }}>{item.target_value ? item.target_value.value : 0} {item.target_template ? getTemplateLabel(item.target_template.template) : null}</Text>
+              :
+              null}
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => {
+              // (item.done = !item.done), this.DoneHabits(item);
+              this.setState({
+                modelHabits: item,
+              });
+            }}
+
+            style={{ height: 40, justifyContent: 'center', alignItems: 'flex-end', width: 40, }}
+          >
+            {threeDot}
+          </TouchableOpacity>
+
+        </View>
+      </Swipeout>
+    );
+  };
+
+
   DoneHabits(item) {
     console.log(' DoneHabits item', item);
     if (!item.done) {
@@ -1014,7 +1222,7 @@ export default class Tab1 extends Component {
           time: item.time,
           weeks: item.weeks,
           purpose: item.purpose,
-          desc: item.desc,
+          desc: item.dessc,
           target: item.target,
           target_template: item.target_template.id,
         })
@@ -1048,6 +1256,32 @@ export default class Tab1 extends Component {
       });
 
   }
+
+
+  donePress = (item) => {
+    console.log('item done', item)
+    let params = {
+      // "date": "2023-05-13",
+      "date": this.state.today,
+      "done": item.done
+    }
+
+    if (item.done) {
+      this.PlaySound();
+    }
+    axios.post(`chat/group/${item.group.id}/habit/${item.id}/history/`,
+      params)
+      .then(response => {
+        console.log("RESPONSE done:", response);
+
+        this.getTodoList();
+      })
+      .catch(error => {
+        console.log("error done:", error.response);
+      })
+  }
+
+
 
   topModalButtonPress = ind => {
     this.setState(
@@ -1098,9 +1332,11 @@ export default class Tab1 extends Component {
     if (isLoading) {
       return null;
     } else {
-      const arrLen = todos[0].tasks.length + todos[0].habits.length
 
-      let procentDone = parseInt((todos[0].doneTasksCount + todos[0].doneHabitsCount) * 100 / arrLen);
+      let AllDoneCount = todos[0].doneTasksCount + todos[0].doneHabitsCount + todos[0].DoneHabitsGCount
+      const arrLen = todos[0].tasks.length + todos[0].habits.length + todos[0].group_habits.length
+
+      let procentDone = parseInt((AllDoneCount) * 100 / arrLen);
       if (arrLen == 0) { procentDone = 0 }
       return (
         <View>
@@ -1116,7 +1352,7 @@ export default class Tab1 extends Component {
                   fontWeight: '500',
                   color: '#272727',
                 }}>
-                {todos[0].doneTasksCount}
+                {AllDoneCount}
               </Text>
               <Text style={{ fontSize: 13, color: '#232857', marginLeft: 8 }}>
                 {strings.bugjet2}
@@ -1137,8 +1373,8 @@ export default class Tab1 extends Component {
                   {procentDone}%
                 </Text>
                 <Text style={{ fontSize: 12, color: '#8A8FA0' }}>
-                  {todos[0].doneTasksCount + todos[0].doneHabitsCount}/
-                  {todos[0].tasks.length + todos[0].habits.length}
+                  {AllDoneCount}/
+                  {arrLen}
                 </Text>
               </View>
               <View
@@ -1165,7 +1401,7 @@ export default class Tab1 extends Component {
             lang={getLang()}
             showWeekNumber
             startingDate={this.state.now}
-            selectedDate={this.state.now}
+            selectedDate={new Date(this.state.now)}
             onPressDate={day => {
               this.setState(
                 {
@@ -1175,7 +1411,14 @@ export default class Tab1 extends Component {
                   modal: false,
                 },
                 () => {
-                  this.getTodoList();
+                  //yyyyyyy
+                  if (this.state.isConnected) {
+                    this.getTodoList();
+                  } else {
+                    this.GetFromSQLite()
+
+                  }
+
                 },
               );
             }}
@@ -1235,7 +1478,7 @@ export default class Tab1 extends Component {
         style={{
           flex: 1,
           backgroundColor: '#fff',
-          paddingTop: getStatusBarHeight,
+          paddingTop: StatusBarHeightPlatform,
         }}>
         <StatusBar backgroundColor={'#fff'} barStyle="dark-content" />
         <SafeAreaView style={{ flex: 1 }}>
@@ -1380,6 +1623,7 @@ export default class Tab1 extends Component {
                       />
                     }
                   />
+
                   <TopModalButtonStyle
                     onPress={() => {
                       this.props.navigation.navigate('MyGoals')
@@ -1391,21 +1635,24 @@ export default class Tab1 extends Component {
                       PurposeIconGrey
                     }
                   />
+                  <TopModalButtonStyle
+                    onPress={() => {
+                      this.props.navigation.navigate('MattersGoals', {
+                        category_id: 9,
+                        section_id: 1,
+                        label: strings.matter,
+                      });
+                    }}
+                    title={strings.matter}
+                    titleColor={'#FF3B30'}
+                    icon={
+                      PurposeIconRed
+                    }
+                  />
+
                 </View>
               </ModalBox>
-              {/* <TouchableOpacity
-                onPress={() =>
-                  // this.mdlRef.open()
-                  this.props.navigation.navigate('TaskAdd', {
-                    updateData: this.updateData,
-                    now: now,
-                    ReminderArr: isLoadingReminder ? null : ReminderArr
-                  })
-                }
-                activeOpacity={0.7}
-                style={styles.btnStl}>
-                {PluseBtn}
-              </TouchableOpacity> */}
+
             </View>
           </View>
         </SafeAreaView>
@@ -1483,6 +1730,7 @@ export default class Tab1 extends Component {
 
         {modelHabits ? (
           <ModalHabits
+            navigation={this.props.navigation}
             isOpen={modelHabits}
             modelItemData={modelHabits}
             RefreshModal={this.RefreshHabits}

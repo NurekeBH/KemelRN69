@@ -29,12 +29,12 @@ import {
   width,
 } from '../../Component/Component';
 import { strings } from '../../Localization/Localization';
-import { CollapsibleHeaderScrollView } from 'react-native-collapsible-header-views';
-import HTML from 'react-native-render-html';
 import axios from 'axios';
 import Swipeout from '../../Swipeout/index'
-import Share from 'react-native-share';
 import Modal from 'react-native-modalbox';
+import { GetFolderByID, GetNotesByID, InsertQueryFolder, InsertQueryNotes } from '../../database/KemelSQLite';
+import NetInfo from "@react-native-community/netinfo";
+
 
 export const BottomModalButtonStyle = ({ title, onPress, icon }) => (
   <TouchableOpacity
@@ -68,21 +68,51 @@ export default class AddFolder extends Component {
   }
 
   componentDidMount() {
-    const unsubscribe = this.props.navigation.addListener('focus', () => {
-      this.getNoteList();
+    this.unsubscribe = this.props.navigation.addListener('focus', () => {
+
+      this.unsubscribeNet = NetInfo.addEventListener(async state => {
+        if (state.isConnected) {
+          this.GetFolders();
+          this.getNoteList();
+        } else {
+          let rows = await GetFolderByID(this.state.parentId)
+          let notes = await GetNotesByID(this.state.parentId)
+
+
+          console.log('rows', rows._array)
+
+          this.setState({
+            folderName: '',
+            data: rows._array,
+            isLoading: false,
+            dataNote: notes._array,
+            isLoadingNote: false,
+          });
+
+        }
+      })
+
     });
-    this.GetFolders();
+
   }
+
+
 
   getNoteList() {
     axios
       .get(`notes/folder/${this.state.parentId}/notes/`)
       .then(response => {
-        console.log('RESPONSE notes:', response);
 
+        let result = response.data
+        for (let r = 0; r < result.length; r++) {
+          let element = result[r]
+          element.dessc = element.desc
+        }
         this.setState({
-          dataNote: response.data,
+          dataNote: result,
           isLoadingNote: false,
+        }, () => {
+          InsertQueryNotes(result)
         });
       })
       .catch(error => {
@@ -107,6 +137,8 @@ export default class AddFolder extends Component {
           data: response.data,
           isLoading: false,
         });
+
+        InsertQueryFolder(response.data, false)
       })
       .catch(error => {
         this.setState({
@@ -210,8 +242,8 @@ export default class AddFolder extends Component {
 
   renderItemNote = ({ item, index }) => {
     const regex = /<[^>]*>/gim;
-    let description = item.desc && item.desc.replace(regex, '');
-    description = description.replaceAll('&nbsp;', '');
+    let description = item.dessc && item.dessc.replace(regex, '');
+    description = description?.replaceAll('&nbsp;', '');
 
 
     return (

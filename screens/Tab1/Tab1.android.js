@@ -6,10 +6,6 @@ import {
   TouchableOpacity,
   FlatList,
   StyleSheet,
-  Switch,
-  TextInput,
-  NativeModules,
-  NativeEventEmitter,
   Modal,
   Alert,
   ActivityIndicator,
@@ -19,8 +15,8 @@ import {
   ButtonClass,
   getLang,
   getTemplateLabel,
+  getTemplateReminder,
   GetTime,
-  Header2,
   showToast,
   width,
 } from '../../Component/Component';
@@ -32,27 +28,19 @@ import {
   LeftIcon,
   LeftIcon2,
   MonthIcon,
-  Nodes,
   PluseBtn,
   WeekIcon,
-  PurposeIcon,
-  Minuse,
-  Plusee,
   Priority,
-  CircleDone,
   clock,
   swipeDelete,
   ShareNote,
-  iconFile,
   closeIcon,
   PurposeIconGrey,
-  FileIcon,
   threeDot,
   addHabitsIcon,
   reminderIcon,
   dayBack,
 } from '../../Component/MyIcons';
-import { getStatusBarHeight } from '../../Component/getStatusBarHeight';
 import { strings } from '../../Localization/Localization';
 import Collapsible from 'react-native-collapsible';
 import ModalBox from 'react-native-modalbox';
@@ -264,9 +252,15 @@ export default class Tab1 extends Component {
       .get(`todos/reminders/`)
       .then(response => {
         console.log('RESPONSE reminder:', response);
+        let Arr = response.data
+        Arr.forEach(element => {
+          element.label = getTemplateReminder(element.label)
+        });
+
+
         this.setState({
           isLoadingReminder: false,
-          ReminderArr: response.data
+          ReminderArr: Arr
         })
       })
       .catch(error => {
@@ -1113,7 +1107,7 @@ export default class Tab1 extends Component {
             lang={getLang()}
             showWeekNumber
             startingDate={this.state.now}
-            selectedDate={this.state.now}
+            selectedDate={new Date(this.state.now)}
             onPressDate={day => {
               this.setState(
                 {

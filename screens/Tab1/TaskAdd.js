@@ -29,6 +29,7 @@ import 'moment/locale/en-au';
 import axios from 'axios';
 import Modal from 'react-native-modalbox';
 import { actions, RichEditor, RichToolbar } from '../../HtmlEditor';
+import { dataFormat } from '../../Component/TimeAgo';
 
 const bordercolor = 'rgba(0, 0, 0, 0.2)';
 const arrAction = [
@@ -67,7 +68,7 @@ export default function TaskAdd({ route, navigation }) {
     console.log('folderData', folderData)
   }, []);
 
-
+  const minDate = new Date().setMinutes(new Date().getMinutes() - 3000);
 
 
   const getLang = () => {
@@ -162,6 +163,7 @@ export default function TaskAdd({ route, navigation }) {
   }
 
 
+
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <StatusBar backgroundColor={'#fff'} barStyle="dark-content" />
@@ -215,7 +217,7 @@ export default function TaskAdd({ route, navigation }) {
               <Text style={{ fontSize: 17 }}>{strings.vremya}</Text>
 
               <Text style={{ fontSize: 17, color: '#3F49DC' }}>
-                {Moment(datetime).format('lll')}
+                {dataFormat(datetime)}
               </Text>
 
             </TouchableOpacity>
@@ -343,7 +345,7 @@ export default function TaskAdd({ route, navigation }) {
                 marginHorizontal: -5,
               }}
               ref={richText}
-              placeholder={strings.zamk}
+              placeholder={strings.addzamk}
               initialContentHTML={zametka}
               onChange={zametka => {
                 setzametka(zametka);
@@ -389,9 +391,10 @@ export default function TaskAdd({ route, navigation }) {
             <DatePicker
               locale={getLang()}
               is24hourSource="locale"
+              minimumDate={new Date(minDate)}
               date={datetime}
-
               onDateChange={date => {
+                console.log('aaaaa', date)
                 setdatetime(date);
               }}
               textColor={"black"}

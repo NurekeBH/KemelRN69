@@ -34,9 +34,6 @@ export default class Login extends Component {
   }
 
   onLoginClick() {
-
-
-
     const { email, pwd } = this.state;
     if (email && pwd) {
       this.setState({ loader: true });
@@ -46,8 +43,13 @@ export default class Login extends Component {
           password: pwd,
         })
         .then(response => {
+          const AuthStr = 'Bearer '.concat(response.data.access);
+          axios.defaults.headers.common['Authorization'] = AuthStr;
+
+
+          this.getProfile(response.data)
           console.log('RESPONSE LOGIN:', response);
-          this.storeData(response.data);
+
 
         })
         .catch(error => {
@@ -63,6 +65,24 @@ export default class Login extends Component {
 
   }
 
+  getProfile(data) {
+
+    axios.get('accounts/profile/')
+      .then(response => {
+        console.log('RESPONSE profile:', response);
+
+        this.storeData(response.data, data);
+
+      })
+      .catch(error => {
+        console.log('RESPONSE error:', error.response);
+        if (error.response && error.response.status == 401) {
+          showToast('error', error.response.data.detail);
+        }
+      });
+  }
+
+
   getLang = () => {
     if (strings.getLanguage() == 'kz') {
       return 'Қазақша';
@@ -75,14 +95,18 @@ export default class Login extends Component {
 
 
 
-  storeData = async data => {
+  storeData = async (user, data) => {
+
+    console.log('user user_id:', user.id);
+    console.log('data data:', data);
+
+
     const { email, pwd } = this.state;
     try {
       await AsyncStorage.setItem('token', data.access);
       await AsyncStorage.setItem('email', email);
       await AsyncStorage.setItem('pwd', pwd);
-      const AuthStr = 'Bearer '.concat(data.access);
-      axios.defaults.headers.common['Authorization'] = AuthStr;
+      await AsyncStorage.setItem('user_id', user.id + '');
 
 
       let fcmToken = await firebase.messaging().getToken();

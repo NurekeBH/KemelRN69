@@ -578,7 +578,7 @@ export default class Wallet extends Component {
                                                                 flex: 1,
                                                                 maxHeight: 200,
                                                             }}>
-                                                            {penEdit}
+                                                            {penEdit()}
                                                             <Text
                                                                 style={{
                                                                     marginTop: 4,
@@ -822,7 +822,7 @@ export default class Wallet extends Component {
                                                             flex: 1,
                                                             maxHeight: 200,
                                                         }}>
-                                                        {penEdit}
+                                                        {penEdit()}
                                                         <Text
                                                             style={{
                                                                 marginTop: 4,

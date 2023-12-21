@@ -47,6 +47,8 @@ export default function AddGoal({ route, navigation }) {
   const [category_id, setCategory] = useState(route.params?.category_id);
   const [section_id, setSectionId] = useState(route.params?.section_id);
 
+  const [isMatter, setIsMatter] = useState(route.params?.isMatter)
+
   const onSaveClick = () => {
     if (label) {
       axios
@@ -55,8 +57,8 @@ export default function AddGoal({ route, navigation }) {
           category: category_id,
           section: section_id,
           done: false,
-          date_from: fromDate,
-          date_to: toDate,
+          date_from: isMatter ? moment(new Date()).format('DD MMMM YYYY') : fromDate,
+          date_to: isMatter ? moment(new Date()).format('DD MMMM YYYY') : toDate,
           desc: desc
         })
         .then(response => {
@@ -120,16 +122,19 @@ export default function AddGoal({ route, navigation }) {
                 }}
               />
 
-              <View style={{ paddig: 16 }}>
-                <Text style={{ color: 'rgba(0,0,0,0.6)', marginBottom: 4, marginLeft: 4 }}>{strings.goalDate}</Text>
+              {
+                isMatter ?
+                  null :
+                  <View style={{ paddig: 16 }}>
+                    <Text style={{ color: 'rgba(0,0,0,0.6)', marginBottom: 4, marginLeft: 4 }}>{strings.goalDate}</Text>
 
-                <View style={{ marginVertical: 8, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setOpen(true)
-                    }}
-                    style={{ backgroundColor: '#F2F2F7', borderRadius: 8, width: Dimensions.get('window').width / 2 - 20, paddingVertical: 8 }} >
-                    {/* <TextInput
+                    <View style={{ marginVertical: 8, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setOpen(true)
+                        }}
+                        style={{ backgroundColor: '#F2F2F7', borderRadius: 8, width: Dimensions.get('window').width / 2 - 20, paddingVertical: 8 }} >
+                        {/* <TextInput
                       style={{ fontSize: 16, color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 2 - 20, paddingVertical: 8 }}
                       numberOfLines={1}
                       onChangeText={fromDate => {
@@ -137,19 +142,19 @@ export default function AddGoal({ route, navigation }) {
                       }}
                       value={fromDate}
                     /> */}
-                    <Text style={{ fontSize: 16, color: 'black', textAlign: 'center', }}>
-                      {fromDate}
-                    </Text>
-                  </TouchableOpacity>
-                  <Text style={{ color: 'black', margin: 8 }}>-</Text>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setOpen2(true)
-                    }}
-                    style={{ backgroundColor: '#F2F2F7', borderRadius: 8, width: Dimensions.get('window').width / 2 - 20, paddingVertical: 8 }}
+                        <Text style={{ fontSize: 16, color: 'black', textAlign: 'center', }}>
+                          {fromDate}
+                        </Text>
+                      </TouchableOpacity>
+                      <Text style={{ color: 'black', margin: 8 }}>-</Text>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setOpen2(true)
+                        }}
+                        style={{ backgroundColor: '#F2F2F7', borderRadius: 8, width: Dimensions.get('window').width / 2 - 20, paddingVertical: 8 }}
 
-                  >
-                    {/* <TextInput
+                      >
+                        {/* <TextInput
                       style={{ fontSize: 16, color: 'black', textAlign: 'center', width: Dimensions.get('window').width / 2 - 20, paddingVertical: 8 }}
                       numberOfLines={1}
                       onChangeText={toDate => {
@@ -157,17 +162,19 @@ export default function AddGoal({ route, navigation }) {
                       }}
                       value={toDate}
                     /> */}
-                    <Text style={{ fontSize: 16, color: 'black', textAlign: 'center', }}>
-                      {toDate}
-                    </Text>
+                        <Text style={{ fontSize: 16, color: 'black', textAlign: 'center', }}>
+                          {toDate}
+                        </Text>
 
-                  </TouchableOpacity>
-                </View>
-              </View>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+              }
+
               <View
                 style={{
                   height: 0.5,
-                  backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                  backgroundColor: isMatter ? null : 'rgba(0, 0, 0, 0.2)',
                   marginVertical: 10,
                   marginHorizontal: 10,
                 }}

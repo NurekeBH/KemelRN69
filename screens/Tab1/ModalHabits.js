@@ -25,6 +25,7 @@ import {
   PurposeIcon,
   RightRed,
   ShareNote,
+  users,
 } from '../../Component/MyIcons';
 import DatePicker from 'react-native-date-picker';
 import { strings } from '../../Localization/Localization';
@@ -69,6 +70,7 @@ export default class ModalHabits extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      navigation: props.navigation,
       modelItem: props.modelItemData,
       isOpen: props.isOpen ? true : false,
       isSave: false,
@@ -258,6 +260,19 @@ export default class ModalHabits extends Component {
               </View>
             </View>
 
+            {
+              modelItem?.group ?
+                <TouchableOpacity
+                  onPress={() => {
+                    this.props.navigation.navigate('DetailChat', { item: modelItem?.group, userId: 10 })
+                  }}
+                  style={{ marginTop: 8, flexDirection: 'row', alignItems: 'center' }}>
+                  {users}
+                  <Text style={{ marginLeft: 4, fontSize: 16, fontWeight: '500' }}>{modelItem?.group?.label}</Text>
+                </TouchableOpacity>
+                :
+                null
+            }
             <View
               style={{
                 paddingVertical: 16,
@@ -274,7 +289,6 @@ export default class ModalHabits extends Component {
                   textDecorationLine: done ? 'line-through' : 'none',
                   color: done ? '#8E8E93' : '#000',
                 }}
-                placeholder={strings.address}
                 value={label}
                 onChangeText={label => this.setState({ label })}
               />
@@ -461,7 +475,8 @@ export default class ModalHabits extends Component {
               </View>
             )}
           </View>
-        ) : null}
+        ) : null
+        }
       </Modal>
     );
   }

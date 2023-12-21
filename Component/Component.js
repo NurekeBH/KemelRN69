@@ -35,6 +35,10 @@ export const GetTime = (date, format) => {
   return Moment(date).format(format);
 }
 
+export const GetTimeAgo = (date) => {
+  return Moment(date).calendar();
+}
+
 export const GetDuration = sec => {
   var hours = Math.floor(sec / 3600);
   var minutes =
@@ -111,11 +115,11 @@ export const arrMonths = [
   'Жел.',
 ];
 
-export const showToast = (type, text) => {
+export const showToast = (type, text, position = 'bottom') => {
   Toast.show({
     type: type,
     text1: text,
-    position: 'bottom',
+    position: position,
     visibilityTime: 2500,
   });
 };
@@ -229,6 +233,8 @@ export const getLabelGoal = (label) => {
     case 'Қарым-қатынас': return getLang() == 'ru' ? 'Отношения' : getLang() == 'en' ? "Attitude" : label
     case 'Қоғамдық жұмыс': return getLang() == 'ru' ? 'Общественные дела' : getLang() == 'en' ? "Public affairs" : label
     case 'Хобби / Демалыс': return getLang() == 'ru' ? 'Хобби / Отдых' : getLang() == 'en' ? "Hobby / Leisure" : label
+    case 'Шұғыл істер': return getLang() == 'ru' ? 'Срочные дела' : getLang() == 'en' ? "Urgent matters" : label
+
     case '3 ай': return '3 месяц';
     case '6 ай': return '6 месяц';
     case '1 жыл': return '1 год';

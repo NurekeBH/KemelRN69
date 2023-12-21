@@ -55,7 +55,7 @@ export default function NoteAdd({ route, navigation }) {
     route.params?.item ? route.params.item.label : '',
   );
   const [text, setText] = useState(
-    route.params?.item ? route.params.item.desc : '',
+    route.params?.item ? route.params.item.dessc : '',
   );
   const [noteId, setNoteId] = useState(
     route.params?.item ? route.params.item.id : '',
@@ -65,6 +65,8 @@ export default function NoteAdd({ route, navigation }) {
   const [arrFiles, setArrFiles] = useState(
     route.params?.item ? route.params.item.children : [],
   );
+
+  console.log('item', route.params?.item)
 
 
   const [isLoading, setIsLoading] = useState(route.params?.item)

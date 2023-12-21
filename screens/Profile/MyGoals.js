@@ -20,6 +20,8 @@ import { descHowGoal, omirTepe, strings } from '../../Localization/Localization'
 import Modal from 'react-native-modalbox';
 import FastImage from 'react-native-fast-image';
 
+import { GetMaqsats, InsertQueryMaqsat } from '../../database/KemelSQLite';
+import NetInfo from "@react-native-community/netinfo";
 
 
 
@@ -72,8 +74,28 @@ export default class MyGoals extends Component {
     }
     console.log('InputArr', InputArr)
 
-    // this.GetSection();
-    this.GetCategory();
+
+
+    this.unsubscribeNet = NetInfo.addEventListener(async state => {
+      console.log('state state state', state)
+
+      if (state.isConnected) {
+        this.GetCategory();
+      } else {
+        let goalCate = await GetMaqsats()
+
+        console.log('goalCate', goalCate)
+
+        this.setState({
+          goalCate: goalCate._array,
+          isLoading: false,
+        });
+
+
+      }
+    })
+
+
 
 
   }
@@ -103,10 +125,14 @@ export default class MyGoals extends Component {
       .then(response => {
         console.log('RESPONSE category:', response);
         let category = response.data.sort((a, b) => (a.sort > b.sort) ? 1 : -1)
+        console.log('RESPONSE category1:', category);
+
+        let filteredCat = category.filter(item => item.id !== 9)
 
 
+        InsertQueryMaqsat(filteredCat)
         this.setState({
-          goalCate: category,
+          goalCate: filteredCat,
           isLoading: false,
         });
       })
@@ -153,13 +179,23 @@ export default class MyGoals extends Component {
           padding: 16,
           borderBottomColor: '#8E8E93',
           borderBottomWidth: 0.5,
+          backgroundColor: item?.color
         }}
         onPress={() => {
-          this.props.navigation.navigate('Goals', {
-            category_id: item.id,
-            section_id: this.state.section_id,
-            label: item.label,
-          });
+          if (item?.id == 9) {
+            this.props.navigation.navigate('MattersGoals', {
+              category_id: item.id,
+              section_id: this.state.section_id,
+              label: item.label,
+            });
+          } else {
+            this.props.navigation.navigate('Goals', {
+              category_id: item.id,
+              section_id: this.state.section_id,
+              label: item.label,
+            });
+          }
+
         }}>
         <Text style={{ color: 'black', flex: 1, fontSize: 17 }}>{getLabelGoal(item.label)}</Text>
         <View

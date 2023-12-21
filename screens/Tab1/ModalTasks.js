@@ -264,7 +264,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
                 mode="datetime"
                 date={new Date(datetime)}
                 is24hourSource="locale"
-                title={null}
+                title={""}
                 textColor={"black"}
                 theme={"light"}
                 confirmText={strings.save}
@@ -383,7 +383,7 @@ export default function ModalTasks({ isOpen, folderData, modelItemData, RefreshM
               <RichEditor
                 style={{ minHeight: 100, marginHorizontal: -5 }}
                 ref={richText}
-                placeholder={strings.zamk}
+                placeholder={strings.addzamk}
                 androidHardwareAccelerationDisabled={true}
                 initialContentHTML={zametka}
                 onChange={zametka => {

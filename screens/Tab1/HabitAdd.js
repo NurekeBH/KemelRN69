@@ -270,9 +270,10 @@ export default class HabitAdd extends Component {
                   <Text style={{ fontSize: 17, color: 'grey' }}>{strings.perday}</Text>
                 </View>
                 <TextInput
-                  style={{ paddingVertical: 2, fontSize: 16, borderRadius: 10, width: 100, textAlign: 'center', backgroundColor: 'rgba(0,0,0,0.1)' }}
+                  style={{ color: '#000', paddingVertical: 2, fontSize: 16, borderRadius: 10, width: 100, textAlign: 'center', backgroundColor: 'rgba(0,0,0,0.1)' }}
                   placeholder="0"
                   keyboardType="number-pad"
+                  placeholderTextColor={"#000"}
                   onChangeText={target =>
                     this.setState({
                       target,
